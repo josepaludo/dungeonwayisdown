@@ -45,12 +45,12 @@ class Board:
         print()
 
 
-    def place_things(self, livings):
+    def place_things(self, livings, players):
 
         self.entry = self.next_entry
 
         self.reset_board()
-        self.make_entrance()
+        self.make_entrance(players)
         self.make_exit()
         self.make_pillars()
         self.make_holes()
@@ -89,7 +89,7 @@ class Board:
                     break
 
 
-    def make_entrance(self, entry=None):
+    def make_entrance(self, players, entry=None):
 
         entry = entry if entry else self.entry
         start = randint(3, 12)

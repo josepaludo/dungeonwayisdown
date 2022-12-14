@@ -1,20 +1,33 @@
 from random import randint
+from player_class import Warrior, Druid, Thief, Wizard, Priest
 
 def get_entry(exit):
     return 1 if exit==3 else 2 if exit==4 else 3 if exit==1 else 4
 
 
-def create_enemies(Clas, n_min, n_max):
+def create_enemies(Clas):
+
+    num_min = randint(3, 6)
+    num_max = num_min+(randint(1, 5))
 
     proxy = []
 
-    for i in range(randint(n_min, n_max)):
+    for i in range(randint(num_min, num_max)):
 
         geni = Clas()
         proxy.append(geni)
 
     return proxy
 
+
+def create_players():
+
+    proxy_list = []
+    for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
+        proxy = class_()
+        proxy_list.append(proxy)
+
+    return proxy_list
 
 game_icon = """
 ______

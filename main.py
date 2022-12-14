@@ -2,19 +2,21 @@ from random import randint
 
 from board_class import Board
 from living_classes import Thing, Living, Enemy
-from functions import create_enemies,get_entry, game_icon
+from functions import create_enemies, create_players, get_entry, game_icon
 
 
 board = Board()
 
 livings = []
 
-num_min = randint(3, 6)
-num_max = num_min+(randint(1, 5))
 
-enemies = create_enemies(Enemy, num_min, num_max)
+enemies = create_enemies(Enemy)
+players = create_players()
 livings += enemies
-board.place_things(livings)
+livings += players
+board.place_things(enemies, Players)
 
 
 board.print_board()
+for player in players:
+    print(player, player.sym)
