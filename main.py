@@ -6,16 +6,14 @@ from functions import create_enemies,get_entry, game_icon
 
 board = Board()
 
-things = []
+livings = []
 
-#exit = randint(1, 4)
-#entry = get_entry(exit)
-num_min = randint(1, 5)
+num_min = randint(3, 6)
 num_max = num_min+(randint(1, 5))
 
-enemies = create_enemies(Enemy, 3, board, num_min, num_max)
-things += enemies
+enemies = create_enemies(Enemy, num_min, num_max)
+livings += enemies
+board.place_things(livings)
 
-board.place_things(things)
 
 board.print_board()

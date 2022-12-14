@@ -28,6 +28,7 @@ class Enemy(Living):
 
     def __init__(self):
         super().__init__()
+        self.sym = "e"
 
 
     def move(self):
@@ -42,9 +43,11 @@ class Board:
         self.wall_square = "#"
         self.hole_square = "*"
         self.board = []
-        self.current_exit = 0
+        self.exit = 0
+        self.next_entry = 3
         self.entry = 0
         self.backup_board = []
+
         self.reset_board()
 
     def reset_board(self):
@@ -72,28 +75,54 @@ class Board:
         print()
 
 
-    def place_things(self, array_of_things, entry=3):
+    def place_things(self, livings):
 
-        entry = self.entry if self.entry != 0 else entry
+        self.entry = self.next_entry
 
         self.reset_board()
-
-        for thing in array_of_things:
-            if isinstance(thing.x, int):
-                self.board[thing.y][thing.x] = thing.sym
-            else:
-                for xcor in thing.x:
-                    for ycor in thing.y:
-                        self.board[ycor][xcor] = thing.sym
-
-        self.make_entrance(entry)
-        self.make_exit(entry)
+        self.make_entrance()
+        self.make_exit()
         self.make_pillars()
         self.make_holes()
+        self.place_livings(livings)
+
+
+    def place_livings(self, livings):
+
+        self.set_livings_xy(livings)
+
+        for living in livings:
+            if isinstance(living.x, int):
+                self.board[living.y][living.x] = living.sym
+            else:
+                for xcor in living.x:
+                    for ycor in living.y:
+                        self.board[ycor][xcor] = living.sym
+
 
         self.backup_board = deepcopy(self.board)
 
-    def make_entrance(self, entry):
+
+    def set_livings_xy(self, livings):
+       # entry must be 1, 2, 3, 4 standing for up, right, down, left
+
+        for liv in livings:
+
+            while True:
+                xrange = (0, 19) if self.entry%2!=0 else (0, 9) if self.entry==2 else (10, 19)
+                yrange = (0, 19) if self.entry%2==0 else (0, 9) if self.entry==3 else (10, 19)
+                xpos = randint(xrange[0], xrange[1])
+                ypos = randint(yrange[0], yrange[1])
+
+                if self.board[ypos][xpos] == self.empty_square:
+                    liv.x, liv.y = xpos, ypos
+                    break
+
+
+    def make_entrance(self, entry=None):
+
+        entry = entry if entry else self.entry
+        start = randint(3, 12)
 
         if entry%2 != 0:
             for i in range(5):
@@ -125,17 +154,20 @@ class Board:
 
         options = [(4, 4), (4, 13), (13, 4), (13, 13)]
         for opt in options:
-            self.pillars_prototype(ycor=opt[0], xcor=opt[1])
+            if randint(0, 1) == 1:
+                self.pillars_prototype(ycor=opt[0], xcor=opt[1])
 
 
-    def make_exit(self, entry):
+    def make_exit(self):
 
-        self.current_exit = choice([x for x in [1, 2, 3, 4] if x != entry])
-        self.make_entrance(self.current_exit)
+        self.exit= choice([x for x in [1, 2, 3, 4] if x != self.entry])
+        self.make_entrance(self.exit)
+        self.next_entry = get_entry(self.exit)
 
 
     def make_holes(self, xcor=None, ycor=None):
 
-        h_size = randint(2, 3)
+        size = randint(2, 3)
+        check = 4
         for j in range(25):
-            self.pillars_prototype(size=h_size, check=h_size+4, subtract=2, wall=False, wall_distance=2)
+            self.pillars_prototype(size=size, check=size+check, subtract=check//2, wall=False)
