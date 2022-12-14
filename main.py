@@ -1,6 +1,7 @@
 from random import randint
 
-from classes import Thing, Living, Enemy, Board
+from board_class import Board
+from living_classes import Thing, Living, Enemy
 from functions import create_enemies,get_entry, game_icon
 
 

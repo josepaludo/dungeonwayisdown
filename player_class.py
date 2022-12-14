@@ -1,2 +1,6 @@
+from living_classes import Living
+
 class Player():
-    pass
+
+    def __init__(self):
+        super().__init__()
