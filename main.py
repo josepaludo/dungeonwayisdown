@@ -8,14 +8,14 @@ board = Board()
 
 things = []
 
-exit = randint(1, 4)
-entry = get_entry(exit)
+#exit = randint(1, 4)
+#entry = get_entry(exit)
 num_min = randint(1, 5)
 num_max = num_min+(randint(1, 5))
 
-enemies = create_enemies(Enemy, entry, board, num_min, num_max)
+enemies = create_enemies(Enemy, 3, board, num_min, num_max)
 things += enemies
 
-board.place_things(things, entry)
+board.place_things(things, 3)
 
 board.print_board()

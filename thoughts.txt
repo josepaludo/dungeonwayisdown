@@ -5,7 +5,7 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
             - Universal Imputs: 'help' for list of commands, 'log' for last
             events, 'cards' for cards functionality, 'status' for life of
             every player, weapons, damage dealt to enemies, 'more help' for
-            more help
+            more help, 'icons' for the meaning of each symbol
 
 - Thig: major class in game, almost everything is a Thing. X, Y and symbol 
 properties.

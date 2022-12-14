@@ -23,7 +23,7 @@ def create_enemies(Clas, entry, board, n_min, n_max):
             if board.board[ypos][xpos] == board.empty_square:
 
                 geni = Clas()
-                geni.x, geni.y, geni.sym = xpos, ypos, "E"
+                geni.x, geni.y, geni.sym = xpos, ypos, "e"
                 proxy.append(geni)
 
                 break
