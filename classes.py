@@ -73,7 +73,9 @@ class Board:
         print()
 
 
-    def place_things(self, array_of_things, entry):
+    def place_things(self, array_of_things, entry=3):
+
+        entry = self.entry if self.entry != 0 else entry
 
         self.reset_board()
 
@@ -92,7 +94,7 @@ class Board:
 
         self.backup_board = deepcopy(self.board)
 
-    def make_entrance(self, entry=1, determined_start=None):
+    def make_entrance(self, entry, determined_start=None):
 
         start = determined_start if determined_start else randint(2, 13)
         self.start = start

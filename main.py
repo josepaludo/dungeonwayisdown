@@ -16,6 +16,6 @@ num_max = num_min+(randint(1, 5))
 enemies = create_enemies(Enemy, 3, board, num_min, num_max)
 things += enemies
 
-board.place_things(things, 3)
+board.place_things(things)
 
 board.print_board()
