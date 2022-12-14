@@ -42,9 +42,8 @@ class Board:
         self.wall_square = "#"
         self.hole_square = "*"
         self.board = []
-        self.start = 0
         self.current_exit = 0
-        self.next_entry = 0
+        self.entry = 0
         self.backup_board = []
         self.reset_board()
 
@@ -94,10 +93,7 @@ class Board:
 
         self.backup_board = deepcopy(self.board)
 
-    def make_entrance(self, entry, determined_start=None):
-
-        start = determined_start if determined_start else randint(2, 13)
-        self.start = start
+    def make_entrance(self, entry):
 
         if entry%2 != 0:
             for i in range(5):
@@ -109,11 +105,11 @@ class Board:
                     line[0 if entry == 4 else -1] = self.empty_square
 
 
-    def pillars_prototype(self, xcor=None, ycor=None, size=3, check=9, subtract=3, wall=True, wall_distance=5):
+    def pillars_prototype(self, xcor=None, ycor=None, size=3, check=3, subtract=0, wall=True):
 
 
-        xcor = xcor if xcor else randint(wall_distance, 17-wall_distance)
-        ycor = ycor if ycor else randint(wall_distance, 17-wall_distance)
+        xcor = xcor if xcor else randint(3, 13)
+        ycor = ycor if ycor else randint(3, 13)
 
         for i in range(check):
             for j in range(check):
@@ -127,13 +123,15 @@ class Board:
 
     def make_pillars(self):
 
-        for j in range(100):
-            self.pillars_prototype()
+        options = [(4, 4), (4, 13), (13, 4), (13, 13)]
+        for opt in options:
+            self.pillars_prototype(ycor=opt[0], xcor=opt[1])
 
 
-    def make_exit(self, entry=3, determined_start=None):
+    def make_exit(self, entry):
 
-        self.make_entrance(choice([x for x in [1, 2, 3, 4] if x != entry]))
+        self.current_exit = choice([x for x in [1, 2, 3, 4] if x != entry])
+        self.make_entrance(self.current_exit)
 
 
     def make_holes(self, xcor=None, ycor=None):
