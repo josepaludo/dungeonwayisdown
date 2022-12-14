@@ -2,6 +2,11 @@ Dungeon Way is Down
 
 Turn Based "Card Game" Dungeon Crawler Game Idea
 
+            - Universal Imputs: 'help' for list of commands, 'log' for last
+            events, 'cards' for cards functionality, 'status' for life of
+            every player, weapons, damage dealt to enemies, 'more help' for
+            more help
+
 - Thig: major class in game, almost everything is a Thing. X, Y and symbol 
 properties.
     - How can a Thing have a 2x2 coordinate? That is, 2 values for both X and Y?

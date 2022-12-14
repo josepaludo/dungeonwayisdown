@@ -1,3 +1,5 @@
-for i in range(1, 5):
-    a = 1 if i%2!=0 else 2 if i==2 else 3
-    print(a)
+a = [x for x in range(1, 11)]
+
+for i in range(4):
+    if i%2==0:
+        print(a[i if i==2 else -1])

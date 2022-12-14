@@ -1,5 +1,8 @@
 from random import randint
 
+def get_entry(exit):
+    return 1 if exit==3 else 2 if exit==4 else 3 if exit==1 else 4
+
 
 def create_enemies(Clas, entry, board, n_min, n_max):
     """entry must be 1, 2, 3, 4 standing for up, right, down, left"""

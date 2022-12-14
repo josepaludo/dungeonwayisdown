@@ -1,4 +1,7 @@
 import os
+from random import randint
+
+from functions import get_entry
 
 
 class Thing:
@@ -36,30 +39,35 @@ class Board:
 
         self.empty_square = " "
         self.board = []
+        self.start = 0
         self.reset_board()
 
     def reset_board(self):
 
         self.board = [[self.empty_square for i in range(20)] for j in range(20)]
-        self.board[0] = self.board[-1] = ["X" for i in range(20)]
+        self.board[0] = ["X" for i in range(20)]
+        self.board[-1] = ["X" for i in range(20)]
+
         for line in self.board:
             line[0] = line[-1] = "X"
 
 
-    def print_board(self):
+    def print_board(self, proxy_board=None):
+
+        proxy_board = proxy_board if proxy_board else self.board
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print()
-        for line in self.board:
+        for line in proxy_board:
             print(" ", end='')
             for symbol in line:
                 print(f"{symbol} ", end='')
-            print(".")
+            print()
         print()
 
 
-    def place_things(self, array_of_things):
+    def place_things(self, array_of_things, entry):
 
         self.reset_board()
 
@@ -71,4 +79,42 @@ class Board:
                     for ycor in thing.y:
                         self.board[ycor][xcor] = thing.sym
 
+        self.make_entrance(entry)
+        self.make_pillars()
 
+    def make_entrance(self, entry, determined_start=None):
+
+        start = determined_start if determined_start else randint(2, 13)
+        self.start = start
+
+        if entry%2 != 0:
+            for i in range(5):
+                self.board[0 if entry == 1 else -1][start+i] = self.empty_square
+
+        else:
+            for ind, line in enumerate(self.board):
+                if start<=ind<start+5:
+                    line[0 if entry == 4 else -1] = self.empty_square
+
+
+    def pillars_prototype(self, xcor=None, ycor=None):
+
+
+        xcor = xcor if xcor else randint(5, 12)
+        ycor = ycor if ycor else randint(5, 12)
+
+        for i in range(9):
+            for j in range(9):
+                if self.board[ycor-3+i][xcor-3+j] != self.empty_square:
+                    return
+
+        for i in range(3):
+            for j in range(3):
+                self.board[ycor+i][xcor+j] = "X"
+
+
+    def make_pillars(self):
+
+        for j in range(80):
+            if self.pillars_prototype():
+                break
