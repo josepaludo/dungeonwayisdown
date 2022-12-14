@@ -14,7 +14,7 @@ enemies = create_enemies(Enemy)
 players = create_players()
 livings += enemies
 livings += players
-board.place_things(enemies, Players)
+board.place_things(enemies, players)
 
 
 board.print_board()
