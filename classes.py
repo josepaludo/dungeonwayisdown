@@ -1,5 +1,5 @@
 import os
-from random import randint
+from random import randint, choice
 
 from functions import get_entry
 
@@ -80,9 +80,10 @@ class Board:
                         self.board[ycor][xcor] = thing.sym
 
         self.make_entrance(entry)
+        self.make_exit(entry)
         self.make_pillars()
 
-    def make_entrance(self, entry, determined_start=None):
+    def make_entrance(self, entry=1, determined_start=None):
 
         start = determined_start if determined_start else randint(2, 13)
         self.start = start
@@ -118,3 +119,8 @@ class Board:
         for j in range(80):
             if self.pillars_prototype():
                 break
+
+
+    def make_exit(self, entry=3, determined_start=None):
+
+        self.make_entrance(choice([x for x in [1, 2, 3, 4] if x != entry]))
