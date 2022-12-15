@@ -37,7 +37,7 @@ def create_players():
 
 def prepare_turn(board):
 
-    enemies = create_enemies(Enemy)
+    enemies = create_enemies(Enemy, targets)
     players = create_players()
     board.place_things(enemies, players)
     board.print_board()

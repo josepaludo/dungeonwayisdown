@@ -12,16 +12,20 @@ board = Board()
 
 while True:
 
-    enemies = create_enemies(Enemy)
     players = create_players()
+    enemies = create_enemies(Enemy)
+    livings = enemies + players
     board.place_things(enemies, players)
     board.print_board()
 
-    board.backup_board = deepcopy(board.board)
-    for i in range(10):
-        board.print_board()
-        sleep(0.25)
-        board.print_board(board.backup_board)
-        sleep(0.25)
+    while True:
+        for living in livings:
+
+            board.backup_board = deepcopy(board.board)
+            for i in range(10):
+                board.print_board()
+                sleep(0.25)
+                board.print_board(board.backup_board)
+                sleep(0.25)
 
     board.backup_board = []
