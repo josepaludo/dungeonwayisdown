@@ -29,9 +29,17 @@ class Enemy(Living):
         self.target = None
         self.current_diff = None
         self.dir = []
+        self.board = board
+        self.target_counter = 10
+        self.dead = False
 
     def set_target(self):
-        self.target = choice(self.targets)
+
+        if self.target_counter == 10:
+            self.target = choice(self.targets)
+            self.target_counter = 0
+        else:
+            self.target_counter += 1
 
 
     def measure_distance(self):
@@ -60,15 +68,26 @@ class Enemy(Living):
 
         for direc in self.dir:
 
-            boardxy = board.board[direc[0]][direc[1]]
-            if boardxy == board.empty_quare or if boardxy == board.hole_square:
+            boardxy = self.board.board[direc[0]][direc[1]]
+            if boardxy == self.board.empty_square or boardxy == self.board.hole_square:
 
-                if dist(direc)<self.current_diff:
+                if self.dist(direc) < self.current_diff:
+                    self.board.board[self.y][self.x] = self.board.empty_square
+
+                    if boardxy == self.board.hole_square:
+                        self.dead = True
+                        return
+
                     self.y, self.x = direc[0], direc[1]
-                    board.board[self.y][self.x] = self.sym
+                    self.board.board[self.y][self.x] = self.sym
                     return
 
 
     def take_turn(self, targets):
 
+        if self.dead:
+            return
+
         self.targets = targets
+        self.set_target()
+        self.move()

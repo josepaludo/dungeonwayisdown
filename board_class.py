@@ -111,7 +111,7 @@ class Board:
 
 
         if entry%2 != 0:
-            y = 0 if entry == 1 else -1
+            y = 0 if entry == 1 else 19
             for i in range(5):
                 x = start+i
                 self.board[y][x] = self.empty_square
@@ -120,7 +120,7 @@ class Board:
                     self.entrance_coords.append((x, y))
 
         else:
-            x = 0 if entry == 4 else -1
+            x = 0 if entry == 4 else 19
             for ind, line in enumerate(self.board):
                 if start<=ind<start+5:
                     y = ind

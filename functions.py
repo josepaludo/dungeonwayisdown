@@ -10,7 +10,7 @@ def get_entry(exit):
     return 1 if exit==3 else 2 if exit==4 else 3 if exit==1 else 4
 
 
-def create_enemies(Clas):
+def create_enemies(Clas, board):
 
     num_min = randint(3, 6)
     num_max = num_min+(randint(1, 5))
@@ -19,7 +19,7 @@ def create_enemies(Clas):
 
     for i in range(randint(num_min, num_max)):
 
-        geni = Clas()
+        geni = Clas(board)
         proxy.append(geni)
 
     return proxy
@@ -33,28 +33,6 @@ def create_players():
         proxy_list.append(proxy)
 
     return proxy_list
-
-
-def prepare_turn(board):
-
-    enemies = create_enemies(Enemy, targets)
-    players = create_players()
-    board.place_things(enemies, players)
-    board.print_board()
-
-    return enemies, players
-
-
-def make_change(func, board):
-
-    board.backup_board = deepcopy(board.board)
-    for i in range(10):
-        board.print_board()
-        sleep(0.25)
-        board.print_board(board.backup_board)
-        sleep(0.25)
-
-    board.backup_board = []
 
 
 game_icon = """

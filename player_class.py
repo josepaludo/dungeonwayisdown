@@ -1,10 +1,15 @@
 from living_classes import Living
 
-class Player():
+class Player:
 
     def __init__(self):
         super().__init__()
 
+        self.input_list = ["help", "log", "cards", "status", "weapons", "icons", "more help", "move"]
+        self.inputs = {"move": self.move}
+
+    def move(self):
+        print("this is move")
 
 class Warrior(Player):
 
@@ -12,6 +17,7 @@ class Warrior(Player):
         super().__init__()
 
         self.sym = "W"
+        self.input_list += ["aaaaaaaaaaaaaaaaaaaaaaa"]
 
 class Priest(Player):
 
