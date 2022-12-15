@@ -17,8 +17,10 @@ class Board:
         self.next_entry = 3
         self.entry = 0
         self.backup_board = []
+        self.entrance_coords = []
 
         self.reset_board()
+
 
     def reset_board(self):
 
@@ -50,14 +52,15 @@ class Board:
         self.entry = self.next_entry
 
         self.reset_board()
-        self.make_entrance(players)
+        self.make_entrance()
         self.make_exit()
         self.make_pillars()
         self.make_holes()
-        self.place_livings(livings)
+        self.place_players(players)
+        self.place_enemies(livings)
 
 
-    def place_livings(self, livings):
+    def place_enemies(self, livings):
 
         self.set_livings_xy(livings)
 
@@ -70,17 +73,14 @@ class Board:
                         self.board[ycor][xcor] = living.sym
 
 
-        self.backup_board = deepcopy(self.board)
-
-
     def set_livings_xy(self, livings):
        # entry must be 1, 2, 3, 4 standing for up, right, down, left
 
         for liv in livings:
 
             while True:
-                xrange = (0, 19) if self.entry%2!=0 else (0, 9) if self.entry==2 else (10, 19)
-                yrange = (0, 19) if self.entry%2==0 else (0, 9) if self.entry==3 else (10, 19)
+                xrange = (1, 18) if self.entry%2!=0 else (1, 9) if self.entry==2 else (10, 18)
+                yrange = (1, 18) if self.entry%2==0 else (1, 9) if self.entry==3 else (10, 18)
                 xpos = randint(xrange[0], xrange[1])
                 ypos = randint(yrange[0], yrange[1])
 
@@ -89,19 +89,34 @@ class Board:
                     break
 
 
-    def make_entrance(self, players, entry=None):
+    def place_players(self, players):
+
+        for coord, player in zip(self.entrance_coords, players):
+            player.x = coord[0]
+            player.y = coord[1]
+            self.board[player.y][player.x] = player.sym
+
+
+    def make_entrance(self, entry=None):
 
         entry = entry if entry else self.entry
         start = randint(3, 12)
+        self.entrance_coords = []
 
         if entry%2 != 0:
+            y = 0 if entry == 1 else -1
             for i in range(5):
-                self.board[0 if entry == 1 else -1][start+i] = self.empty_square
+                x = start+i
+                self.board[y][x] = self.empty_square
+                self.entrance_coords.append((x, y))
 
         else:
+            x = 0 if entry == 4 else -1
             for ind, line in enumerate(self.board):
                 if start<=ind<start+5:
-                    line[0 if entry == 4 else -1] = self.empty_square
+                    y = ind
+                    line[x] = self.empty_square
+                    self.entrance_coords.append((x, y))
 
 
     def pillars_prototype(self, xcor=None, ycor=None, size=3, check=3, subtract=0, wall=True):
@@ -141,3 +156,4 @@ class Board:
         check = 4
         for j in range(25):
             self.pillars_prototype(size=size, check=size+check, subtract=check//2, wall=False)
+

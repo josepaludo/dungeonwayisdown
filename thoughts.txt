@@ -1,5 +1,8 @@
 Dungeon Way is Down
 
+todo:
+    - enemies spawning on wrong place
+
 Turn Based "Card Game" Dungeon Crawler Game Idea
 
             - Universal Imputs: 'help' for list of commands, 'log' for last
@@ -68,6 +71,3 @@ right).
     seconds, print board as will be, sleep 0.3 seconds. Then board as is is 
     equal to boar as will be.
 
-
-
-How to delete objects?

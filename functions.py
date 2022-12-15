@@ -1,5 +1,7 @@
 from random import randint
 from player_class import Warrior, Druid, Thief, Wizard, Priest
+from living_classes import Enemy
+
 
 def get_entry(exit):
     return 1 if exit==3 else 2 if exit==4 else 3 if exit==1 else 4
@@ -28,6 +30,17 @@ def create_players():
         proxy_list.append(proxy)
 
     return proxy_list
+
+
+def prepare_turn(board):
+
+    enemies = create_enemies(Enemy)
+    players = create_players()
+    board.place_things(enemies, players)
+    board.print_board()
+
+    return enemies, players
+
 
 game_icon = """
 ______
