@@ -65,9 +65,17 @@ def living_turn(livings, board, players, enemies):
 
 def enemy_turn(living, board, players, enemies):
 
-    board.backup_board = deepcopy(board.board)
+    board.make_copy()
 
     living.take_turn(players)
+
+    blink_screen(board)
+
+    board.backup_board = []
+
+
+def blink_screen(board):
+    """you must deal with proxy yourself!!!"""
 
     for i in range(2):
         sleep(0.05)
@@ -75,15 +83,14 @@ def enemy_turn(living, board, players, enemies):
         sleep(0.05)
         board.print_board()
 
-    board.backup_board = []
-
 
 def player_turn(living, board, players, enemies):
+
+    living.get_info(board, players)
 
     while True:
         action = input("Which action would you like to take? ")
         if action in living.inputs:
             break
     living.inputs[action]()
-    sleep(5)
 

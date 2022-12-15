@@ -1,3 +1,6 @@
-def myfun():
-    print("AAA")
-myfun(None)
+a = [[], [1, 2, 3, [1, 2, 3, [1, 2, 3], [1, 2, 3, [1, 2, 3]], 1, 2], 2, 3]]
+def change(dd):
+    dd = []
+
+change(a)
+print(a)
