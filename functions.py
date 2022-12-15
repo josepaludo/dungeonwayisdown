@@ -1,4 +1,7 @@
 from random import randint
+from copy import deepcopy
+from time import sleep
+
 from player_class import Warrior, Druid, Thief, Wizard, Priest
 from living_classes import Enemy
 
@@ -40,6 +43,18 @@ def prepare_turn(board):
     board.print_board()
 
     return enemies, players
+
+
+def make_change(func, board):
+
+    board.backup_board = deepcopy(board.board)
+    for i in range(10):
+        board.print_board()
+        sleep(0.25)
+        board.print_board(board.backup_board)
+        sleep(0.25)
+
+    board.backup_board = []
 
 
 game_icon = """

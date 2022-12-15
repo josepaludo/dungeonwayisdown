@@ -16,6 +16,7 @@ class Board:
         self.exit = 0
         self.next_entry = 3
         self.entry = 0
+        self.start = 7
         self.backup_board = []
         self.entrance_coords = []
 
@@ -47,7 +48,7 @@ class Board:
         print()
 
 
-    def place_things(self, livings, players):
+    def place_things(self, enemies, players):
 
         self.entry = self.next_entry
 
@@ -57,7 +58,7 @@ class Board:
         self.make_pillars()
         self.make_holes()
         self.place_players(players)
-        self.place_enemies(livings)
+        self.place_enemies(enemies)
 
 
     def place_enemies(self, livings):
@@ -97,18 +98,26 @@ class Board:
             self.board[player.y][player.x] = player.sym
 
 
-    def make_entrance(self, entry=None):
+    def make_entrance(self, entry=None, entrance=True):
+
+        if entrance:
+            self.entrance_coords = []
+            start = self.start
+        else:
+            start = randint(3, 12)
+            self.start = start
 
         entry = entry if entry else self.entry
-        start = randint(3, 12)
-        self.entrance_coords = []
+
 
         if entry%2 != 0:
             y = 0 if entry == 1 else -1
             for i in range(5):
                 x = start+i
                 self.board[y][x] = self.empty_square
-                self.entrance_coords.append((x, y))
+
+                if entrance:
+                    self.entrance_coords.append((x, y))
 
         else:
             x = 0 if entry == 4 else -1
@@ -116,7 +125,9 @@ class Board:
                 if start<=ind<start+5:
                     y = ind
                     line[x] = self.empty_square
-                    self.entrance_coords.append((x, y))
+
+                    if entrance:
+                        self.entrance_coords.append((x, y))
 
 
     def pillars_prototype(self, xcor=None, ycor=None, size=3, check=3, subtract=0, wall=True):
@@ -146,7 +157,7 @@ class Board:
     def make_exit(self):
 
         self.exit= choice([x for x in [1, 2, 3, 4] if x != self.entry])
-        self.make_entrance(self.exit)
+        self.make_entrance(self.exit, entrance=False)
         self.next_entry = get_entry(self.exit)
 
 
