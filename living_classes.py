@@ -104,7 +104,7 @@ class Enemy(Living):
                     return
 
 
-    def take_turn(self, targets):
+    def turn_move(self, targets):
 
         self.targets = [target for target in targets if not target.dead]
         self.set_target()

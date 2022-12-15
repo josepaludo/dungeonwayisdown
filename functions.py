@@ -65,7 +65,7 @@ def dungeon_loop(livings, board, players, enemies):
         if not go_on:
             return True
 
-def livings_turn(livings, board, players, enemies:
+def livings_turn(livings, board, players, enemies):
 
     for living in livings:
 
@@ -89,7 +89,7 @@ def livings_turn(livings, board, players, enemies:
 def enemy_turn(living, board, players, enemies):
 
     board.make_copy()
-    living.take_turn(players)
+    living.turn_move(players)
     blink_screen(board)
     board.backup_board = []
 

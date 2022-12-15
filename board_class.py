@@ -26,8 +26,9 @@ class Board:
     def level_finished(self, players, enemies):
 
         for player in players:
-            if (player.x, player.y) not in self.exit_coords:
-                return
+            if not player.dead:
+                if (player.x, player.y) not in self.exit_coords:
+                    return
 
         for enemy in enemies:
             if not enemy.dead:
