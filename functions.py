@@ -22,54 +22,68 @@ def create_enemies(Clas, board):
     return proxy
 
 
-def create_players():
+def create_players(board):
 
     proxy_list = []
     for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
+
         proxy = class_()
-        proxy_list.append(proxy)
+        if proxy.sym not in board.dead_players:
+            proxy_list.append(proxy)
 
     return proxy_list
 
 
-def dungeon_loop():
+def game_loop():
 
     board = Board()
 
     while True:
 
-        players = create_players()
+        players = create_players(board)
         enemies = create_enemies(Enemy, board)
         livings = enemies + players
         board.place_things(enemies, players)
 
-        go_on = living_turn(livings, board, players, enemies)
+        go_on = dungeon_loop(livings, board, players, enemies)
 
         if not go_on:
             break
 
+        check_dead_players(board, players)
 
-def living_turn(livings, board, players, enemies):
+
+def dungeon_loop(livings, board, players, enemies):
 
     while True:
 
         if all_players_died(players):
             return
 
-        for living in livings:
+        go_on = livings_turn(livings, board, players, enemies)
 
-            board.print_board()
+        if not go_on:
+            return True
 
-            if board.level_finished(players, enemies):
-                return True
+def livings_turn(livings, board, players, enemies:
 
-            if not living.dead:
+    for living in livings:
 
-                if isinstance(living, Enemy):
-                    enemy_turn(living, board, players, enemies)
+        board.print_board()
 
-                else:
-                    player_turn(living, board, players, enemies)
+        if board.level_finished(players, enemies):
+            sleep(1)
+            return
+
+        if not living.dead:
+
+            if isinstance(living, Enemy):
+                enemy_turn(living, board, players, enemies)
+
+            else:
+                player_turn(living, board, players, enemies)
+
+    return True
 
 
 def enemy_turn(living, board, players, enemies):
@@ -107,3 +121,11 @@ def all_players_died(players):
         if not player.dead:
             return False
     return True
+
+
+def check_dead_players(board, players):
+
+    for player in players:
+        if player.dead:
+
+            board.dead_players.append(player.sym)

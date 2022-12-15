@@ -18,6 +18,7 @@ class Board:
         self.backup_board = []
         self.entrance_coords = []
         self.exit_coords = []
+        self.dead_players = []
 
         self.reset_board()
 
