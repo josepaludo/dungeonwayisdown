@@ -1,4 +1,5 @@
 from random import choice
+from time import sleep
 
 
 class Thing:
@@ -15,9 +16,29 @@ class Living(Thing):
     def __init__(self):
         super().__init__()
 
-        self.health = None
+        self.health = 20
         self.weapons = []
         self.abilities = []
+        self.dead = False
+
+        self.board = None
+        self.enemies = None
+
+
+    def blink_screen(self):
+        """you must deal with proxy yourself!!!"""
+
+        for i in range(5):
+            sleep(0.05)
+            self.board.print_board(self.board.backup_board)
+            sleep(0.05)
+            self.board.print_board()
+
+
+    def get_info(self, board, enemies):
+
+        self.board = board
+        self.enemies = enemies
 
 
 class Enemy(Living):
@@ -31,7 +52,7 @@ class Enemy(Living):
         self.dir = []
         self.board = board
         self.target_counter = 10
-        self.dead = False
+
 
     def set_target(self):
 

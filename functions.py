@@ -43,34 +43,40 @@ def dungeon_loop():
         livings = enemies + players
         board.place_things(enemies, players)
 
-        living_turn(livings, board, players, enemies)
+        go_on = living_turn(livings, board, players, enemies)
+
+        if not go_on:
+            break
 
 
 def living_turn(livings, board, players, enemies):
 
     while True:
+
+        if all_players_died(players):
+            return
+
         for living in livings:
 
             board.print_board()
 
-            if isinstance(living, Enemy):
+            if board.level_finished(players, enemies):
+                return True
 
-                enemy_turn(living, board, players, enemies)
+            if not living.dead:
 
+                if isinstance(living, Enemy):
+                    enemy_turn(living, board, players, enemies)
 
-            if isinstance(living, Player):
-
-                player_turn(living, board, players, enemies)
+                else:
+                    player_turn(living, board, players, enemies)
 
 
 def enemy_turn(living, board, players, enemies):
 
     board.make_copy()
-
     living.take_turn(players)
-
     blink_screen(board)
-
     board.backup_board = []
 
 
@@ -94,3 +100,10 @@ def player_turn(living, board, players, enemies):
             break
     living.inputs[action]()
 
+
+def all_players_died(players):
+
+    for player in players:
+        if not player.dead:
+            return False
+    return True

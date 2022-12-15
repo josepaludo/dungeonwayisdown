@@ -17,8 +17,22 @@ class Board:
         self.start = 7
         self.backup_board = []
         self.entrance_coords = []
+        self.exit_coords = []
 
         self.reset_board()
+
+
+    def level_finished(self, players, enemies):
+
+        for player in players:
+            if (player.x, player.y) not in self.exit_coords:
+                return
+
+        for enemy in enemies:
+            if not enemy.dead:
+                return
+
+        return True
 
 
     def make_copy(self):
@@ -108,6 +122,7 @@ class Board:
         else:
             start = randint(3, 12)
             self.start = start
+            self.exit_coords = []
 
         entry = entry if entry else self.entry
 
@@ -118,8 +133,7 @@ class Board:
                 x = start+i
                 self.board[y][x] = self.empty_square
 
-                if entrance:
-                    self.entrance_coords.append((x, y))
+                self.add_coords(x, y, entrance)
 
         else:
             x = 0 if entry == 4 else 19
@@ -128,9 +142,15 @@ class Board:
                     y = ind
                     line[x] = self.empty_square
 
-                    if entrance:
-                        self.entrance_coords.append((x, y))
+                    self.add_coords(x, y, entrance)
 
+
+    def add_coords(self, x, y, entrance= True):
+
+        if entrance:
+            self.entrance_coords.append((x, y))
+        else:
+            self.exit_coords.append((x, y))
 
     def pillars_prototype(self, xcor=None, ycor=None, size=3, check=3, subtract=0, wall=True):
 

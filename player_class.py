@@ -3,7 +3,7 @@ from time import sleep
 
 from living_classes import Living
 
-class Player:
+class Player(Living):
 
     def __init__(self):
         super().__init__()
@@ -17,25 +17,6 @@ class Player:
                        #"icons": self.weapons,
                        #"more help": self.more_help,
                        #"move": self.move}
-
-        self.board = None
-        self.enemies = None
-
-
-    def blink_screen(self):
-        """you must deal with proxy yourself!!!"""
-
-        for i in range(5):
-            sleep(0.05)
-            self.board.print_board(self.board.backup_board)
-            sleep(0.05)
-            self.board.print_board()
-
-
-    def get_info(self, board, enemies):
-
-        self.board = board
-        self.enemies = enemies
 
 
     def move(self):
@@ -68,8 +49,14 @@ class Player:
     def make_movement(self, ycor, xcor):
 
         self.board.make_copy()
-        self.board.board[ycor][xcor] = self.sym
+
+        if not self.board.board[ycor][xcor] == self.board.hole_square:
+            self.board.board[ycor][xcor] = self.sym
+        else:
+            self.dead = True
+
         self.board.board[self.y][self.x] = self.board.empty_square
+        self.x, self.y = xcor, ycor
         self.blink_screen()
         self.backup_board = []
 
