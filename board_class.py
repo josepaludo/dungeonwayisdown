@@ -2,8 +2,6 @@ import os
 from random import randint, choice
 from copy import deepcopy
 
-from functions import get_entry
-
 
 class Board:
 
@@ -158,7 +156,8 @@ class Board:
 
         self.exit= choice([x for x in [1, 2, 3, 4] if x != self.entry])
         self.make_entrance(self.exit, entrance=False)
-        self.next_entry = get_entry(self.exit)
+        self.next_entry = 1 if self.exit==3 else 2 if self.exit==4 else 3 if self.exit==1 else 4
+
 
 
     def make_holes(self, xcor=None, ycor=None):

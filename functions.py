@@ -2,12 +2,9 @@ from random import randint
 from copy import deepcopy
 from time import sleep
 
-from player_class import Warrior, Druid, Thief, Wizard, Priest
+from player_class import Player, Warrior, Druid, Thief, Wizard, Priest
 from living_classes import Enemy
-
-
-def get_entry(exit):
-    return 1 if exit==3 else 2 if exit==4 else 3 if exit==1 else 4
+from board_class import Board
 
 
 def create_enemies(Clas, board):
@@ -33,6 +30,62 @@ def create_players():
         proxy_list.append(proxy)
 
     return proxy_list
+
+
+def dungeon_loop():
+
+    board = Board()
+
+    while True:
+
+        players = create_players()
+        enemies = create_enemies(Enemy, board)
+        livings = enemies + players
+        board.place_things(enemies, players)
+
+        living_turn(livings, board, players, enemies)
+
+
+def living_turn(livings, board, players, enemies):
+
+    while True:
+        for living in livings:
+
+            board.print_board()
+
+            if isinstance(living, Enemy):
+
+                enemy_turn(living, board, players, enemies)
+
+
+            if isinstance(living, Player):
+
+                player_turn(living, board, players, enemies)
+
+
+def enemy_turn(living, board, players, enemies):
+
+    board.backup_board = deepcopy(board.board)
+
+    living.take_turn(players)
+
+    for i in range(2):
+        sleep(0.05)
+        board.print_board(board.backup_board)
+        sleep(0.05)
+        board.print_board()
+
+    board.backup_board = []
+
+
+def player_turn(living, board, players, enemies):
+
+    while True:
+        action = input("Which action would you like to take? ")
+        if action in living.inputs:
+            break
+    living.inputs[action]()
+    sleep(5)
 
 
 game_icon = """
