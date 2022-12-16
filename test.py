@@ -1,4 +1,7 @@
-a = {"a": (1,2), "b": (19,20)}
-for key in a:
-    print(key)
-    print(a[key][1])
+i = 0
+j = 1
+x = i-j
+
+for y in range(x):
+    print(y)
+print(x)

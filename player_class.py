@@ -1,7 +1,9 @@
 from copy import deepcopy
 from time import sleep
+from random import random
 
 from living_classes import Living
+
 
 class Player(Living):
 
@@ -18,17 +20,56 @@ class Player(Living):
                        "mhelp": (self.more_help, "Gives more details about the game."),
                        "end": ("", "Finish your turn.")}
 
-
         self.moves = 2
         self.actions = 2
         self.max_health = 20
 
-        self.my_cards = ['aa', 'bb', 'cc']
-        self.all_cards = {}
-        self.all_cards_list = []
-        self.easy_cards = []
+        self.cards = {}
+        self.my_cards = []
+        self.weak_cards = []
         self.medium_cards = []
-        self.hard_cards = []
+        self.strong_cards = []
+
+
+    def init_cards(self):
+
+        self.strong_cards = [card for card, info in self.cards.items() if info['level']=='strong']
+        self.medium_cards = [card for card, info in self.cards.items() if info['level']=='medium']
+        self.weak_cards= [card for card, info in self.cards.items() if info['level']=='weak']
+
+
+    def get_turn_cards(self):
+
+        chance = random()
+
+        if chance == 0:
+            pass
+        elif chance < 0.3:
+            self.my_cards += [choice(self.weak_cards) for i in range(2)]
+        elif chance < 0.6:
+            self.my_cards += [choice(self.weak_cards), choice(self.medium_cards)]
+        elif chance < 0.75:
+            self.my_cards += [choice(self.medium_cards) for i in range(2)]
+        elif chance < 0.9:
+            self.my_cards += [choice(self.strong_cards), choice(self.weak_cards)]
+        elif chance < 0.98:
+            self.my_cards += [choice(self.strong_cards), choice(self.medium_cards)]
+        else:
+            self.my_cards += [choice(self.strong_cards) for i in range(2)]
+
+
+    def maintance(self, board, enemies, players):
+
+        self.get_info(board, enemies, players)
+
+        self.actions = 2 if self.actions < 2 else self.actions
+        self.moves = 2 if self.moves < 2 else self.moves
+
+        for i in range(2):
+            self.get_turn_cards()
+
+        for x in range(len(self.my_cards)-6):
+            self.my_cards.pop(randint(0, len(self.my_cards)-1))
 
 
     def clear_screen(self):
@@ -163,7 +204,7 @@ class Player(Living):
     def make_action(self, action):
 
         self.board.make_copy()
-        self.all_cards[action]["func"]()
+        self.cards[action]["func"]()
         self.board.empty_copy()
 
         self.actions -= 1

@@ -99,6 +99,8 @@ class Enemy(Living):
 
                     if boardxy == self.board.hole_square:
                         self.dead = True
+                        report = "Enemy fell on a hole and died."
+                        self.board.add_log(report)
                         return
 
                     self.y, self.x = direc[0], direc[1]
@@ -111,3 +113,4 @@ class Enemy(Living):
         self.targets = [target for target in targets if not target.dead]
         self.set_target()
         self.move()
+

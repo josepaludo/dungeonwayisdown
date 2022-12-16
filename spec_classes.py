@@ -12,14 +12,19 @@ class Warrior(Player):
 
         self.var = "qqq"
 
-        self.all_cards = {"card_name": {"func": self.func, "descr": self.var},
-                          "aa": {"func": self.func, "descr": self.var}}
+        self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"},
+                          "aa": {"func": self.func, "descr": self.var, "level": "strong"}}
 
+        self.init_cards()
 
     def func(self):
         sleep(1)
-        print("AAAAAA")
-        sleep(1)
+        for x, y in self.cards.items():
+            print(x)
+            print(y)
+            print(y['level'])
+        print(self.strong_cards)
+        input()
 
 
 class Priest(Player):

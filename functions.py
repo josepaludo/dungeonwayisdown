@@ -94,8 +94,8 @@ def enemy_turn(living, board, players, enemies):
 
     board.make_copy()
     living.turn_move(players)
-    blink_screen(board)
-    board.backup_board = []
+    living.blink_screen()
+    board.empty_copy()
 
 
 def blink_screen(board):
@@ -110,7 +110,8 @@ def blink_screen(board):
 
 def player_turn(player, board, players, enemies):
 
-    player.get_info(board, enemies, players)
+    player.maintance(board, enemies, players)
+
     input(f"{player.sym}'s turn. Press 'Enter' to begin.")
 
     while True:
@@ -125,7 +126,6 @@ def player_turn(player, board, players, enemies):
 
         player.inputs[valid_input][0]()
 
-        #if action != "move" and action != "act":
         if valid_input not in ["move", "act"]:
             input("\nPress 'Enter' to return.")
 
@@ -164,3 +164,4 @@ def check_dead_players(board, players):
         if player.dead:
 
             board.dead_players.append(player.sym)
+
