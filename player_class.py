@@ -21,13 +21,14 @@ class Player(Living):
 
         self.moves = 2
         self.actions = 2
-        self.cards = []
         self.max_health = 20
-        self.companions = []
 
-
-    def action(self):
-        pass
+        self.my_cards = ['aa', 'bb', 'cc']
+        self.all_cards = {}
+        self.all_cards_list = []
+        self.easy_cards = []
+        self.medium_cards = []
+        self.hard_cards = []
 
 
     def clear_screen(self):
@@ -46,9 +47,10 @@ class Player(Living):
         for key in self.inputs:
             print(f"'{key}': {self.inputs[key][1]}")
 
+
     def more_help(self):
 
-        print("More help here.")
+        print("\nMore help here.")
 
 
     def show_icons(self):
@@ -73,7 +75,7 @@ class Player(Living):
 
         self.clear_screen()
 
-        for card in self.cards:
+        for card in self.my_cards:
             print(cards)
 
 
@@ -138,4 +140,72 @@ class Player(Living):
         self.x, self.y = xcor, ycor
         self.blink_screen()
         self.backup_board = []
+
+
+    def action(self):
+
+        if self.actions < 1:
+            print("\nNot enough actions.")
+            input("\nPress 'Enter' to return")
+            return
+
+        self.clear_screen()
+        self.print_options()
+
+        action = self.action_input()
+
+        if not action:
+            return
+
+        self.make_action(action)
+
+
+    def make_action(self, action):
+
+        self.board.make_copy()
+        self.all_cards[action]["func"]()
+        self.board.empty_copy()
+
+        self.actions -= 1
+        self.my_cards.remove(action)
+
+
+    def print_options(self):
+
+        print("Your cards:", end='')
+        for ind, card in enumerate(self.my_cards):
+            print(f" {card}{'.' if ind==len(self.my_cards)-1 else ','}", end='')
+
+        print("\n")
+        for ind, card in enumerate(self.my_cards):
+            print(f"Enter '{ind+1}' for '{card}'.")
+
+        print("Enter 'q' to quit.")
+
+
+    def test_input(self, act_input):
+
+        try:
+            act_input = int(act_input)
+        except TypeError:
+            return
+        else:
+            act_input -= 1
+            if 0<=act_input<len(self.my_cards):
+                return self.my_cards[act_input]
+
+    def action_input(self):
+
+        while True:
+
+            act_input = input("\nWhich card do you want to use? ")
+
+            if act_input == 'q':
+                return
+
+            test = self.test_input(act_input)
+            if test:
+                return test
+
+            input("\nEnter a valid input.\n\nPress 'Enter' to return.")
 

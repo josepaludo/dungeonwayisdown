@@ -1,7 +1,16 @@
 Dungeon Way is Down
 
 todo:
-    - enemies spawning on wrong place
+    - enemies spawning on wrong place(fixed??)
+ 
+TODO: 
+    - RESET MOVES EVERY TURN
+    - at the start of player turn, get random cards 
+        - get random number, check percentage
+        - get cards based on percentage:w
+        
+ 
+ 
 
 Turn Based "Card Game" Dungeon Crawler Game Idea
 

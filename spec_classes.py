@@ -1,3 +1,5 @@
+from time import sleep
+
 from player_class import Player
 
 
@@ -7,7 +9,18 @@ class Warrior(Player):
         super().__init__()
 
         self.sym = "W"
-        self.inputs["attack"] = "aaa"
+
+        self.var = "qqq"
+
+        self.all_cards = {"card_name": {"func": self.func, "descr": self.var},
+                          "aa": {"func": self.func, "descr": self.var}}
+
+
+    def func(self):
+        sleep(1)
+        print("AAAAAA")
+        sleep(1)
+
 
 class Priest(Player):
 

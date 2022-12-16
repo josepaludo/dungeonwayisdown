@@ -2,7 +2,8 @@ from random import randint
 from copy import deepcopy
 from time import sleep
 
-from player_class import Player, Warrior, Druid, Thief, Wizard, Priest
+from player_class import Player
+from spec_classes import Warrior, Druid, Thief, Wizard, Priest
 from living_classes import Enemy
 from board_class import Board
 
@@ -109,7 +110,7 @@ def blink_screen(board):
 
 def player_turn(player, board, players, enemies):
 
-    player.get_info(board, players)
+    player.get_info(board, enemies, players)
     input(f"{player.sym}'s turn. Press 'Enter' to begin.")
 
     while True:

@@ -49,6 +49,10 @@ class Board:
         self.backup_board = deepcopy(self.board)
 
 
+    def empty_copy(self):
+        self.backup_board = []
+
+
     def reset_board(self):
 
         self.board = [[self.empty_square for i in range(20)] for j in range(20)]

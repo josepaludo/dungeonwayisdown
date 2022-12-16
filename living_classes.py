@@ -23,6 +23,7 @@ class Living(Thing):
 
         self.board = None
         self.enemies = None
+        self.companions = None
 
 
     def blink_screen(self):
@@ -35,10 +36,11 @@ class Living(Thing):
             self.board.print_board()
 
 
-    def get_info(self, board, enemies):
+    def get_info(self, board, enemies, players):
 
         self.board = board
         self.enemies = enemies
+        self.companions = players
 
 
 class Enemy(Living):
