@@ -1,6 +1,6 @@
 from copy import deepcopy
 from time import sleep
-from random import random
+from random import random, choice, randint
 
 from living_classes import Living
 
@@ -97,7 +97,7 @@ class Player(Living):
     def show_icons(self):
 
         self.board.print_board()
-        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground.\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\bb: boss summons.\n")
+        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground.\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\nb: boss summons.\n")
 
 
     def show_status(self):
@@ -116,13 +116,14 @@ class Player(Living):
 
         self.clear_screen()
 
-        for card in self.my_cards:
-            print(cards)
+        for card in set(self.my_cards):
+            print(f"\nCard name: {card}.\nDescription: {self.cards[card]['descr']}")
 
 
     def show_log(self):
 
         self.clear_screen()
+        print("Log os last events:")
 
         for log in self.board.log:
             print(log)

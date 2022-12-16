@@ -1,7 +1,6 @@
-i = 0
-j = 1
-x = i-j
+#for x in range(len(self.my_cards)-6):
+#    self.my_cards.pop(randint(0, len(self.my_cards)-1))
 
-for y in range(x):
-    print(y)
-print(x)
+x = [1, 2, 3, 4, 5]
+for i in range(len(x)-6):
+    print("a")

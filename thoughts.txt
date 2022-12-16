@@ -1,46 +1,13 @@
 Dungeon Way is Down
 
-todo:
-    - enemies spawning on wrong place(fixed??)
- 
-TODO: 
-    - RESET MOVES EVERY TURN
-    - at the start of player turn, get random cards 
-        - get random number, check percentage
-        - get cards based on percentage:w
-        
- 
- 
-
 Turn Based "Card Game" Dungeon Crawler Game Idea
 
-            - Universal Imputs: 'help' for list of commands, 'log' for last
-            events, 'cards' for cards functionality, 'status' for life of
-            every player, weapons, damage dealt to enemies, 'more help' for
-            more help, 'icons' for the meaning of each symbol
 
-- Thig: major class in game, almost everything is a Thing. X, Y and symbol 
-properties.
-    - How can a Thing have a 2x2 coordinate? That is, 2 values for both X and Y?
-    How to check distance? (function than when checks for XY values checks if is 
-    integer, yada yada.)
+TODO: 
+    *** FOR TESTING, IM ONLY CREATING WARRIOR ***
 
-- Living: Is Thing, inherits X, Y and Symbol atributes. Have health and speed 
-property.
 
-- Enemy: Is Living. Inherits Thing and Living properties. Have move and attack
-method. Target property.
-    - Set target method: Chooses a random player target, which will be it's 
-    target until otherwise. Must have target attribute.
-    - Move Method: If distance from target == 0, return. For every location, if 
-    valid (not hole or wall), if it makes target closer, move there. If no valid 
-    move, make same loop but for center.
-    - Various weapons with different ranges, damages, names, etc.
 
-- Ally: Is Living. can be target of Enemies.
-
-- Player: is Ally. Is controlled. Specs: Warrior, Priest, Druid, Wizard, Thief.
-Have the Hand property where strings that represent abilities are stored.
 
     - Warrior: tank, can taunt, takes less damage.
     - Priest: healer, can't attack.
@@ -49,34 +16,5 @@ Have the Hand property where strings that represent abilities are stored.
     - Wizard: damage, AOE, summon.
     transform
     - Thief: damage, glass cannon, can get invisible.
-    
-    - New Cards Method: random(between 0 and 1). 0 = nothing, <5 = 2 weak cards,
-    <7.5 = 1 medium 1 weak cards, <9 = 2 medium cards, <10 1 strong 1 medium 
-    cards, 10 = 2 strong cards. This goes to everybody
 
-- Board: 20x20 Matrix (10 lines with 10 elements each). Displays (only displays 
-each thing's symbol and it X and Y values.
-    - Spawn: Enemies will spawn at random locations on the opposite side of the 
-    board compared to players' spawning place. Players always spawn side to side
-    close to the wall, in a "door" where they can't come back to (the dungeon 
-    way is down). Exits are doors to other rooms' entrances.
-    - Display Location Method: Must have a list of Things, in which there is 
-    lists of Enemies, Allies and Nonlivings, or it is a list of all this things. 
-    Get X, Y and symbol properties of all Things, place symbols at locations.
-        - Must also print the last 5 or 10 major events, such as damage dealt, 
-        what the enemy said, who moved where. Must be a distinction between 
-        important events and uninportant
-    - Random Nonlivings Method: How to generate random nonlivings? Make reserved 
-    area in which things can't be placed, like around entrances and exits?
-    Suggestion: check which wall is free, flip coin if yes put a randint by 
-    randint close to the wall.
-    - Holes: If someone or something falls into a hole, it disappears.
-
-- Loop: when an exit is reached by all players, the level is terminated, a new 
-one is generated with entrance at the opposite wall side (up x down, left x 
-right).
-    - Every Round, players get new cards.
-    - Every event happens blinking: loop range 10: print board as is, sleep 0.3
-    seconds, print board as will be, sleep 0.3 seconds. Then board as is is 
-    equal to boar as will be.
 

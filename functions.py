@@ -26,7 +26,8 @@ def create_enemies(Clas, board):
 def create_players(board):
 
     proxy_list = []
-    for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
+    #for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
+    for class_ in [Warrior]:
 
         proxy = class_()
         if proxy.sym not in board.dead_players:
