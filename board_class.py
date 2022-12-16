@@ -9,7 +9,7 @@ class Board:
 
         self.empty_square = " "
         self.wall_square = "#"
-        self.hole_square = "*"
+        self.hole_square = "-"
         self.board = []
         self.exit = 0
         self.next_entry = 3
@@ -19,8 +19,16 @@ class Board:
         self.entrance_coords = []
         self.exit_coords = []
         self.dead_players = []
+        self.log = []
 
         self.reset_board()
+
+
+    def add_log(self, log):
+
+        self.log.append(log)
+        if len(self.log) > 10:
+            self.log.pop(0)
 
 
     def level_finished(self, players, enemies):

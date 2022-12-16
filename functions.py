@@ -31,6 +31,9 @@ def create_players(board):
         if proxy.sym not in board.dead_players:
             proxy_list.append(proxy)
 
+    for prox in proxy_list:
+        prox.companions = proxy_list
+
     return proxy_list
 
 
@@ -104,15 +107,45 @@ def blink_screen(board):
         board.print_board()
 
 
-def player_turn(living, board, players, enemies):
+def player_turn(player, board, players, enemies):
 
-    living.get_info(board, players)
+    player.get_info(board, players)
+    input(f"{player.sym}'s turn. Press 'Enter' to begin.")
 
     while True:
-        action = input("Which action would you like to take? ")
-        if action in living.inputs:
-            break
-    living.inputs[action]()
+
+        if player.dead:
+            return
+
+        valid_input = prompt_input(player, board)
+
+        if not valid_input:
+            return
+
+        player.inputs[valid_input][0]()
+
+        #if action != "move" and action != "act":
+        if valid_input not in ["move", "act"]:
+            input("\nPress 'Enter' to return.")
+
+
+def prompt_input(player, board):
+
+    while True:
+
+        board.print_board()
+        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\nMoves left: {player.moves}.\n")
+
+        action = input("What do you want to do? ")
+
+        if action == "end":
+            return
+
+        if action in player.inputs:
+            return action
+
+        print("\nInvalid input, enter 'help' for input options")
+        input("\nPress 'Enter' to return.")
 
 
 def all_players_died(players):
@@ -120,6 +153,7 @@ def all_players_died(players):
     for player in players:
         if not player.dead:
             return False
+
     return True
 
 

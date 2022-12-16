@@ -8,18 +8,86 @@ class Player(Living):
     def __init__(self):
         super().__init__()
 
-        self.inputs = {"move": self.move}
+        self.inputs = {"move": (self.move, "Move up, down, left or right."),
+                       "act": (self.action, "Use one of your cards."),
+                       "log": (self.show_log, "Shows a log of last important events."),
+                       "cards": (self.show_cards, "Shows every card you have and how it works."),
+                       "status": (self.show_status, "Shows status of each player."),
+                       "icons": (self.show_icons, "Shows the meaning of each icon."),
+                       "help": (self.help, "Shows every possible input."),
+                       "mhelp": (self.more_help, "Gives more details about the game."),
+                       "end": ("", "Finish your turn.")}
 
-                       #"log": self.log,
-                       #"cards": self.cards,
-                       #"status": self.status,
-                       #"weapons": self.weapons,
-                       #"icons": self.weapons,
-                       #"more help": self.more_help,
-                       #"move": self.move}
+
+        self.moves = 2
+        self.actions = 2
+        self.cards = []
+        self.max_health = 20
+        self.companions = []
+
+
+    def action(self):
+        pass
+
+
+    def clear_screen(self):
+
+        self.board.print_board()
+        print(f"{self.sym}'s turn.\n")
+
+
+    def help(self):
+
+        self.clear_screen()
+
+        print("These are the valid inputs:")
+        print("(Note you must enter only what is inside the '')\n")
+
+        for key in self.inputs:
+            print(f"'{key}': {self.inputs[key][1]}")
+
+    def more_help(self):
+
+        print("More help here.")
+
+
+    def show_icons(self):
+
+        self.board.print_board()
+        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground.\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\bb: boss summons.\n")
+
+
+    def show_status(self):
+
+        self.clear_screen()
+
+        for companion in self.companions:
+
+            if companion.dead:
+                print(f"{companion.sym} is dead.")
+            else:
+                print(f"{companion.sym} health is {companion.health}/{companion.max_health}.")
+
+
+    def show_cards(self):
+
+        self.clear_screen()
+
+        for card in self.cards:
+            print(cards)
+
+
+    def show_log(self):
+
+        self.clear_screen()
+
+        for log in self.board.log:
+            print(log)
 
 
     def move(self):
+
+        self.clear_screen()
 
         while True:
 
@@ -41,7 +109,7 @@ class Player(Living):
                     if to == self.board.empty_square or to == self.board.hole_square:
                         break
 
-            print("Enter a valid input.")
+            print("\nEnter a valid input.\n")
 
         self.make_movement(ycor, xcor)
 
