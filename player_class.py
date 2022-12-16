@@ -87,6 +87,15 @@ class Player(Living):
 
     def move(self):
 
+        if self.moves > 0:
+            self.move_input()
+        else:
+            print("\nNot enough moves.")
+            input("\nPress 'Enter' to return.")
+
+
+    def move_input(self):
+
         self.clear_screen()
 
         while True:
@@ -116,6 +125,8 @@ class Player(Living):
 
     def make_movement(self, ycor, xcor):
 
+        self.moves -= 1
+
         self.board.make_copy()
 
         if not self.board.board[ycor][xcor] == self.board.hole_square:
@@ -127,44 +138,4 @@ class Player(Living):
         self.x, self.y = xcor, ycor
         self.blink_screen()
         self.backup_board = []
-
-
-class Warrior(Player):
-
-    def __init__(self):
-        super().__init__()
-
-        self.sym = "W"
-        self.inputs["attack"] = "aaa"
-
-class Priest(Player):
-
-    def __init__(self):
-        super().__init__()
-
-        self.sym = "P"
-
-
-class Druid(Player):
-
-    def __init__(self):
-        super().__init__()
-
-        self.sym = "D"
-
-
-class Wizard(Player):
-
-    def __init__(self):
-        super().__init__()
-
-        self.sym = "Z"
-
-
-class Thief(Player):
-
-    def __init__(self):
-        super().__init__()
-
-        self.sym = "T"
 
