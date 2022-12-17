@@ -30,7 +30,10 @@ class Warrior(Player):
 
 
     def wek_as_f(self):
-        pass
+
+        for x in self.get_urdl_line_coords(self.y, self.x):
+            print(x)
+        input()
 
 
     def wek_j_f(self):

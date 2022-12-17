@@ -83,8 +83,9 @@ class Player(Living):
             if x == 0:
                 self.clear_screen()
                 print(f"\nYou've reached the maximum hand size of {self.max_hand_size}.")
-                print(f"{excess_cards} random card{'s ' if excess_cards>1 else ' '}will be discarted.")
-                print(f"Press 'Enter' to return.")
+                print(f"{excess_cards} random card{'s ' if excess_cards>1 else ' '}will be discarted.\n")
+                input(f"Press 'Enter' to return.")
+                self.clear_screen()
 
             random_card_index = randint(0, len(self.my_cards)-1)
             self.my_cards.pop(random_card_index)
@@ -248,7 +249,7 @@ class Player(Living):
 
         try:
             act_input = int(act_input)
-        except TypeError:
+        except (TypeError, ValueError):
             return
         else:
             act_input -= 1

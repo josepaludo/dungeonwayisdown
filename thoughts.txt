@@ -21,6 +21,10 @@ DOING NOW:
 
     - Do wek_as_f (W):
         + input for direction
+            + get udlr coords func
+            + get udlr line coords
+            + get around coords by range
+                (if range> difference bettween end of map and coord, pass)
         + check direction coordinates
         + (see if any other func already does it)
         + make a function that does it

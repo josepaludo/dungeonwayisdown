@@ -56,6 +56,24 @@ class Living(Thing):
                 return None, None, invalid_loc
 
 
+    def get_urdl_coords(self, ycor, xcor):
+
+        up, down = (ycor-1, xcor), (ycor+1, xcor)
+        left, right = (ycor, xcor-1), (ycor, xcor+1)
+
+        return up, right, down, left
+
+
+    def get_urdl_line_coords(self, ycor, xcor):
+
+        up = [(ycor-i-1, xcor) for i in range(ycor)]
+        down = [(ycor+i+1, xcor) for i in range(len(self.board.board)-1-ycor)]
+        left = [(ycor, xcor-i-1) for i in range(xcor)]
+        right = [(ycor, xcor+i+1) for i in range(len(self.board.board[0])-1-xcor)]
+
+        return up, right, down, left
+
+
 class Enemy(Living):
 
     def __init__(self, board):
