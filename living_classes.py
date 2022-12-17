@@ -56,7 +56,7 @@ class Living(Thing):
                 return None, None, invalid_loc
 
 
-    def get_urdl_coords(self, ycor, xcor):
+    def get_urdl_coords_close(self, ycor, xcor):
 
         up, down = (ycor-1, xcor), (ycor+1, xcor)
         left, right = (ycor, xcor-1), (ycor, xcor+1)
@@ -64,12 +64,24 @@ class Living(Thing):
         return up, right, down, left
 
 
-    def get_urdl_line_coords(self, ycor, xcor):
+    def get_urdl_coords(self, ycor, xcor):
 
         up = [(ycor-i-1, xcor) for i in range(ycor)]
         down = [(ycor+i+1, xcor) for i in range(len(self.board.board)-1-ycor)]
         left = [(ycor, xcor-i-1) for i in range(xcor)]
         right = [(ycor, xcor+i+1) for i in range(len(self.board.board[0])-1-xcor)]
+
+        return up, right, down, left
+
+
+    def get_urdl_coords_range(self, ycor, xcor, rangei):
+
+        up, right, down, left = self.get_urdl_coords(ycor, xcor)
+
+        up = up[:rangei] if len(up)>rangei else up
+        right = right[:rangei] if len(right)>rangei else right
+        down = down[:rangei] if len(down)>rangei else down
+        left = left[:rangei] if len(left)>rangei else left
 
         return up, right, down, left
 

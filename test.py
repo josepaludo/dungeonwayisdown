@@ -1,8 +1,1 @@
-a = 1
-b = 2
-
-c = int(input())
-d = int(input())
-
-if (a, b) == (c, d):
-    print("AAA")
+print(207+147+98+168+73+3)
