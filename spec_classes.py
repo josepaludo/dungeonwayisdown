@@ -12,7 +12,7 @@ class Warrior(Player):
 
         self.sym = "W"
 
-        self.wek_a = "Swings your axe in a direction, hiting a single enemy dealing 4 damage."
+        self.wek_a = "Swings your axe in a direction, hiting a single enemy and dealing damage."
         self.wek_j = "Gains an extra move."
         self.mid_p = "Tries to taunt each oponent until your next turn."
         self.mid_m = "Ignores some damage until your next turn."

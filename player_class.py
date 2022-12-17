@@ -20,9 +20,13 @@ class Player(Living):
                        "mhelp": (self.more_help, "Gives more details about the game."),
                        "end": ("", "Finish your turn.")}
 
+        self.max_health = 20
+        self.max_hand_size = 6
+        self.draws_per_turn = 2
         self.moves = 2
         self.actions = 2
-        self.max_health = 20
+        self.actions_per_turn = 2
+        self.moves_per_turn = 2
 
         self.cards = {}
         self.my_cards = []
@@ -62,14 +66,28 @@ class Player(Living):
 
         self.get_info(board, enemies, players)
 
-        self.actions = 2 if self.actions < 2 else self.actions
-        self.moves = 2 if self.moves < 2 else self.moves
+        self.actions = self.actions_per_turn if self.actions < self.actions_per_turn else self.actions
+        self.moves = self.moves_per_turn if self.moves < self.moves_per_turn else self.moves
 
-        for i in range(2):
+        for i in range(self.draws_per_turn):
             self.get_turn_cards()
 
-        for x in range(len(self.my_cards)-6):
-            self.my_cards.pop(randint(0, len(self.my_cards)-1))
+        self.discard_excess_cards()
+
+
+    def discard_excess_cards(self):
+
+        excess_cards = len(self.my_cards)-self.max_hand_size
+        for x in range(excess_cards):
+
+            if x == 0:
+                self.clear_screen()
+                print(f"\nYou've reached the maximum hand size of {self.max_hand_size}.")
+                print(f"{excess_cards} random card{'s ' if excess_cards>1 else ' '}will be discarted.")
+                print(f"Press 'Enter' to return.")
+
+            random_card_index = randint(0, len(self.my_cards)-1)
+            self.my_cards.pop(random_card_index)
 
 
     def clear_screen(self):
