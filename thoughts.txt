@@ -17,4 +17,18 @@ TODO:
     transform
     - Thief: damage, glass cannon, can get invisible.
 
+DOING NOW:
 
+    - Do wek_as_f (W):
+        + input for direction
+        + check direction coordinates
+        + (see if any other func already does it)
+        + make a function that does it
+        + makes x flash on it
+        + (coordinate on backup board == x)
+        + see if any enemy is on coordinate
+        + if yes, enemy health -= damage
+        + makes log of damage
+        + if enemy health < 0, enemy dies
+        + makes log of death
+        + coord = empty square

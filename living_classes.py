@@ -27,7 +27,6 @@ class Living(Thing):
 
 
     def blink_screen(self):
-        """you must deal with proxy yourself!!!"""
 
         for i in range(5):
             sleep(0.05)
@@ -41,6 +40,20 @@ class Living(Thing):
         self.board = board
         self.enemies = enemies
         self.companions = players
+
+
+    def check_coord(self, ycor, xcor):
+        """returns tuple with coord object, class name, symbol"""
+
+        for living in self.enemies + self.players:
+            if (living.y, living.x) == (ycor, xcor):
+                return living, living.__class__.name, living.sym
+
+        invalid_locs = [self.board.empty_square, self.board.hole_square, self.board.wall_square]
+
+        for invalid_loc in invalid_locs:
+            if self.board.board[ycor][xcor] == invalid_loc:
+                return None, None, invalid_loc
 
 
 class Enemy(Living):

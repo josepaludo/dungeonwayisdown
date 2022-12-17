@@ -224,6 +224,7 @@ class Player(Living):
 
         self.board.make_copy()
         self.cards[action]["func"]()
+        self.blink_screen()
         self.board.empty_copy()
 
         self.actions -= 1

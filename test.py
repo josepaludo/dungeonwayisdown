@@ -1,6 +1,8 @@
-#for x in range(len(self.my_cards)-6):
-#    self.my_cards.pop(randint(0, len(self.my_cards)-1))
+a = 1
+b = 2
 
-x = [1, 2, 3, 4, 5]
-for i in range(len(x)-6):
-    print("a")
+c = int(input())
+d = int(input())
+
+if (a, b) == (c, d):
+    print("AAA")
