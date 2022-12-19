@@ -56,15 +56,7 @@ class Living(Thing):
                 return None, None, invalid_loc
 
 
-    def get_urdl_coords_close(self, ycor, xcor):
-
-        up, down = (ycor-1, xcor), (ycor+1, xcor)
-        left, right = (ycor, xcor-1), (ycor, xcor+1)
-
-        return up, right, down, left
-
-
-    def get_urdl_coords(self, ycor, xcor):
+    def get_urdl_coords_all(self, ycor, xcor):
 
         up = [(ycor-i-1, xcor) for i in range(ycor)]
         down = [(ycor+i+1, xcor) for i in range(len(self.board.board)-1-ycor)]
@@ -74,9 +66,9 @@ class Living(Thing):
         return up, right, down, left
 
 
-    def get_urdl_coords_range(self, ycor, xcor, rangei):
+    def get_urdl_coords(self, ycor, xcor, rangei):
 
-        up, right, down, left = self.get_urdl_coords(ycor, xcor)
+        up, right, down, left = self.get_urdl_coords_all(ycor, xcor)
 
         up = up[:rangei] if len(up)>rangei else up
         right = right[:rangei] if len(right)>rangei else right
@@ -84,6 +76,20 @@ class Living(Thing):
         left = left[:rangei] if len(left)>rangei else left
 
         return up, right, down, left
+
+
+    def get_around_coords(self, ycor, xcor, rangei, self_exc=True):
+
+        yrange = range(ycor-rangei, ycor+rangei+1)
+        xrange = range(xcor-rangei, xcor+rangei+1 )
+
+        coords = [(y, x) for y in yrange for x in xrange]
+        valids = [yx for yx in coords if 0<yx[0]<19 and 0<yx[1]<19]
+
+        if self_exc and (ycor, xcor) in valids:
+            valids.remove((ycor, xcor))
+
+        return valids
 
 
 class Enemy(Living):

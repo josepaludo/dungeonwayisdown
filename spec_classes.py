@@ -12,38 +12,33 @@ class Warrior(Player):
 
         self.sym = "W"
 
-        self.wek_a = "Swings your axe in a direction, hiting a single enemy and dealing damage."
-        self.wek_j = "Gains an extra move."
-        self.mid_p = "Tries to taunt each oponent until your next turn."
-        self.mid_m = "Ignores some damage until your next turn."
-        self.str_t = "Taunts each oponent."
-        self.str_m = "Ignores all damage until end of turn."
+        wek_a = "Swings your axe in a direction, hiting a single enemy."
+        mid_p = "Tries to taunt each oponent until your next turn."
+        mid_m = "Ignores some damage until your next turn."
+        str_t = "Taunts each oponent."
+        str_m = "Ignores all damage until end of turn."
 
-        self.cards = {"Axe Swing": {"func": self.wek_as_f, "descr": self.wek_a, "level": "weak"},
-                      "Jump": {"func": self.wek_j_f, "descr": self.wek_j, "level": "weak"},
-                      "Mitigate": {"func": self.mid_m_f, "descr": self.mid_m, "level": "medium"},
-                      "Provoke": {"func": self.mid_p_f, "descr": self.mid_p, "level": "medium"},
-                      "Taunt": {"func": self.str_t_f, "descr": self.str_t, "level": "strong"},
-                      "Ignore Pain": {"func": self.str_m_f, "descr": self.str_m, "level": "strong"}}
+        self.cards["Axe Swing"] = {"func": self.wek_as_f, "descr": wek_a, "level": "weak"}
+        self.cards["Mitigate"] = {"func": self.mid_m_f, "descr": mid_m, "level": "medium"}
+        self.cards["Provoke"] = {"func": self.mid_p_f, "descr": mid_p, "level": "medium"}
+        self.cards["Taunt"] = {"func": self.str_t_f, "descr": str_t, "level": "strong"}
+        self.cards["Ignore Pain"] = {"func": self.str_m_f, "descr": str_m, "level": "strong"}
 
         self.init_cards()
 
 
     def wek_as_f(self):
-
-        for x in self.get_urdl_coords(self.y, self.x):
-            print(x)
-        for y in self.get_urdl_coords_range(self.y, self.x, 3):
-            print(y)
-        input()
-
-
-    def wek_j_f(self):
         pass
+
 
 
     def mid_p_f(self):
-        pass
+
+        for x in self.get_urdl_coords(self.y, self.x, 1):
+            print(x)
+        for x in self.get_around_coords(self.y, self.x, 1):
+            print(x)
+        input()
 
 
     def mid_m_f(self):

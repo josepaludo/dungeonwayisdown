@@ -5,7 +5,8 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 TODO: 
     *** FOR TESTING, IM ONLY CREATING WARRIOR ***
-
+    problema no descarte?
+    check if it's possible to get range of urlf
 
 
 
