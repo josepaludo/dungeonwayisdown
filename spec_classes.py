@@ -1,3 +1,5 @@
+from random import random
+
 from player_class import Player
 
 # self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"},
@@ -13,22 +15,23 @@ class Warrior(Player):
         self.weapon_sym = "x"
         self.taunt_sym = "t"
         self.ignore_sym = "i"
+        self.short_taunt_duration = 3
 
-        swing_axe = "Swings your axe in a direction, hiting a single enemy."
-        mid_p = "Tries to taunt each oponent until your next turn."
-        mid_m = "Ignores some damage until your next turn."
-        taunt = "Taunts each oponent."
+        swing_axe = "Swings your axe hiting a single enemy."
+        mid_p = f"Taunts each enemy for {self.short_taunt_duration} turns."
+        avoid_pain = "Tries to ignore all damage until your next turn"
+        taunt = "Taunts each enemy."
         ignore_pain = "Ignores all damage until your next turn."
 
         self.cards["Axe Swing"] = {"func": self.swing_axe,
                                    "descr": swing_axe,
                                    "level": "weak"}
 
-        self.cards["Mitigate"] = {"func": self.mid_m_f,
-                                  "descr": mid_m,
+        self.cards["Avoid Pain"] = {"func": self.avoid_pain,
+                                  "descr": avoid_pain,
                                   "level": "medium"}
 
-        self.cards["Provoke"] = {"func": self.mid_p_f,
+        self.cards["Short Taunt"] = {"func": self.mid_p_f,
                                  "descr": mid_p,
                                  "level": "medium"}
 
@@ -41,8 +44,6 @@ class Warrior(Player):
                                      "level": "strong"}
 
         self.init_cards()
-
-        self.my_cards.append("Ignore Pain")
 
     def swing_axe(self):
 
@@ -71,7 +72,7 @@ class Warrior(Player):
 
     def taunt(self):
 
-        input_message = "To taunt every oponent, enter '1'. To cancel, enter 'q': "
+        input_message = "To taunt each oponent, enter '1'. To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
         if not go_on:
             return
@@ -87,6 +88,24 @@ class Warrior(Player):
 
         return True
 
+    def short_taunt(self):
+
+        input_message = f"To taunt each oponent for {self.short_taunt_duration} turns, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(input_message)
+        if not go_on:
+            return
+
+        for enemy in self.enemies:
+
+            enemy.target = self
+            enemy.target_counter = enemy.max_target_counter-self.short_taunt_duration-1
+            self.board.backup_board[enemy.y][enemy.x] = self.taunt_sym
+
+        message = f"{self.name} taunted each enemy for {self.short_taunt_duration} turns."
+        self.board.add_log(message)
+
+        return True
+
     def inner_ignore_pain(self, living):
 
         if not living == self:
@@ -94,9 +113,17 @@ class Warrior(Player):
 
         self.invulnerable = False
 
+        message = f"{self.name} is no longe invulnerable."
+        self.board.add_log(message)
+
         return True
 
     def ignore_pain(self):
+
+        input_message = "To ignore pain until next turn, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(input_message)
+        if not go_on:
+            return
 
         self.invulnerable = True
 
@@ -104,24 +131,41 @@ class Warrior(Player):
 
         self.board.backup_board[self.y][self.x] = self.ignore_sym
 
+        message = f"{self.name} is invulnerable."
+        self.board.add_log(message)
+
         return True
 
-    def mid_p_f(self):
+    def inner_avoid_pain(self, living):
 
-        for x in self.get_urdl_coords(self.y, self.x, 1):
-            print(x)
-        for x in self.get_around_coords(self.y, self.x, 1):
-            print(x)
-        input()
+        if living == self:
+            self.invulnerable == False
 
-    def mid_m_f(self):
-        pass
+            message = f"{self.name}'s Avoid Pain period ended."
+            self.board.add_log(message)
 
-    def str_t_f(self):
-        pass
+            return True
 
-    def str_m_f(self):
-        pass
+        if random() > 0.5:
+            self.invulnerable = True
+        else:
+            self.invulnerable = False
+
+    def avoid_pain(self):
+
+        input_message = "To avoid damage until your next turn, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(input_message)
+        if not go_on:
+            return
+
+        self.board.living_turn_checker.append(self.inner_avoid_pain)
+
+        self.board.backup_board[self.y][self.x] = self.ignore_sym
+
+        message = f"{self.name}'s Avoid Pain period started."
+        self.board.add_log(message)
+
+        return True
 
 
 class Priest(Player):
