@@ -21,6 +21,7 @@ class Living(Thing):
         self.abilities = []
         self.dead = False
         self.name = None
+        self.invulnerable = False
 
         self.board = None
         self.enemies = None
@@ -225,3 +226,4 @@ class Enemy(Living):
         self.targets = [target for target in targets if not target.dead]
         self.set_target()
         self.move()
+

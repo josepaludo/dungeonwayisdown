@@ -60,6 +60,8 @@ def dungeon_loop(livings, board, players, enemies):
 
     while True:
 
+        dungeon_loop_check(livings, board, players, enemies)
+
         if all_players_died(players):
             return
 
@@ -80,6 +82,8 @@ def livings_turn(livings, board, players, enemies):
             return
 
         if not living.dead:
+
+            living_turn_check(board, living)
 
             if isinstance(living, Enemy):
                 enemy_turn(living, board, players)
@@ -149,6 +153,19 @@ def prompt_input(player, board):
         input("\nPress 'Enter' to return.")
 
 
+def living_turn_check(board, living):
+
+    for func in board.living_turn_checker:
+
+        remove_ = func(living)
+        if remove_:
+            board.living_turn_checker.remove(func)
+
+
+def dungeon_loop_check(livings, board, players, enemies):
+    pass
+
+
 def all_players_died(players):
 
     for player in players:
@@ -164,3 +181,4 @@ def check_dead_players(board, players):
         if player.dead:
 
             board.dead_players.append(player.sym)
+

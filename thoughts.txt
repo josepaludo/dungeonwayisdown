@@ -4,9 +4,11 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO: 
-    *** FOR TESTING, IM ONLY CREATING WARRIOR ***
-    problema no descarte?
-    check if it's possible to get range of urlf
+        *** universal function that ticks everyturn and does something on
+        everyone's turn
+        *** can't take damage atribute that is checked by every enemy attack
+        ivulnarable
+        #
 
 
 
@@ -20,20 +22,4 @@ TODO:
 
 DOING NOW:
 
-    - Do wek_as_f (W):
-        + input for direction
-            + get udlr coords func
-            + get udlr line coords
-            + get around coords by range
-                (if range> difference bettween end of map and coord, pass)
-        + check direction coordinates
-        + (see if any other func already does it)
-        + make a function that does it
-        + makes x flash on it
-        + (coordinate on backup board == x)
-        + see if any enemy is on coordinate
-        + if yes, enemy health -= damage
-        + makes log of damage
-        + if enemy health < 0, enemy dies
-        + makes log of death
-        + coord = empty square
+

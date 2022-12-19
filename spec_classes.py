@@ -12,22 +12,37 @@ class Warrior(Player):
         self.name = "Warrior"
         self.weapon_sym = "x"
         self.taunt_sym = "t"
+        self.ignore_sym = "i"
 
-        wek_a = "Swings your axe in a direction, hiting a single enemy."
+        swing_axe = "Swings your axe in a direction, hiting a single enemy."
         mid_p = "Tries to taunt each oponent until your next turn."
         mid_m = "Ignores some damage until your next turn."
-        str_t = "Taunts each oponent."
-        str_m = "Ignores all damage until end of turn."
+        taunt = "Taunts each oponent."
+        ignore_pain = "Ignores all damage until your next turn."
 
-        self.cards["Axe Swing"] = {"func": self.swing_axe, "descr": wek_a, "level": "weak"}
-        self.cards["Mitigate"] = {"func": self.mid_m_f, "descr": mid_m, "level": "medium"}
-        self.cards["Provoke"] = {"func": self.mid_p_f, "descr": mid_p, "level": "medium"}
-        self.cards["Taunt"] = {"func": self.taunt, "descr": str_t, "level": "strong"}
-        self.cards["Ignore Pain"] = {"func": self.str_m_f, "descr": str_m, "level": "strong"}
+        self.cards["Axe Swing"] = {"func": self.swing_axe,
+                                   "descr": swing_axe,
+                                   "level": "weak"}
+
+        self.cards["Mitigate"] = {"func": self.mid_m_f,
+                                  "descr": mid_m,
+                                  "level": "medium"}
+
+        self.cards["Provoke"] = {"func": self.mid_p_f,
+                                 "descr": mid_p,
+                                 "level": "medium"}
+
+        self.cards["Taunt"] = {"func": self.taunt,
+                               "descr": taunt,
+                               "level": "strong"}
+
+        self.cards["Ignore Pain"] = {"func": self.ignore_pain,
+                                     "descr": ignore_pain,
+                                     "level": "strong"}
 
         self.init_cards()
 
-        self.my_cards.append("Taunt")
+        self.my_cards.append("Ignore Pain")
 
     def swing_axe(self):
 
@@ -54,11 +69,10 @@ class Warrior(Player):
 
         return True
 
-
     def taunt(self):
 
         input_message = "To taunt every oponent, enter '1'. To cancel, enter 'q': "
-        go_on = self.yes_no_input(input_message):
+        go_on = self.yes_no_input(input_message)
         if not go_on:
             return
 
@@ -70,6 +84,25 @@ class Warrior(Player):
 
         message = f"{self.name} taunted each enemy."
         self.board.add_log(message)
+
+        return True
+
+    def inner_ignore_pain(self, living):
+
+        if not living == self:
+            return
+
+        self.invulnerable = False
+
+        return True
+
+    def ignore_pain(self):
+
+        self.invulnerable = True
+
+        self.board.living_turn_checker.append(self.inner_ignore_pain)
+
+        self.board.backup_board[self.y][self.x] = self.ignore_sym
 
         return True
 

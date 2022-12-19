@@ -10,16 +10,21 @@ class Board:
         self.empty_square = " "
         self.wall_square = "#"
         self.hole_square = "-"
+
         self.board = []
+        self.backup_board = []
+
         self.exit = 0
         self.next_entry = 3
         self.entry = 0
         self.start = 7
-        self.backup_board = []
         self.entrance_coords = []
         self.exit_coords = []
+
         self.dead_players = []
         self.log = []
+        self.living_turn_checker = []
+        self.dungeon_loop_checker = []
 
         self.reset_board()
 
