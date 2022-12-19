@@ -1,5 +1,3 @@
-from copy import deepcopy
-from time import sleep
 from random import random, choice, randint
 
 from living_classes import Living
@@ -30,8 +28,7 @@ class Player(Living):
         self.actions, self.actions_per_turn = 2, 2
 
         self.my_cards = []
-        self.weak_cards, self.medium_cards, strong_cards = [], [], []
-
+        self.weak_cards, self.medium_cards, self.strong_cards = [], [], []
 
     def jump_func(self):
 
@@ -39,13 +36,11 @@ class Player(Living):
             print(key, value)
         input()
 
-
     def init_cards(self):
 
-        self.strong_cards = [card for card, info in self.cards.items() if info['level']=='strong']
-        self.medium_cards = [card for card, info in self.cards.items() if info['level']=='medium']
-        self.weak_cards= [card for card, info in self.cards.items() if info['level']=='weak']
-
+        self.strong_cards = [card for card, info in self.cards.items() if info['level'] == 'strong']
+        self.medium_cards = [card for card, info in self.cards.items() if info['level'] == 'medium']
+        self.weak_cards = [card for card, info in self.cards.items() if info['level'] == 'weak']
 
     def get_turn_cards(self):
 
@@ -66,7 +61,6 @@ class Player(Living):
         else:
             self.my_cards += [choice(self.strong_cards) for i in range(2)]
 
-
     def maintance(self, board, enemies, players):
 
         self.get_info(board, enemies, players)
@@ -78,7 +72,6 @@ class Player(Living):
             self.get_turn_cards()
 
         self.discard_excess_cards()
-
 
     def discard_excess_cards(self):
 
@@ -95,13 +88,6 @@ class Player(Living):
             random_card_index = randint(0, len(self.my_cards)-1)
             self.my_cards.pop(random_card_index)
 
-
-    def clear_screen(self):
-
-        self.board.print_board()
-        print(f"{self.sym}'s turn.\n")
-
-
     def help(self):
 
         self.clear_screen()
@@ -112,17 +98,16 @@ class Player(Living):
         for key in self.inputs:
             print(f"'{key}': {self.inputs[key][1]}")
 
-
     def more_help(self):
 
         print("\nMore help here.")
 
-
     def show_icons(self):
 
         self.board.print_board()
-        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground.\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\nb: boss summons.\n")
-
+        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player"
+              f"\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground."
+              f"\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\nb: boss summons.\n")
 
     def show_status(self):
 
@@ -135,7 +120,6 @@ class Player(Living):
             else:
                 print(f"{companion.sym} health is {companion.health}/{companion.max_health}.")
 
-
     def show_cards(self):
 
         self.clear_screen()
@@ -143,15 +127,13 @@ class Player(Living):
         for card in set(self.my_cards):
             print(f"\nCard name: {card}.\nDescription: {self.cards[card]['descr']}")
 
-
     def show_log(self):
 
         self.clear_screen()
-        print("Log os last events:")
+        print("Log of last events:\n")
 
         for log in self.board.log:
             print(log)
-
 
     def move(self):
 
@@ -160,7 +142,6 @@ class Player(Living):
         else:
             print("\nNot enough moves.")
             input("\nPress 'Enter' to return.")
-
 
     def move_input(self):
 
@@ -175,21 +156,20 @@ class Player(Living):
 
             try:
                 di = int(di)
-                xcor = self.x-1 if di==4 else self.x+1 if di==2 else self.x
-                ycor = self.y-1 if di==1 else self.y+1 if di==3 else self.y
+                xcor = self.x-1 if di == 4 else self.x+1 if di == 2 else self.x
+                ycor = self.y-1 if di == 1 else self.y+1 if di == 3 else self.y
                 to = self.board.board[ycor][xcor]
             except (ValueError, IndexError):
                 pass
             else:
 
-                if 0<di<5:
+                if 0 < di < 5:
                     if to == self.board.empty_square or to == self.board.hole_square:
                         break
 
             print("\nEnter a valid input.\n")
 
         self.make_movement(ycor, xcor)
-
 
     def make_movement(self, ycor, xcor):
 
@@ -205,8 +185,7 @@ class Player(Living):
         self.board.board[self.y][self.x] = self.board.empty_square
         self.x, self.y = xcor, ycor
         self.blink_screen()
-        self.backup_board = []
-
+        self.board.empty_copy()
 
     def action(self):
 
@@ -225,17 +204,17 @@ class Player(Living):
 
         self.make_action(action)
 
-
     def make_action(self, action):
 
         self.board.make_copy()
-        self.cards[action]["func"]()
-        self.blink_screen()
+        func = self.cards[action]["func"]()
+
+        if func:
+            self.actions -= 1
+            self.my_cards.remove(action)
+            self.blink_screen()
+
         self.board.empty_copy()
-
-        self.actions -= 1
-        self.my_cards.remove(action)
-
 
     def print_options(self):
 
@@ -249,7 +228,6 @@ class Player(Living):
 
         print("Enter 'q' to quit.")
 
-
     def test_input(self, act_input):
 
         try:
@@ -258,7 +236,7 @@ class Player(Living):
             return
         else:
             act_input -= 1
-            if 0<=act_input<len(self.my_cards):
+            if 0 <= act_input < len(self.my_cards):
                 return self.my_cards[act_input]
 
     def action_input(self):
@@ -275,4 +253,3 @@ class Player(Living):
                 return test
 
             input("\nEnter a valid input.\n\nPress 'Enter' to return.")
-

@@ -1,14 +1,12 @@
 from random import randint
-from copy import deepcopy
 from time import sleep
 
-from player_class import Player
 from spec_classes import Warrior, Druid, Thief, Wizard, Priest
 from living_classes import Enemy
 from board_class import Board
 
 
-def create_enemies(Clas, board):
+def create_enemies(clas, board):
 
     num_min = randint(3, 6)
     num_max = num_min+(randint(1, 5))
@@ -17,7 +15,7 @@ def create_enemies(Clas, board):
 
     for i in range(randint(num_min, num_max)):
 
-        geni = Clas(board)
+        geni = clas(board)
         proxy.append(geni)
 
     return proxy
@@ -26,7 +24,7 @@ def create_enemies(Clas, board):
 def create_players(board):
 
     proxy_list = []
-    #for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
+    # for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
     for class_ in [Warrior]:
 
         proxy = class_()
@@ -70,6 +68,7 @@ def dungeon_loop(livings, board, players, enemies):
         if not go_on:
             return True
 
+
 def livings_turn(livings, board, players, enemies):
 
     for living in livings:
@@ -77,13 +76,13 @@ def livings_turn(livings, board, players, enemies):
         board.print_board()
 
         if board.level_finished(players, enemies):
-            sleep(1)
+            sleep(2)
             return
 
         if not living.dead:
 
             if isinstance(living, Enemy):
-                enemy_turn(living, board, players, enemies)
+                enemy_turn(living, board, players)
 
             else:
                 player_turn(living, board, players, enemies)
@@ -91,11 +90,11 @@ def livings_turn(livings, board, players, enemies):
     return True
 
 
-def enemy_turn(living, board, players, enemies):
+def enemy_turn(enemy, board, players):
 
     board.make_copy()
-    living.turn_move(players)
-    living.blink_screen()
+    enemy.turn_move(players)
+    enemy.blink_screen()
     board.empty_copy()
 
 
@@ -165,4 +164,3 @@ def check_dead_players(board, players):
         if player.dead:
 
             board.dead_players.append(player.sym)
-

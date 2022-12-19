@@ -1,11 +1,5 @@
-from living_classes import Living
+from player_class import Player
 
-a = Living()
+a = Player()
 
-y = 4
-x = 4
-ran = 1
-
-result = a.get_around_coords(y, x, ran)
-print(result)
-
+print(a.prompt_for_direction())
