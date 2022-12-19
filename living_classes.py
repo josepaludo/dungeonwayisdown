@@ -127,6 +127,22 @@ class Living(Thing):
         print("\nInvalid input. Try again.")
         input("\nPress 'Enter' to continue.")
 
+    def yes_no_input(self, input_message, yes_par='1', no_par='q'):
+
+        while True:
+
+            self.clear_screen()
+            print(input_message)
+            input_ = input()
+
+            if input_ == yes_par:
+                return True
+
+            if input_ == no_par:
+                return False
+
+            self.wrong_input_warning()
+
     def check_if_dead(self, killer=None):
 
         if self.health > 0:

@@ -11,6 +11,7 @@ class Warrior(Player):
         self.sym = "W"
         self.name = "Warrior"
         self.weapon_sym = "x"
+        self.taunt_sym = "t"
 
         wek_a = "Swings your axe in a direction, hiting a single enemy."
         mid_p = "Tries to taunt each oponent until your next turn."
@@ -21,10 +22,12 @@ class Warrior(Player):
         self.cards["Axe Swing"] = {"func": self.swing_axe, "descr": wek_a, "level": "weak"}
         self.cards["Mitigate"] = {"func": self.mid_m_f, "descr": mid_m, "level": "medium"}
         self.cards["Provoke"] = {"func": self.mid_p_f, "descr": mid_p, "level": "medium"}
-        self.cards["Taunt"] = {"func": self.str_t_f, "descr": str_t, "level": "strong"}
+        self.cards["Taunt"] = {"func": self.taunt, "descr": str_t, "level": "strong"}
         self.cards["Ignore Pain"] = {"func": self.str_m_f, "descr": str_m, "level": "strong"}
 
         self.init_cards()
+
+        self.my_cards.append("Taunt")
 
     def swing_axe(self):
 
@@ -48,6 +51,25 @@ class Warrior(Player):
                 enemy.check_if_dead(self.name)
 
         self.board.backup_board[target[0]][target[1]] = self.weapon_sym
+
+        return True
+
+
+    def taunt(self):
+
+        input_message = "To taunt every oponent, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(input_message):
+        if not go_on:
+            return
+
+        for enemy in self.enemies:
+
+            enemy.target = self
+            enemy.target_counter = 0
+            self.board.backup_board[enemy.y][enemy.x] = self.taunt_sym
+
+        message = f"{self.name} taunted each enemy."
+        self.board.add_log(message)
 
         return True
 
