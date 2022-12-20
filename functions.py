@@ -70,7 +70,7 @@ def dungeon_loop(board):
 
         dungeon_loop_check(board)
 
-        if all_players_died(board)):
+        if all_players_died(board):
             return
 
         go_on = livings_turn(board)
@@ -120,7 +120,7 @@ def enemy_act(enemy, board):
      #   card = choice(enemy.card_list)
       #  board.make_copy()
        # enemy.cards[card]["func"]()
-       # board.board_blink(
+       # board.board_blink()
         #board.empty_copy()
 
     #enemy.actions = 0

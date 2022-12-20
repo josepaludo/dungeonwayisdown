@@ -19,11 +19,6 @@ class Living():
 
         self.board = None
 
-        self.enemies = [None
-        self.companions = [None]
-        self.allies = [None]
-        self.livings = [None]
-
         self.cards = {}
         self.my_cards = []
         self.weak_cards, self.medium_cards, self.strong_cards = [], [], []
@@ -201,7 +196,7 @@ class Enemy(Living):
     def set_target(self):
 
         if self.target_counter >= self.max_target_counter:
-            targets = [ally in self.board.allies if not ally.dead]
+            targets = [ally for ally in self.board.allies if not ally.dead]
             self.target = choice(targets)
             self.target_counter = 0
 
@@ -242,10 +237,10 @@ class Enemy(Living):
             return
 
         if self.dist(direc) < self.current_diff:
-            self.make_the_move(direc)
+            self.make_the_move(direc, boardxy)
             return True
 
-    def make_the_move(self, direc):
+    def make_the_move(self, direc, boardxy):
 
         self.board.board[self.y][self.x] = self.board.empty_square
 

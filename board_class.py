@@ -43,7 +43,7 @@ class Board:
             sleep(0.05)
             self.print_board()
 
-    def livings_maintance(livings, enemies, allies, players):
+    def livings_maintance(self, livings, enemies, allies, players):
 
         self.livings = livings
         self.enemies = enemies
@@ -126,7 +126,7 @@ class Board:
             self.set_enemy_xy(enemy)
             self.board[enemy.y][enemy.x] = enemy.sym
 
-    def set_enemies_xy(self, enemy):
+    def set_enemy_xy(self, enemy):
 
         while True:
             xrange = (1, 18) if self.entry % 2 != 0 else (1, 9) if self.entry == 2 else (10, 18)

@@ -97,7 +97,7 @@ class Warrior(Player):
         if not go_on:
             return
 
-        for enemy in self.enemies:
+        for enemy in self.board.enemies:
 
             enemy.target = self
             enemy.target_counter = enemy.max_target_counter-self.short_taunt_duration-1

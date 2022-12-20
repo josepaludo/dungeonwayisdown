@@ -168,7 +168,7 @@ class Player(Living):
 
         self.board.board[self.y][self.x] = self.board.empty_square
         self.x, self.y = xcor, ycor
-        self.blink_screen()
+        self.board.board_blink()
         self.board.empty_copy()
 
     def action(self):
@@ -197,7 +197,7 @@ class Player(Living):
         if func:
             self.actions -= 1
             self.my_cards.remove(action)
-            self.blink_screen()
+            self.board.board_blink()
 
         self.board.empty_copy()
 
