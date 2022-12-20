@@ -4,6 +4,9 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO: 
+        *** what to do with livings ***
+        *** get livings info ***
+        
         *** change init enemy with board to get info every turn ***
         
         *** forgot to do something with check coord ***
@@ -16,11 +19,21 @@ TODO:
         
         *** what to do about the symbols?
 
+        *** change check if dead function to give object, not name, or not
+
 Doing now:
-    - enemies ideas, v
+    - Do veloster after
+    - Refactor allies, enemies, players, livings
+    - board will have reference for eveything
+    
+    - board reviewed
+    - check enemy targets and movement
+    - only use board_blink
+    
 
 Enemies ideas:
     - "v": fast enemy, changes target quickly, but doesn't do much damage, melee
+    - sting, does 1 damage and 2 damage every turn for the next 3 turns
     - "ç": snake enemy, walks slowly, but does high dagamge, and over time damage, melee
     - "o": orc enemy, medium speed, medium damage, high defense, melee
     - "g": goblin, high speed, casts bombs from afar, ranged

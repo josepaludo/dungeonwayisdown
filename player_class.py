@@ -33,9 +33,7 @@ class Player(Living):
             print(key, value)
         input()
 
-    def maintance(self, board, enemies, players):
-
-        self.get_info(board, enemies, players)
+    def player_maintance(self):
 
         self.actions = max(self.actions_per_turn, self.actions)
         self.moves = max(self.moves, self.moves_per_turn)
@@ -77,6 +75,9 @@ class Player(Living):
     def show_icons(self):
 
         self.board.print_board()
+        #for living in self.board.livings:
+        #    print(f"{living.sym}: {living.name}, {'player' if isinstance(living, Player) else 'enemy'}.")
+        #print(f"{self.board.wall_square}: Wall.\n{self.board.hole_square}: Hole.")
         print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player"
               f"\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground."
               f"\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\nb: boss summons.\n")
@@ -85,12 +86,12 @@ class Player(Living):
 
         self.clear_screen()
 
-        for companion in self.companions:
+        for ally in self.board.allies:
 
-            if companion.dead:
-                print(f"{companion.sym} is dead.")
+            if ally.dead:
+                print(f"{ally.name} is dead.")
             else:
-                print(f"{companion.sym} health is {companion.health}/{companion.max_health}.")
+                print(f"{ally.name} health is {ally.health}/{ally.max_health}.")
 
     def show_cards(self):
 
@@ -117,31 +118,42 @@ class Player(Living):
 
     def move_input(self):
 
-        self.clear_screen()
-
         while True:
 
-            di = input("Which direction?\n'1' for up\n'2' for right\n'3' for down\n'4' for left\n'q' for quit\n: ")
+            self.clear_screen()
 
-            if di == 'q':
+            result = self.prompt_for_direction()
+
+            if result == 'q':
                 return
 
-            try:
-                di = int(di)
-                xcor = self.x-1 if di == 4 else self.x+1 if di == 2 else self.x
-                ycor = self.y-1 if di == 1 else self.y+1 if di == 3 else self.y
-                to = self.board.board[ycor][xcor]
-            except (ValueError, IndexError):
-                pass
-            else:
+            if result:
+                ycor, xcor = result[0], result[1]
+                break
 
-                if 0 < di < 5:
-                    if to == self.board.empty_square or to == self.board.hole_square:
-                        break
-
-            print("\nEnter a valid input.\n")
+            self.wrong_input_warning()
 
         self.make_movement(ycor, xcor)
+
+    def prompt_for_direction(self):
+
+        di = input("Which direction?\n'1' for up\n'2' for right\n'3' for down\n'4' for left\n'q' for quit\n: ")
+
+        if di == 'q':
+            return 'q'
+
+        try:
+            di = int(di)
+            xcor = self.x-1 if di == 4 else self.x+1 if di == 2 else self.x
+            ycor = self.y-1 if di == 1 else self.y+1 if di == 3 else self.y
+            to = self.board.board[ycor][xcor]
+        except (ValueError, IndexError):
+            pass
+        else:
+
+            if 0 < di < 5:
+                if to == self.board.empty_square or to == self.board.hole_square:
+                    return (ycor, xcor)
 
     def make_movement(self, ycor, xcor):
 
@@ -167,6 +179,7 @@ class Player(Living):
             return
 
         self.clear_screen()
+
         self.print_options()
 
         action = self.action_input()
@@ -224,4 +237,5 @@ class Player(Living):
             if test:
                 return test
 
-            input("\nEnter a valid input.\n\nPress 'Enter' to return.")
+            self.wrong_input_warning()
+

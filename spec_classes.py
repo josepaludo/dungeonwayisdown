@@ -56,7 +56,7 @@ class Warrior(Player):
 
         target = self.get_urdl_coords(self.y, self.x, 1)[valid_input-1][0]
 
-        for enemy in self.enemies:
+        for enemy in self.board.enemies:
 
             if ((enemy.y, enemy.x) == (target[0], target[1])) and not enemy.dead:
                 enemy.health -= damage
@@ -74,10 +74,11 @@ class Warrior(Player):
 
         input_message = "To taunt each oponent, enter '1'. To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
+
         if not go_on:
             return
 
-        for enemy in self.enemies:
+        for enemy in self.board.enemies:
 
             enemy.target = self
             enemy.target_counter = 0
@@ -92,6 +93,7 @@ class Warrior(Player):
 
         input_message = f"To taunt each oponent for {self.short_taunt_duration} turns, enter '1'. To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
+
         if not go_on:
             return
 
@@ -122,6 +124,7 @@ class Warrior(Player):
 
         input_message = "To ignore pain until next turn, enter '1'. To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
+
         if not go_on:
             return
 
@@ -131,7 +134,7 @@ class Warrior(Player):
 
         self.board.backup_board[self.y][self.x] = self.ignore_sym
 
-        message = f"{self.name} is invulnerable."
+        message = f"{self.name} is invulnerable until his next turn."
         self.board.add_log(message)
 
         return True
@@ -155,6 +158,7 @@ class Warrior(Player):
 
         input_message = "To avoid damage until your next turn, enter '1'. To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
+
         if not go_on:
             return
 

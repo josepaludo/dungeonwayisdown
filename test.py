@@ -1,4 +1,3 @@
-from random import choice
-a = {"a": 2, "b": 3, "c": 4}
-b = [a]
-print(choice(b))
+a = [1, 2, 3]
+b = None
+print(a + [b])

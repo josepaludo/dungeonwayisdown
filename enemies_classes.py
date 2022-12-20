@@ -21,7 +21,17 @@ class Veloster(Enemy):
         self.init_cards()
 
     def hit(self):
-        pass
+
+        coords = self.get_urdl_coords(self.y, self.x, 1)[0]
+        for coord in coords:
+            info = self.check_coords(coord[0], coord[1])
+            if info[0]:
+                self.make_hit(info, coord[0], coord[1])
+                return
+
+    def make_hit(self, target, ycor, xcor):
+
+
 
     def twist(self):
         pass

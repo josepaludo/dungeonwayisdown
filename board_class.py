@@ -1,6 +1,7 @@
 import os
 from random import randint, choice
 from copy import deepcopy
+from time import sleep
 
 
 class Board:
@@ -21,12 +22,38 @@ class Board:
         self.entrance_coords = []
         self.exit_coords = []
 
-        self.dead_players = []
         self.log = []
         self.living_turn_checker = []
         self.dungeon_loop_checker = []
+        self.dead_players = []
+
+        self.livings = []
+        self.enemies = []
+        self.allies = []
+        self.players = []
 
         self.reset_board()
+
+    def board_blink(self):
+
+        for i in range(5):
+
+            sleep(0.05)
+            self.print_board(self.backup_board)
+            sleep(0.05)
+            self.print_board()
+
+    def livings_maintance(livings, enemies, allies, players):
+
+        self.livings = livings
+        self.enemies = enemies
+        self.allies = allies
+        self.players = players
+
+    def clear_livings(self):
+
+        self.livings, self.enemies = [], []
+        self.allies, self.players = [], []
 
     def add_log(self, log):
 
@@ -34,23 +61,25 @@ class Board:
         if len(self.log) > 10:
             self.log.pop(0)
 
-    def level_finished(self, players, enemies):
+    def level_finished(self):
 
-        for player in players:
+        for player in self.players:
             if not player.dead:
                 if (player.x, player.y) not in self.exit_coords:
                     return
 
-        for enemy in enemies:
+        for enemy in self.enemies:
             if not enemy.dead:
                 return
 
         return True
 
     def make_copy(self):
+
         self.backup_board = deepcopy(self.board)
 
     def empty_copy(self):
+
         self.backup_board = []
 
     def reset_board(self):
@@ -76,47 +105,43 @@ class Board:
             print()
         print()
 
-    def place_things(self, enemies, players):
+    def place_things(self):
 
         self.entry = self.next_entry
 
         self.reset_board()
+
         self.make_entrance()
         self.make_exit()
         self.make_pillars()
         self.make_holes()
-        self.place_players(players)
-        self.place_enemies(enemies)
 
-    def place_enemies(self, enemies):
+        self.place_players()
+        self.place_enemies()
 
-        self.set_enemies_xy(enemies)
+    def place_enemies(self):
 
-        for living in enemies:
-            if isinstance(living.x, int):
-                self.board[living.y][living.x] = living.sym
-            else:
-                for xcor in living.x:
-                    for ycor in living.y:
-                        self.board[ycor][xcor] = living.sym
+        for enemy in self.enemies:
 
-    def set_enemies_xy(self, enemies):
+            self.set_enemy_xy(enemy)
+            self.board[enemy.y][enemy.x] = enemy.sym
 
-        for enemy in enemies:
+    def set_enemies_xy(self, enemy):
 
-            while True:
-                xrange = (1, 18) if self.entry % 2 != 0 else (1, 9) if self.entry == 2 else (10, 18)
-                yrange = (1, 18) if self.entry % 2 == 0 else (1, 9) if self.entry == 3 else (10, 18)
-                xpos = randint(xrange[0], xrange[1])
-                ypos = randint(yrange[0], yrange[1])
+        while True:
+            xrange = (1, 18) if self.entry % 2 != 0 else (1, 9) if self.entry == 2 else (10, 18)
+            yrange = (1, 18) if self.entry % 2 == 0 else (1, 9) if self.entry == 3 else (10, 18)
 
-                if self.board[ypos][xpos] == self.empty_square:
-                    enemy.x, enemy.y = xpos, ypos
-                    break
+            xpos = randint(xrange[0], xrange[1])
+            ypos = randint(yrange[0], yrange[1])
 
-    def place_players(self, players):
+            if self.board[ypos][xpos] == self.empty_square:
+                enemy.x, enemy.y = xpos, ypos
+                break
 
-        for coord, player in zip(self.entrance_coords, players):
+    def place_players(self):
+
+        for coord, player in zip(self.entrance_coords, self.players):
             player.x = coord[0]
             player.y = coord[1]
             self.board[player.y][player.x] = player.sym

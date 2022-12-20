@@ -6,7 +6,7 @@ from living_classes import Enemy
 from board_class import Board
 
 
-def create_enemies(clas):
+def create_enemies(clas, board):
 
     num_min = randint(3, 6)
     num_max = num_min+(randint(1, 5))
@@ -16,6 +16,7 @@ def create_enemies(clas):
     for i in range(randint(num_min, num_max)):
 
         geni = clas()
+        geni.board = board
         proxy.append(geni)
 
     return proxy
@@ -29,6 +30,7 @@ def create_players(board):
 
         proxy = class_()
         if proxy.sym not in board.dead_players:
+            proxy.board = board
             proxy_list.append(proxy)
 
     for prox in proxy_list:
@@ -44,46 +46,46 @@ def game_loop():
     while True:
 
         players = create_players(board)
-        enemies = create_enemies(Enemy)
+        enemies = create_enemies(Enemy, board)
 
         livings = enemies + players
         allies = players
 
-        for enemy in enemies:
-            enemy.enemy_info(board, allies)
+        board.livings_maintance(livings, enemies, allies, players)
+        board.place_things()
 
-        board.place_things(enemies, players)
-
-        go_on = dungeon_loop(livings, board, players, enemies)
+        go_on = dungeon_loop(board)
 
         if not go_on:
             break
 
         check_dead_players(board, players)
 
+        board.clear_livings()
 
-def dungeon_loop(livings, board, players, enemies):
+
+def dungeon_loop(board):
 
     while True:
 
-        dungeon_loop_check(livings, board, players, enemies)
+        dungeon_loop_check(board)
 
-        if all_players_died(players):
+        if all_players_died(board)):
             return
 
-        go_on = livings_turn(livings, board, players, enemies)
+        go_on = livings_turn(board)
 
         if not go_on:
             return True
 
 
-def livings_turn(livings, board, players, enemies):
+def livings_turn(board):
 
-    for living in livings:
+    for living in board.livings:
 
         board.print_board()
 
-        if board.level_finished(players, enemies):
+        if board.level_finished():
             sleep(2)
             return
 
@@ -92,23 +94,19 @@ def livings_turn(livings, board, players, enemies):
             living_turn_check(board, living)
 
             if isinstance(living, Enemy):
-                enemy_turn(living, board, players)
+                enemy_turn(living, board)
 
             else:
-                player_turn(living, board, players, enemies)
+                player_turn(living, board)
 
     return True
 
 
-def enemy_turn(enemy, board, players):
+def enemy_turn(enemy, board):
 
-    enemy.actions = max(enemy.actions, enemy.actions_per_turn)
-    enemy.moves = max(enemy.moves, enemy.moves_per_turn)
+    enemy.enemy_maintance()
 
-    enemy_move(enemy, board, players)
-
-    #enemy.enemy_get_cards()
-    enemy.enemy_info(board, players)
+    enemy_move(enemy, board)
 
     enemy_act(enemy, board)
 
@@ -122,36 +120,27 @@ def enemy_act(enemy, board):
      #   card = choice(enemy.card_list)
       #  board.make_copy()
        # enemy.cards[card]["func"]()
-        #enemy.blink_screen()
+       # board.board_blink(
         #board.empty_copy()
 
     #enemy.actions = 0
 
 
-def enemy_move(enemy, board, players):
+def enemy_move(enemy, board):
 
-    for x in range(enemy.moves):
+    for i in range(enemy.moves):
 
         board.make_copy()
-        enemy.turn_move(players)
-        enemy.blink_screen()
+        enemy.turn_move()
+        board.board_blink()
         board.empty_copy()
 
     enemy.moves = 0
 
 
-def blink_screen(board):
+def player_turn(player, board):
 
-    for i in range(2):
-        sleep(0.05)
-        board.print_board(board.backup_board)
-        sleep(0.05)
-        board.print_board()
-
-
-def player_turn(player, board, players, enemies):
-
-    player.maintance(board, enemies, players)
+    player.player_maintance()
 
     input(f"{player.sym}'s turn. Press 'Enter' to begin.")
 
@@ -199,22 +188,22 @@ def living_turn_check(board, living):
             board.living_turn_checker.remove(func)
 
 
-def dungeon_loop_check(livings, board, players, enemies):
+def dungeon_loop_check(board):
     pass
 
 
-def all_players_died(players):
+def all_players_died(board):
 
-    for player in players:
+    for player in board.players:
         if not player.dead:
             return False
 
     return True
 
 
-def check_dead_players(board, players):
+def check_dead_players(board):
 
-    for player in players:
+    for player in board.players:
         if player.dead:
 
             board.dead_players.append(player.sym)

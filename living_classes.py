@@ -2,19 +2,13 @@ from random import choice, random
 from time import sleep
 
 
-class Thing:
+class Living():
 
     def __init__(self):
 
         self.x = None
         self.y = None
         self.sym = ""
-
-
-class Living(Thing):
-
-    def __init__(self):
-        super().__init__()
 
         self.health = 20
         self.weapons = []
@@ -24,8 +18,11 @@ class Living(Thing):
         self.invulnerable = False
 
         self.board = None
-        self.enemies = None
-        self.companions = None
+
+        self.enemies = [None
+        self.companions = [None]
+        self.allies = [None]
+        self.livings = [None]
 
         self.cards = {}
         self.my_cards = []
@@ -36,32 +33,17 @@ class Living(Thing):
         self.board.print_board()
         print(f"{self.sym}'s turn.\n")
 
-    def blink_screen(self):
-
-        for i in range(5):
-            sleep(0.05)
-            self.board.print_board(self.board.backup_board)
-            sleep(0.05)
-            self.board.print_board()
-
-    def get_info(self, board, enemies, players):
-
-        self.board = board
-        self.enemies = enemies
-        self.companions = players
-
     def check_coord(self, ycor, xcor):
-        """returns tuple with coord object, class name, symbol"""
 
-        for living in self.enemies + self.companions:
+        for living in self.enemies + self.companions + self.targets:
             if (living.y, living.x) == (ycor, xcor):
-                return living, living.__class__.name, living.sym
+                return living
 
         invalid_locs = [self.board.empty_square, self.board.hole_square, self.board.wall_square]
 
         for invalid_loc in invalid_locs:
             if self.board.board[ycor][xcor] == invalid_loc:
-                return None, None, invalid_loc
+                return None
 
     def get_urdl_coords_all(self, ycor, xcor):
 
@@ -189,38 +171,40 @@ class Enemy(Living):
 
         self.sym = "e"
         self.name = "Generic small enemy"
-        self.targets = None
+
         self.target = None
         self.current_diff = None
         self.dir = []
         self.max_target_counter = 15
         self.target_counter = self.max_target_counter
         self.can_attack = True
+
         self.moves = 1
-        self.actions = 1
         self.moves_per_turn = 1
+
+        self.actions = 1
         self.actions_per_turn = 1
         self.card_list = []
         self.my_cards = []
 
-    def enemy_get_cards(self):
+    def enemy_maintance(self):
 
-        self.get_turn_cards()
+        self.actions = max(self.actions, self.actions_per_turn)
+        self.moves = max(self.moves, self.moves_per_turn)
+
+        #self.get_turn_cards()
 
     def empty_hand(self):
 
         self.my_cards = []
 
-    def enemy_info(self, board, allies):
-
-        self.board = board
-        self.targets = allies
-
     def set_target(self):
 
         if self.target_counter >= self.max_target_counter:
-            self.target = choice(self.targets)
+            targets = [ally in self.board.allies if not ally.dead]
+            self.target = choice(targets)
             self.target_counter = 0
+
         else:
             self.target_counter += 1
 
@@ -235,38 +219,52 @@ class Enemy(Living):
         self.dir = up, right, down, left
 
     def dist(self, coor):
+
         xdiff = abs(coor[1]-self.target.x)
         ydiff = abs(coor[0]-self.target.y)
+
         return xdiff+ydiff
 
     def move(self):
 
-        self.measure_distance()
-
         if self.current_diff == 1:
             return
 
-        for direc in self.dir:
+        for direction in self.dir:
 
-            boardxy = self.board.board[direc[0]][direc[1]]
-            if boardxy == self.board.empty_square or boardxy == self.board.hole_square:
+            if self.try_to_move(direction):
+                return
 
-                if self.dist(direc) < self.current_diff:
-                    self.board.board[self.y][self.x] = self.board.empty_square
+    def try_to_move(self, direc):
 
-                    if boardxy == self.board.hole_square:
-                        self.dead = True
-                        report = "Enemy fell on a hole and died."
-                        self.board.add_log(report)
-                        return
+        boardxy = self.board.board[direc[0]][direc[1]]
+        if boardxy not in [self.board.empty_square, self.board.hole_square]:
+            return
 
-                    self.y, self.x = direc[0], direc[1]
-                    self.board.board[self.y][self.x] = self.sym
-                    return
+        if self.dist(direc) < self.current_diff:
+            self.make_the_move(direc)
+            return True
 
-    def turn_move(self, targets):
+    def make_the_move(self, direc):
 
-        self.targets = [target for target in targets if not target.dead]
+        self.board.board[self.y][self.x] = self.board.empty_square
+
+        if boardxy == self.board.hole_square:
+            self.hole_fall()
+            return
+
+        self.y, self.x = direc[0], direc[1]
+        self.board.board[self.y][self.x] = self.sym
+
+    def hole_fall(self):
+
+        self.dead = True
+        report = "Enemy fell on a hole and died."
+        self.board.add_log(report)
+
+    def turn_move(self):
+
         self.set_target()
+        self.measure_distance()
         self.move()
 
