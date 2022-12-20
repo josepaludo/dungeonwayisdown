@@ -11,6 +11,7 @@ class Board:
         self.empty_square = " "
         self.wall_square = "#"
         self.hole_square = "-"
+        self.invalids = [self.wall_square, self.hole_square]
 
         self.board = []
         self.backup_board = []

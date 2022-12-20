@@ -15,7 +15,9 @@ class Living():
         self.abilities = []
         self.dead = False
         self.name = None
+
         self.invulnerable = False
+        self.can_attack = True
 
         self.board = None
 
@@ -30,15 +32,13 @@ class Living():
 
     def check_coord(self, ycor, xcor):
 
-        for living in self.enemies + self.companions + self.targets:
+        for invalid_loc in self.board.invalids:
+            if self.board.board[ycor][xcor] == invalid_loc:
+                return 'invalid'
+
+        for living in self.board.livings:
             if (living.y, living.x) == (ycor, xcor):
                 return living
-
-        invalid_locs = [self.board.empty_square, self.board.hole_square, self.board.wall_square]
-
-        for invalid_loc in invalid_locs:
-            if self.board.board[ycor][xcor] == invalid_loc:
-                return None
 
     def get_urdl_coords_all(self, ycor, xcor):
 
@@ -73,7 +73,7 @@ class Living():
 
         return valids
 
-    def prompt_for_direction(self):
+    def prompt_direction(self):
 
         while True:
 
@@ -164,6 +164,8 @@ class Enemy(Living):
     def __init__(self):
         super().__init__()
 
+        self.player_or_enemy = 'Enemy'
+
         self.sym = "e"
         self.name = "Generic small enemy"
 
@@ -172,22 +174,23 @@ class Enemy(Living):
         self.dir = []
         self.max_target_counter = 15
         self.target_counter = self.max_target_counter
-        self.can_attack = True
 
         self.moves = 1
         self.moves_per_turn = 1
 
         self.actions = 1
         self.actions_per_turn = 1
+
         self.card_list = []
         self.my_cards = []
 
     def enemy_maintance(self):
 
+        for i in range(self.actions_per_turn):
+            self.get_turn_cards()
+
         self.actions = max(self.actions, self.actions_per_turn)
         self.moves = max(self.moves, self.moves_per_turn)
-
-        #self.get_turn_cards()
 
     def empty_hand(self):
 

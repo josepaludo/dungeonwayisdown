@@ -2,6 +2,7 @@ from random import randint, choice
 from time import sleep
 
 from spec_classes import Warrior, Druid, Thief, Wizard, Priest
+from enemies_classes import Veloster
 from living_classes import Enemy
 from board_class import Board
 
@@ -46,12 +47,11 @@ def game_loop():
     while True:
 
         players = create_players(board)
-        enemies = create_enemies(Enemy, board)
+        enemies = create_enemies(Veloster, board)
 
         livings = enemies + players
-        allies = players
 
-        board.livings_maintance(livings, enemies, allies, players)
+        board.livings_maintance(livings, enemies, players, players)
         board.place_things()
 
         go_on = dungeon_loop(board)
@@ -114,16 +114,15 @@ def enemy_turn(enemy, board):
 
 
 def enemy_act(enemy, board):
-    pass
 
-    #for i in range(enemy.actions):
-     #   card = choice(enemy.card_list)
-      #  board.make_copy()
-       # enemy.cards[card]["func"]()
-       # board.board_blink()
-        #board.empty_copy()
+    for card in enemy.my_cards:
 
-    #enemy.actions = 0
+        board.make_copy()
+        enemy.cards[card]["func"]()
+        board.board_blink()
+        board.empty_copy()
+
+    enemy.actions = 0
 
 
 def enemy_move(enemy, board):
@@ -154,7 +153,7 @@ def player_turn(player, board):
         if not valid_input:
             return
 
-        player.inputs[valid_input][0]()
+        player.inputs[valid_input]["func"]()
 
         if valid_input not in ["move", "act"]:
             input("\nPress 'Enter' to return.")

@@ -4,22 +4,14 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO: 
-        *** what to do with livings ***
-        *** get livings info ***
-        
-        *** change init enemy with board to get info every turn ***
-        
-        *** forgot to do something with check coord ***
-        
-        *** adjust enemy turn ***
+        *** must check if player is dead after every enemy damage ***
+        *** something is wrong with warrior swing axw ***
         
         *** make a counter, every 5th level make a boss ***
         
         *** make items you can iterract with ***
         
         *** what to do about the symbols?
-
-        *** change check if dead function to give object, not name, or not
 
 Doing now:
     - Do veloster after
@@ -29,7 +21,7 @@ Doing now:
     - board reviewed
     - check enemy targets and movement
     - only use board_blink
-    
+
 
 Enemies ideas:
     - "v": fast enemy, changes target quickly, but doesn't do much damage, melee
@@ -44,28 +36,34 @@ Enemies ideas:
 List of symbols:
 
     - #: wall
-    - -: hole
-
-    - W: warrior
-        - w: warrior skills, about to replace or not:
-            - t: taunt
-            - i: invulnerable
-            - x: warrior's axe
-    
-    - v: fast enemy
-    - ç: snake enemy
-    - o: orc enemy
-    - g: goblin enemy
-    - y: troll enmy
-    
+    - -: hole     
+    - a:
+    - b:
     - c: chest on the ground
-    - i: item on the ground
-    
+    - ç: snake enemy/ Ç snake boss
+    - d:
+    - e:
     - f: fire
-    - l: lightning
-    - r: rock
+    - g: goblin enemy / G goblin boss
     - h: heal
-    
+    - i: invulnerable
+    - j:
+    - k: knife
+    - l: lightning
+    - m:
+    - n:
+    - o: orc enemy/ Orc boss
+    - p:
+    - q:
+    - r: rock
+    - s:
+    - t: taunt
+    - u:
+    - v: fast enemy/ V fast boss/ k knife
+    - w: W Warrior/ x axe/ t taunt/ i invulnerable
+    - x: warrios axe
+    - y: troll enemy / Y troll boss
+    - z:
 
 Player classes:
     - Warrior: tank, can taunt, takes less damage.
@@ -75,3 +73,4 @@ Player classes:
     - Wizard: damage, AOE, summon.
     transform
     - Thief: damage, glass cannon, can get invisible.
+

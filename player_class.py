@@ -1,6 +1,15 @@
 from random import random, choice, randint
 
-from living_classes import Living
+from living_classes import Living, Enemy
+
+
+class Ally(Living):
+
+    def __init__(self, board):
+        super().__init__()
+
+        self.player_or_enemy = 'Ally'
+        self.board = board
 
 
 class Player(Living):
@@ -8,19 +17,32 @@ class Player(Living):
     def __init__(self):
         super().__init__()
 
-        self.inputs = {"move": (self.move, "Move up, down, left or right."),
-                       "act": (self.action, "Use one of your cards."),
-                       "log": (self.show_log, "Shows a log of last important events."),
-                       "cards": (self.show_cards, "Shows every card you have and how it works."),
-                       "status": (self.show_status, "Shows status of each player."),
-                       "icons": (self.show_icons, "Shows the meaning of each icon."),
-                       "help": (self.help, "Shows every possible input."),
-                       "mhelp": (self.more_help, "Gives more details about the game."),
-                       "end": ("", "Finish your turn.")}
+        self.player_or_enemy = 'Player'
+
+        self.inputs = {"move": {"func": self.move,
+                                "descr": "Move up, down, left or right."},
+                       "act": {"func": self.action,
+                               "descr": "Use one of your cards."},
+                       "log": {"func": self.show_log,
+                               "descr": "Shows a log of last important events."},
+                       "cards": {"func": self.show_cards,
+                                 "descr": "Shows every card you have and how it works."},
+                       "status": {"func": self.show_status,
+                                  "descr": "Shows status of each player."},
+                       "icons": {"func": self.show_icons,
+                                 "descr": "Shows the meaning of each icon."},
+                       "help": {"func": self.help,
+                                "descr": "Shows every possible input."},
+                       "mhelp": {"func": self.more_help,
+                                 "descr": "Gives more details about the game."},
+                       "end": {"func": "",
+                               "descr": "Finish your turn."}}
 
         jump = "Gains an extra move."
 
-        self.cards = {"Jump": {"func": self.jump_func, "descr": jump, "level": "weak"}}
+        self.cards = {"Jump": {"func": self.jump_func,
+                               "descr": jump,
+                               "level": "weak"}}
 
         self.max_health = 20
         self.max_hand_size, self.draws_per_turn = 6, 2
@@ -66,7 +88,7 @@ class Player(Living):
         print("(Note you must enter only what is inside the '')\n")
 
         for key in self.inputs:
-            print(f"'{key}': {self.inputs[key][1]}")
+            print(f"'{key}': {self.inputs[key]['descr']}")
 
     def more_help(self):
 
@@ -75,12 +97,11 @@ class Player(Living):
     def show_icons(self):
 
         self.board.print_board()
-        #for living in self.board.livings:
-        #    print(f"{living.sym}: {living.name}, {'player' if isinstance(living, Player) else 'enemy'}.")
-        #print(f"{self.board.wall_square}: Wall.\n{self.board.hole_square}: Hole.")
-        print(f"W: Warrior, player.\nD: Druid, player.\nZ: Wizard, player.\nT: Thief, player\nP: Priest, player"
-              f"\n{self.board.wall_square}: wall.\n{self.board.hole_square}: hole in the ground."
-              f"\ne: generic small enemy.\nE: Generic large enemy.\nB: Boss.\nb: boss summons.\n")
+
+        for living in self.board.livings:
+            print(f"{living.sym}: {living.name}, {living.player_or_enemy}.")
+
+        print(f"{self.board.wall_square}: Wall.\n{self.board.hole_square}: Hole.")
 
     def show_status(self):
 

@@ -49,7 +49,7 @@ class Warrior(Player):
 
         damage = 5
 
-        valid_input = self.prompt_for_direction()
+        valid_input = self.prompt_direction()
 
         if not valid_input:
             return
