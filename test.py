@@ -1,5 +1,4 @@
-from player_class import Player
-
-a = Player()
-
-print(a.prompt_for_direction())
+from random import choice
+a = {"a": 2, "b": 3, "c": 4}
+b = [a]
+print(choice(b))

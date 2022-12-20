@@ -27,46 +27,18 @@ class Player(Living):
         self.moves, self.moves_per_turn = 2, 2
         self.actions, self.actions_per_turn = 2, 2
 
-        self.my_cards = []
-        self.weak_cards, self.medium_cards, self.strong_cards = [], [], []
-
     def jump_func(self):
 
         for key, value in self.cards.items():
             print(key, value)
         input()
 
-    def init_cards(self):
-
-        self.strong_cards = [card for card, info in self.cards.items() if info['level'] == 'strong']
-        self.medium_cards = [card for card, info in self.cards.items() if info['level'] == 'medium']
-        self.weak_cards = [card for card, info in self.cards.items() if info['level'] == 'weak']
-
-    def get_turn_cards(self):
-
-        chance = random()
-
-        if chance == 0:
-            pass
-        elif chance < 0.3:
-            self.my_cards += [choice(self.weak_cards) for i in range(2)]
-        elif chance < 0.6:
-            self.my_cards += [choice(self.weak_cards), choice(self.medium_cards)]
-        elif chance < 0.75:
-            self.my_cards += [choice(self.medium_cards) for i in range(2)]
-        elif chance < 0.9:
-            self.my_cards += [choice(self.strong_cards), choice(self.weak_cards)]
-        elif chance < 0.98:
-            self.my_cards += [choice(self.strong_cards), choice(self.medium_cards)]
-        else:
-            self.my_cards += [choice(self.strong_cards) for i in range(2)]
-
     def maintance(self, board, enemies, players):
 
         self.get_info(board, enemies, players)
 
-        self.actions = self.actions_per_turn if self.actions < self.actions_per_turn else self.actions
-        self.moves = self.moves_per_turn if self.moves < self.moves_per_turn else self.moves
+        self.actions = max(self.actions_per_turn, self.actions)
+        self.moves = max(self.moves, self.moves_per_turn)
 
         for i in range(self.draws_per_turn):
             self.get_turn_cards()

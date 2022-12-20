@@ -18,7 +18,7 @@ class Warrior(Player):
         self.short_taunt_duration = 3
 
         swing_axe = "Swings your axe hiting a single enemy."
-        mid_p = f"Taunts each enemy for {self.short_taunt_duration} turns."
+        short_taunt = f"Taunts each enemy for {self.short_taunt_duration} turns."
         avoid_pain = "Tries to ignore all damage until your next turn"
         taunt = "Taunts each enemy."
         ignore_pain = "Ignores all damage until your next turn."
@@ -28,12 +28,12 @@ class Warrior(Player):
                                    "level": "weak"}
 
         self.cards["Avoid Pain"] = {"func": self.avoid_pain,
-                                  "descr": avoid_pain,
-                                  "level": "medium"}
+                                    "descr": avoid_pain,
+                                    "level": "medium"}
 
-        self.cards["Short Taunt"] = {"func": self.mid_p_f,
-                                 "descr": mid_p,
-                                 "level": "medium"}
+        self.cards["Short Taunt"] = {"func": self.short_taunt,
+                                     "descr": short_taunt,
+                                     "level": "medium"}
 
         self.cards["Taunt"] = {"func": self.taunt,
                                "descr": taunt,

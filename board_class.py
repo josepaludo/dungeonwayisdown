@@ -88,11 +88,11 @@ class Board:
         self.place_players(players)
         self.place_enemies(enemies)
 
-    def place_enemies(self, livings):
+    def place_enemies(self, enemies):
 
-        self.set_livings_xy(livings)
+        self.set_enemies_xy(enemies)
 
-        for living in livings:
+        for living in enemies:
             if isinstance(living.x, int):
                 self.board[living.y][living.x] = living.sym
             else:
@@ -100,10 +100,9 @@ class Board:
                     for ycor in living.y:
                         self.board[ycor][xcor] = living.sym
 
-    def set_livings_xy(self, livings):
-        # entry must be 1, 2, 3, 4 standing for up, right, down, left
+    def set_enemies_xy(self, enemies):
 
-        for liv in livings:
+        for enemy in enemies:
 
             while True:
                 xrange = (1, 18) if self.entry % 2 != 0 else (1, 9) if self.entry == 2 else (10, 18)
@@ -112,7 +111,7 @@ class Board:
                 ypos = randint(yrange[0], yrange[1])
 
                 if self.board[ypos][xpos] == self.empty_square:
-                    liv.x, liv.y = xpos, ypos
+                    enemy.x, enemy.y = xpos, ypos
                     break
 
     def place_players(self, players):

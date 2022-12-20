@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 from time import sleep
 
 from spec_classes import Warrior, Druid, Thief, Wizard, Priest
@@ -6,7 +6,7 @@ from living_classes import Enemy
 from board_class import Board
 
 
-def create_enemies(clas, board):
+def create_enemies(clas):
 
     num_min = randint(3, 6)
     num_max = num_min+(randint(1, 5))
@@ -15,7 +15,7 @@ def create_enemies(clas, board):
 
     for i in range(randint(num_min, num_max)):
 
-        geni = clas(board)
+        geni = clas()
         proxy.append(geni)
 
     return proxy
@@ -44,8 +44,14 @@ def game_loop():
     while True:
 
         players = create_players(board)
-        enemies = create_enemies(Enemy, board)
+        enemies = create_enemies(Enemy)
+
         livings = enemies + players
+        allies = players
+
+        for enemy in enemies:
+            enemy.enemy_info(board, allies)
+
         board.place_things(enemies, players)
 
         go_on = dungeon_loop(livings, board, players, enemies)
@@ -96,14 +102,45 @@ def livings_turn(livings, board, players, enemies):
 
 def enemy_turn(enemy, board, players):
 
-    board.make_copy()
-    enemy.turn_move(players)
-    enemy.blink_screen()
-    board.empty_copy()
+    enemy.actions = max(enemy.actions, enemy.actions_per_turn)
+    enemy.moves = max(enemy.moves, enemy.moves_per_turn)
+
+    enemy_move(enemy, board, players)
+
+    #enemy.enemy_get_cards()
+    enemy.enemy_info(board, players)
+
+    enemy_act(enemy, board)
+
+    enemy.empty_hand()
+
+
+def enemy_act(enemy, board):
+    pass
+
+    #for i in range(enemy.actions):
+     #   card = choice(enemy.card_list)
+      #  board.make_copy()
+       # enemy.cards[card]["func"]()
+        #enemy.blink_screen()
+        #board.empty_copy()
+
+    #enemy.actions = 0
+
+
+def enemy_move(enemy, board, players):
+
+    for x in range(enemy.moves):
+
+        board.make_copy()
+        enemy.turn_move(players)
+        enemy.blink_screen()
+        board.empty_copy()
+
+    enemy.moves = 0
 
 
 def blink_screen(board):
-    """you must deal with proxy yourself!!!"""
 
     for i in range(2):
         sleep(0.05)

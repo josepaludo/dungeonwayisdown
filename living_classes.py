@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, random
 from time import sleep
 
 
@@ -26,6 +26,10 @@ class Living(Thing):
         self.board = None
         self.enemies = None
         self.companions = None
+
+        self.cards = {}
+        self.my_cards = []
+        self.weak_cards, self.medium_cards, self.strong_cards = [], [], []
 
     def clear_screen(self):
 
@@ -157,10 +161,30 @@ class Living(Thing):
 
         return True
 
+    def init_cards(self):
+
+        self.strong_cards = [card for card, info in self.cards.items() if info['level'] == 'strong']
+        self.medium_cards = [card for card, info in self.cards.items() if info['level'] == 'medium']
+        self.weak_cards = [card for card, info in self.cards.items() if info['level'] == 'weak']
+
+    def get_turn_cards(self):
+
+        chance = random()
+
+        if chance == 0:
+            message = f"{self.name} couldn't draw a card."
+            self.board.add_log(message)
+        elif chance < 0.5:
+            self.my_cards.append(choice(self.weak_cards))
+        elif chance < 0.9:
+            self.my_cards.append(choice(self.medium_cards))
+        else:
+            self.my_cards.append(choice(self.strong_cards))
+
 
 class Enemy(Living):
 
-    def __init__(self, board):
+    def __init__(self):
         super().__init__()
 
         self.sym = "e"
@@ -169,9 +193,28 @@ class Enemy(Living):
         self.target = None
         self.current_diff = None
         self.dir = []
-        self.board = board
         self.max_target_counter = 15
         self.target_counter = self.max_target_counter
+        self.can_attack = True
+        self.moves = 1
+        self.actions = 1
+        self.moves_per_turn = 1
+        self.actions_per_turn = 1
+        self.card_list = []
+        self.my_cards = []
+
+    def enemy_get_cards(self):
+
+        self.get_turn_cards()
+
+    def empty_hand(self):
+
+        self.my_cards = []
+
+    def enemy_info(self, board, allies):
+
+        self.board = board
+        self.targets = allies
 
     def set_target(self):
 
