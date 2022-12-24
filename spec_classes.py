@@ -161,6 +161,11 @@ class Warrior(Player):
         if not go_on:
             return
 
+        if self.invulnerable:
+            self.clear_screen()
+            input("You are already invulnerable.\nPress 'Enter' to continue.")
+            return
+
         self.board.living_turn_checker.append(self.inner_avoid_pain)
 
         self.board.backup_board[self.y][self.x] = self.ignore_sym
@@ -180,9 +185,11 @@ class Priest(Player):
         self.name = 'Priest'
 
         self.blessing_allies = {}
+        self.protect_allies = []
 
         self.blessing_turns = 4
         self.blessing_heal = 1
+        self.protect_turns = 1
         self.light_heal_heal = 5
         self.all_healed_heal = 3
         self.revive_turns = 3
@@ -232,7 +239,7 @@ class Priest(Player):
             if answer == 'q':
                 return
 
-            if not self.check_int_range(answer, 1, 4):
+            if not self.check_int_range(answer, 1, len(alive_allies)):
                 continue
 
             self.apply_blessing(ally, alive_allies, answer)
@@ -271,7 +278,56 @@ class Priest(Player):
         self.board.add_log(message)
 
     def protect(self):
-        pass
+
+        alive_allies = [ally for ally in self.board.allies if not ally.dead]
+
+        while True:
+
+            self.clear_screen()
+            print("Choose an ally:\n")
+            for ind, ally in enumerate(alive_allies):
+                print(f"'{ind+1}' for {ally.name}.")
+            print("'q' to  quit.")
+
+            answer = input("\nWhich ally would you like to protect? ")
+
+            if answer == 'q':
+                return
+
+            if not self.check_int_range(answer, 1, len(alive_allies)):
+                continue
+
+            self.apply_protect(ally, alive_allies, answer)
+
+            return True
+
+    def apply_protect(self, ally, alive_allies, answer):
+
+        ally = alive_allies[int(answer)-1]
+
+        if self.do_protect not in self.board.living_turn_checker:
+            self.board.living_turn_checker.append(self.do_protect)
+
+        message = f"{self.name} protected {ally.name}."
+        self.board.add_log(message)
+
+        self.board.backup_board[ally.y][ally.x] = self.invulnerable_sym
+        self.protect_allies.append(ally)
+        ally.invulnerable = True
+
+    def do_protect(self, living):
+
+        if not living == self:
+            return
+
+        for ally in self.protect_allies:
+            ally.invulnerable = False
+
+            message = f'{ally.name} is no longer protected by {self.name}.'
+            self.board.add_log(message)
+
+        return True
+
 
     def light_heal(self):
         pass
