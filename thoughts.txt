@@ -27,7 +27,29 @@ TODO:
 
 Doing now:
 	
-	jjk
+	fix this bug:
+	
+	Traceback (most recent call last):
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/main.py", line 3, in <module>
+    game_loop()
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/functions.py", line 54, in game_loop
+    go_on = dungeon_loop(board)
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/functions.py", line 73, in dungeon_loop
+    go_on = livings_turn(board)
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/functions.py", line 94, in livings_turn
+    enemy_turn(living, board)
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/functions.py", line 110, in enemy_turn
+    enemy_move(enemy, board)
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/functions.py", line 134, in enemy_move
+    enemy.turn_move()
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/living_classes.py", line 289, in turn_move
+    self.set_target()
+  File "/home/josepaludo/MEGAsync/Programming/Games/RPGCardDungeonGame/living_classes.py", line 227, in set_target
+    self.target = choice(targets)
+  File "/usr/lib/python3.10/random.py", line 378, in choice
+    return seq[self._randbelow(len(seq))]
+IndexError: list index out of range
+
 
 
 Enemies ideas:

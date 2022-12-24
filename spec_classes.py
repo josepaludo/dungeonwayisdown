@@ -296,6 +296,7 @@ class Priest(Player):
 
         for ally in self.protect_allies:
             ally.invulnerable = False
+            self.protect_allies.remove(ally)
 
             message = f'{ally.name} is no longer protected by {self.name}.'
             self.board.add_log(message)
@@ -330,6 +331,7 @@ class Priest(Player):
 
         for ind, ally in enumerate(self.board.allies):
             ally.health += self.all_healed_heal
+            self.board.backup_board[ally.y][ally.x] = self.heal_sym
             message += f"{ally.name}{'.' if ind == len(self.board.allies)-1 else ', '}"
 
         self.board.add_log(message)
