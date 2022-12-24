@@ -12,13 +12,14 @@ class Warrior(Player):
 
         self.sym = "W"
         self.name = "Warrior"
-        self.weapon_sym = "x"
+        self.weapon_sym = self.axe_sym
         self.taunt_sym = "t"
         self.ignore_sym = "i"
         self.short_taunt_duration = 3
+        self.axe_damage = 5
 
         swing_axe = "Swings your axe hiting a single enemy."
-        short_taunt = f"Taunts each enemy for {self.short_taunt_duration} turns."
+        short_taunt = f"Taunts each enemy for {self.short_taunt_duration} turn{'s' if self.short_taunt_duration > 1 else ''}."
         avoid_pain = "Tries to ignore all damage until your next turn"
         taunt = "Taunts each enemy."
         ignore_pain = "Ignores all damage until your next turn."
@@ -47,8 +48,6 @@ class Warrior(Player):
 
     def swing_axe(self):
 
-        damage = 5
-
         valid_input = self.prompt_direction()
 
         if not valid_input:
@@ -59,9 +58,9 @@ class Warrior(Player):
         for enemy in self.board.enemies:
 
             if ((enemy.y, enemy.x) == (target[0], target[1])) and not enemy.dead:
-                enemy.health -= damage
+                enemy.health -= self.axe_damage
 
-                message = f"{self.name} dealt {damage} damage to {enemy.name} with his axe."
+                message = f"{self.name} dealt {self.axe_damage} damage to {enemy.name} with his axe."
                 self.board.add_log(message)
 
                 enemy.check_if_dead(self.name)
@@ -178,8 +177,110 @@ class Priest(Player):
         super().__init__()
 
         self.sym = "P"
+        self.name = 'Priest'
 
-        self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"}}
+        self.blessing_allies = {}
+
+        self.blessing_turns = 4
+        self.blessing_heal = 1
+        self.light_heal_heal = 5
+        self.all_healed_heal = 3
+        self.revive_turns = 3
+
+        blessing = f'Heals an ally for {self.blessing_heal} for {self.blessing_turns}.'
+        protect = 'Make an ally invulnerable for 1 turn.'
+        light_heal = f'Heals an ally for {self.light_heal_heal}.'
+        all_healed = f'Heals each ally for {self.all_healed_heal}.'
+        revive = f"Revive a dead player if not alive for {self.revive_turns} turns."
+
+        self.cards["Blessing"] = {"func": self.blessing,
+                                  "descr": blessing,
+                                  "level": "weak"}
+
+        self.cards["Protect"] = {"func": self.protect,
+                                 "descr": protect,
+                                 "level": "medium"}
+
+        self.cards["Light Heal"] = {"func": self.light_heal,
+                                    "descr": light_heal,
+                                    "level": "medium"}
+
+        self.cards["All Healed"] = {"func": self.all_healed,
+                                    "descr": all_healed,
+                                    "level": "strong"}
+
+        self.cards["Revive"] = {"func": self.revive,
+                                  "descr": revive,
+                                  "level": "strong"}
+
+        self.init_cards()
+
+    def blessing(self):
+
+        alive_allies = [ally for ally in self.board.allies if not ally.dead]
+
+        while True:
+
+            self.clear_screen()
+            print("Choose an ally:\n")
+            for ind, ally in enumerate(alive_allies):
+                print(f"'{ind+1}' for {ally.name}.")
+            print("'q' to  quit.")
+
+            answer = input("\nWhich ally would you like to bless? ")
+
+            if answer == 'q':
+                return
+
+            if not self.check_int_range(answer, 1, 4):
+                continue
+
+            self.apply_blessing(ally, alive_allies, answer)
+
+            return True
+
+    def apply_blessing(self, ally, alive_allies, answer):
+
+        ally = alive_allies[int(answer)-1]
+
+        self.blessing_allies[ally] = self.blessing_turns
+
+        if self.do_blessing not in self.board.living_turn_checker:
+            self.board.living_turn_checker.append(self.do_blessing)
+
+        message = f"{self.name} blessed {ally.name}."
+        self.board.add_log(message)
+
+        self.board.backup_board[ally.y][ally.x] = self.heal_sym
+
+    def do_blessing(self, living):
+
+        if living not in self.blessing_allies:
+            return
+
+        if self.blessing_allies[living] == 0:
+            del self.blessing_allies[living]
+
+        if len(self.blessing_allies) == 0:
+            return True
+
+        self.blessing_allies[living] -= 1
+        living.health += self.blessing_heal
+
+        message = f'{self.name} healed {living.name} for {self.blessing_heal} with blessing.'
+        self.board.add_log(message)
+
+    def protect(self):
+        pass
+
+    def light_heal(self):
+        pass
+
+    def all_healed(self):
+        pass
+
+    def revive(self):
+        pass
 
 
 class Druid(Player):

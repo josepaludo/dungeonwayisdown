@@ -1,3 +1,3 @@
-a = [1, 2, 3]
-b = None
-print(a + [b])
+a = (1, 2)
+b, c = a
+print(b, c)

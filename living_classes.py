@@ -10,6 +10,10 @@ class Living():
         self.y = None
         self.sym = ""
 
+        self.heal_sym = 'h'
+        self.invulnerable_sym = 'i'
+        self.axe_sym = 'x'
+
         self.health = 20
         self.weapons = []
         self.abilities = []
@@ -32,9 +36,8 @@ class Living():
 
     def check_coord(self, ycor, xcor):
 
-        for invalid_loc in self.board.invalids:
-            if self.board.board[ycor][xcor] == invalid_loc:
-                return 'invalid'
+        if self.board.board[ycor][xcor] in self.board.invalids:
+            return 'invalid'
 
         for living in self.board.livings:
             if (living.y, living.x) == (ycor, xcor):
@@ -133,8 +136,8 @@ class Living():
         self.dead = True
         self.board.board[self.y][self.x] = self.board.empty_square
 
-        mess = f"{self.name} died.{f' {killer} slayed it.' if killer else ''}"
-        self.board.add_log(mess)
+        message = f"{self.name} died.{f' {killer} slayed it.' if killer else ''}"
+        self.board.add_log(message)
 
         return True
 

@@ -2,42 +2,39 @@ from random import randint, choice
 from time import sleep
 
 from spec_classes import Warrior, Druid, Thief, Wizard, Priest
-from enemies_classes import Veloster
+from enemies_classes import Goblin, Snake, Troll, Necro
 from living_classes import Enemy
 from board_class import Board
 
 
-def create_enemies(clas, board):
+def create_enemies(board):
 
-    num_min = randint(3, 6)
-    num_max = num_min+(randint(1, 5))
+    enemies = []
 
-    proxy = []
+    for i in range(5+randint(0, 5)):
 
-    for i in range(randint(num_min, num_max)):
+        enemy_classes = Snake, Goblin, Troll, Necro
+        enemy = choice(enemy_classes)()
 
-        geni = clas()
-        geni.board = board
-        proxy.append(geni)
+        enemy.board = board
+        enemies.append(enemy)
 
-    return proxy
+    return enemies
 
 
 def create_players(board):
 
-    proxy_list = []
-    # for class_ in [Warrior, Druid, Thief, Wizard, Priest]:
-    for class_ in [Warrior]:
+    players = []
+    # for player_class in [Warrior, Druid, Thief, Wizard, Priest]:
+    for player_class in [Warrior, Priest]:
 
-        proxy = class_()
-        if proxy.sym not in board.dead_players:
-            proxy.board = board
-            proxy_list.append(proxy)
+        player = player_class()
 
-    for prox in proxy_list:
-        prox.companions = proxy_list
+        if player.sym not in board.dead_players:
+            player.board = board
+            players.append(player)
 
-    return proxy_list
+    return players
 
 
 def game_loop():
@@ -47,7 +44,7 @@ def game_loop():
     while True:
 
         players = create_players(board)
-        enemies = create_enemies(Veloster, board)
+        enemies = create_enemies(board)
 
         livings = enemies + players
 
@@ -93,11 +90,15 @@ def livings_turn(board):
 
             living_turn_check(board, living)
 
-            if isinstance(living, Enemy):
+            if living in board.enemies:
                 enemy_turn(living, board)
 
-            else:
+            elif living in board.players:
                 player_turn(living, board)
+
+            else:
+                # ally turn
+                pass
 
     return True
 
@@ -174,8 +175,7 @@ def prompt_input(player, board):
         if action in player.inputs:
             return action
 
-        print("\nInvalid input, enter 'help' for input options")
-        input("\nPress 'Enter' to return.")
+        player.wrong_input_warning()
 
 
 def living_turn_check(board, living):

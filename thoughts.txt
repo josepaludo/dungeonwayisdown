@@ -3,24 +3,28 @@ Dungeon Way is Down
 Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
-TODO: 
-        *** must check if player is dead after every enemy damage ***
-        *** something is wrong with warrior swing axw ***
-        
+TODO:
+	*** make a minimum distance variable ***
+	*** check if dead function ***
+	*** reduce target max counter
+	*** enemy move checks which places get it closer to target, chose at
+	random, if no one, choses one at random(only here he can fall)
+	*** enemy move check if can move ***
+	*** make a clear checker functions function ***
+	*** check dead players?? ***
+        *** change player movement ***
         *** make a counter, every 5th level make a boss ***
-        
         *** make items you can iterract with ***
-        
-        *** what to do about the symbols?
+        *** chests have effects: gain life, lose life, gain movements, love
+        movements
+        *** make a txt with all info to help players, better than on IDE
+	*** make a countdown for dead players, if reaches 0, he can't be
+	revived
 
 Doing now:
-    - Do veloster after
-    - Refactor allies, enemies, players, livings
-    - board will have reference for eveything
-    
-    - board reviewed
-    - check enemy targets and movement
-    - only use board_blink
+	
+	- blessing
+	make a prompt for alive player function
 
 
 Enemies ideas:
@@ -30,39 +34,37 @@ Enemies ideas:
     - "o": orc enemy, medium speed, medium damage, high defense, melee
     - "g": goblin, high speed, casts bombs from afar, ranged
     - "y": troll enemy, slow, high damage, trows rocks from afar, ranged
-    
-    - "B" generic boss, must make specific bosses, like V, Ç, O, G 
 
 List of symbols:
 
     - #: wall
     - -: hole     
     - a:
-    - b:
+    - b: bear, druid summon
     - c: chest on the ground
-    - ç: snake enemy/ Ç snake boss
-    - d:
+    - ç: snake enemy/ Ç snake boss/ p poison
+    - d: drain life necro
     - e:
     - f: fire
-    - g: goblin enemy / G goblin boss
+    - g: goblin enemy / G goblin boss/ knife
     - h: heal
     - i: invulnerable
     - j:
     - k: knife
     - l: lightning
     - m:
-    - n:
+    - n: necromancer enemy/ N necro boss/ d drain life/ s summon
     - o: orc enemy/ Orc boss
-    - p:
+    - p: poison snake
     - q:
     - r: rock
-    - s:
+    - s: summon, necro
     - t: taunt
     - u:
-    - v: fast enemy/ V fast boss/ k knife
+    - v:
     - w: W Warrior/ x axe/ t taunt/ i invulnerable
     - x: warrios axe
-    - y: troll enemy / Y troll boss
+    - y: troll enemy / Y troll boss/ r rock
     - z:
 
 Player classes:
