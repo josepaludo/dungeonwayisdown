@@ -536,28 +536,7 @@ class Necro(Enemy):
             if not enemy.dead:
                 continue
 
-            self.do_reincarnate(enemy)
-
-            return
-
-    def do_reincarnate(self, enemy):
-
-        coords = self.get_urdl_coords(self.y, self.x, 1)
-
-        for coord in coords:
-
-            ycor, xcor = coord[0][0], coord[0][1]
-
-            if not self.board.board[ycor][xcor] == self.board.empty_square:
-                continue
-
-            self.board.board[ycor][xcor] = enemy.sym
-            enemy.dead = False
-            enemy.y, enemy.x = ycor, xcor
-            enemy.health = 15
-
-            message = f"{self.name} revived {enemy.name}."
-            self.board.add_log(message)
+            self.revive_living(enemy)
 
             return
 

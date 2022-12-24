@@ -58,11 +58,38 @@ class Player(Living):
         self.moves, self.moves_per_turn = 2, 2
         self.actions, self.actions_per_turn = 2, 2
 
+    def prompt_for_ally(self, question, ally_group=False):
+
+        alive_allies = [ally for ally in self.board.allies if not ally.dead]
+        ally_group = ally_group if ally_group else alive_allies
+
+        while True:
+
+            self.clear_screen()
+
+            print("Choose an ally:\n")
+            for ind, ally in enumerate(ally_group):
+                print(f"'{ind+1}' for {ally.name}.")
+            print("'q' to  quit.")
+
+            answer = input(f"\n{question} ")
+
+            if answer == 'q':
+                return
+
+            if not self.check_int_range(answer, 1, len(ally_group)):
+                continue
+
+            ally = ally_group[int(answer)-1]
+
+            return ally
+
     def jump_func(self):
 
-        for key, value in self.cards.items():
-            print(key, value)
-        input()
+        self.moves += 1
+
+        message = f"{self.name} jumped and can make one more move this turn"
+        self.board.add_log(message)
 
     def player_maintance(self):
 

@@ -22,6 +22,7 @@ class Living():
 
         self.invulnerable = False
         self.can_attack = True
+        self.revive_counter = 4
 
         self.board = None
 
@@ -161,6 +162,26 @@ class Living():
         else:
             self.my_cards.append(choice(self.strong_cards))
 
+    def revive_living(self, living):
+
+        coords = self.get_urdl_coords(self.y, self.x, 1)
+
+        for coord in coords:
+
+            ycor, xcor = coord[0][0], coord[0][1]
+
+            if not self.board.board[ycor][xcor] == self.board.empty_square:
+                continue
+
+            self.board.board[ycor][xcor] = living.sym
+            living.dead = False
+            living.y, living.x = ycor, xcor
+            living.health = 15
+
+            message = f"{self.name} revived {living.name}."
+            self.board.add_log(message)
+
+            return True
 
 class Enemy(Living):
 

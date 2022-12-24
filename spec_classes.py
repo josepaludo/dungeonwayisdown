@@ -224,31 +224,18 @@ class Priest(Player):
 
     def blessing(self):
 
-        alive_allies = [ally for ally in self.board.allies if not ally.dead]
+        question = "Which ally would you like to bless?"
 
-        while True:
+        ally = self.prompt_for_ally(question)
 
-            self.clear_screen()
-            print("Choose an ally:\n")
-            for ind, ally in enumerate(alive_allies):
-                print(f"'{ind+1}' for {ally.name}.")
-            print("'q' to  quit.")
+        if not ally:
+            return
 
-            answer = input("\nWhich ally would you like to bless? ")
+        self.apply_blessing(ally)
 
-            if answer == 'q':
-                return
+        return True
 
-            if not self.check_int_range(answer, 1, len(alive_allies)):
-                continue
-
-            self.apply_blessing(ally, alive_allies, answer)
-
-            return True
-
-    def apply_blessing(self, ally, alive_allies, answer):
-
-        ally = alive_allies[int(answer)-1]
+    def apply_blessing(self, ally):
 
         self.blessing_allies[ally] = self.blessing_turns
 
@@ -279,31 +266,18 @@ class Priest(Player):
 
     def protect(self):
 
-        alive_allies = [ally for ally in self.board.allies if not ally.dead]
+        question = "Which ally would you like to protect?"
 
-        while True:
+        ally = self.prompt_for_ally(question)
 
-            self.clear_screen()
-            print("Choose an ally:\n")
-            for ind, ally in enumerate(alive_allies):
-                print(f"'{ind+1}' for {ally.name}.")
-            print("'q' to  quit.")
+        if not ally:
+            return
 
-            answer = input("\nWhich ally would you like to protect? ")
+        self.apply_protect(ally)
 
-            if answer == 'q':
-                return
+        return True
 
-            if not self.check_int_range(answer, 1, len(alive_allies)):
-                continue
-
-            self.apply_protect(ally, alive_allies, answer)
-
-            return True
-
-    def apply_protect(self, ally, alive_allies, answer):
-
-        ally = alive_allies[int(answer)-1]
+    def apply_protect(self, ally):
 
         if self.do_protect not in self.board.living_turn_checker:
             self.board.living_turn_checker.append(self.do_protect)
@@ -328,16 +302,57 @@ class Priest(Player):
 
         return True
 
-
     def light_heal(self):
-        pass
+
+        question = "Which ally would you like to light heal?"
+        ally = self.prompt_for_ally(question)
+
+        if not ally:
+            return
+
+        ally.health += self.light_heal_heal
+        self.board.backup_board[ally.y][ally.x] = self.heal_sym
+
+        message = f"{self.name} healed {ally.name} for {self.light_heal_heal} health."
+        self.board.add_log(message)
+
+        return True
 
     def all_healed(self):
-        pass
+
+        message = "Do you want to heal all allies?\nEnter '1' for yes and 'q' for no:"
+        answer = self.yes_no_input(message)
+
+        if not answer:
+            return
+
+        message = f"{self.name} healed "
+
+        for ind, ally in enumerate(self.board.allies):
+            ally.health += self.all_healed_heal
+            message += f"{ally.name}{'.' if ind == len(self.board.allies)-1 else ', '}"
+
+        self.board.add_log(message)
+
+        return True
 
     def revive(self):
-        pass
 
+        dead_players = [player for player in self.board.players if players.dead and player.revive_counter > 0]
+
+        if len(dead_players) == 0:
+            self.clear_screen()
+            input("Not enough dead players.\n\nPress 'Enter' to continue.")
+            return
+
+        question = "Which ally do you want to revive?"
+        ally = self.prompt_for_ally(question, dead_players)
+
+        if not ally:
+            return
+
+        if self.revive_living(ally):
+            return True
 
 class Druid(Player):
 
