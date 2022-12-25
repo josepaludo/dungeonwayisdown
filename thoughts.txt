@@ -31,9 +31,9 @@ TODO:
 
 Doing now:
 
+    ally
+
 Druid:
-    - weak: root all enemies adjacent to an ally
-    - medium: root all enemies in place for 1 turn
     - medium: summon a boar or wolf
         - boar:
         - wolf:

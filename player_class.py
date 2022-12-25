@@ -11,14 +11,19 @@ class Ally(Living):
         self.player_or_enemy = 'Ally'
         self.board = board
 
-        self.append_to_board_allies()
+        self.target = None
+        self.target_counter = 0
+        self.max_target_counter = 5
 
-    def append_to_board_allies(self):
+        self.append_to_board()
 
-        if self in self.board.allies:
-            return
+    def append_to_board(self):
 
-        self.board.allies.append(self)
+        if self not in self.board.allies:
+            self.board.allies.append(self)
+
+        if self not in self.board.livings:
+            self.board.livings.append(self)
 
 
 class Player(Living):
