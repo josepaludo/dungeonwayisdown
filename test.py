@@ -1,8 +1,7 @@
-a = ["a", "b", "c"]
+a = [1, 2, 3, 4]
+b = 2
 
-b = ""
-
-for ind, x in enumerate(a):
-    b += f"{x}{'.' if ind == len(a)-1 else ', '}"
-
-print(b)
+if b not in a:
+    print("AAA")
+else:
+    print("VBB")

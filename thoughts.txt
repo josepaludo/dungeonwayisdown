@@ -4,6 +4,7 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
+    *** see if redo priest to include impare attack
     *** make ally turns
     *** fix targets if all alies are dead
     *** make revive counter checker on living turn

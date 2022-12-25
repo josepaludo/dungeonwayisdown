@@ -22,6 +22,7 @@ class Living():
 
         self.invulnerable = False
         self.can_attack = True
+        self.can_move = True
         self.revive_counter = 4
 
         self.board = None

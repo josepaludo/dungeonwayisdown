@@ -364,7 +364,7 @@ class Druid(Player):
         self.sym = "D"
         self.name = "Druid"
 
-        self.roots_sum = "z"
+        self.roots_sym = "z"
 
         self.boar_sym = "r"
         self.wolf_sym = "w"
@@ -388,22 +388,50 @@ class Druid(Player):
 
         self.cards["Enroot"] = {"func": self.enroot,
                                   "descr": enroot,
-                                  "level": "weak"}
+                                  "level": "medium"}
 
         self.cards["Summon Wild"] = {"func": self.summon_wild,
                                   "descr": summon_wild,
-                                  "level": "weak"}
+                                  "level": "medium"}
 
         self.cards["Summon Beast"] = {"func": self.summon_beast,
                                   "descr": summon_beast,
-                                  "level": "weak"}
+                                  "level": "strong"}
 
         self.cards["Ancient Shape"] = {"func": self.ancient_shape,
                                   "descr": ancient_shape,
-                                  "level": "weak"}
+                                  "level": "strong"}
 
     def root_protection(self):
-        pass
+
+        question = "Which ally would you like to protect with your roots?"
+
+        ally = self.prompt_for_ally(question)
+
+        if not ally:
+            return
+
+        self.do_root_protection(ally)
+
+        return True
+
+    def do_root_protection(self, ally):
+
+        around_coords = self.get_around_coords(ally.y, ally.x, 1)
+
+        for coord in around_coords:
+
+            target = self.check_coord(coord[0], coord[1])
+
+            if target == 'invalid':
+                continue
+
+            self.board.backup_board[coord.y][coord.x] = self.root_sym
+
+            if target not in self.board.enemies:
+                continue
+
+            target.can_move = False
 
     def enroot(self):
         pass
