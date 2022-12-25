@@ -362,8 +362,60 @@ class Druid(Player):
         super().__init__()
 
         self.sym = "D"
+        self.name = "Druid"
 
-        self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"}}
+        self.roots_sum = "z"
+
+        self.boar_sym = "r"
+        self.wolf_sym = "w"
+        self.tiger_sym = "t"
+        self.bear_sym = "b"
+
+        self.saber_tooth_tiger_sym = "T"
+        self.mammoth_sym = "M"
+
+        self.enroot_turns = 1
+
+        root_protection = f"Protects an ally, enrooting enemies around it for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
+        enroot = f"Enroots all enemies for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
+        summon_wild = "Summons an wild beast: a boar or a wolf."
+        summon_beast = "Summons an wild beast: a bear of a tiger."
+        ancient_shape = "Transforms into an ancient beast, a saber tooth tiger or a mammoth."
+
+        self.cards["Root Protection"] = {"func": self.root_protection,
+                                  "descr": root_protection,
+                                  "level": "weak"}
+
+        self.cards["Enroot"] = {"func": self.enroot,
+                                  "descr": enroot,
+                                  "level": "weak"}
+
+        self.cards["Summon Wild"] = {"func": self.summon_wild,
+                                  "descr": summon_wild,
+                                  "level": "weak"}
+
+        self.cards["Summon Beast"] = {"func": self.summon_beast,
+                                  "descr": summon_beast,
+                                  "level": "weak"}
+
+        self.cards["Ancient Shape"] = {"func": self.ancient_shape,
+                                  "descr": ancient_shape,
+                                  "level": "weak"}
+
+    def root_protection(self):
+        pass
+
+    def enroot(self):
+        pass
+
+    def summon_wild(self):
+        pass
+
+    def summon_beast(self):
+        pass
+
+    def ancient_shape(self):
+        pass
 
 
 class Wizard(Player):

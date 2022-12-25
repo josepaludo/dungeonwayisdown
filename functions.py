@@ -97,20 +97,24 @@ def livings_turn(board):
                 player_turn(living, board)
 
             else:
-                # ally turn
                 pass
+                ally_turn(ally, board)
 
     return True
 
 
+def ally_turn(ally, board):
+
+    ally.ally_maintance()
+    ally_move(ally, board)
+    ally_act(ally, board)
+    ally.empty_hand()
+
 def enemy_turn(enemy, board):
 
     enemy.enemy_maintance()
-
     enemy_move(enemy, board)
-
     enemy_act(enemy, board)
-
     enemy.empty_hand()
 
 
@@ -203,7 +207,7 @@ def all_players_died(board):
 def check_dead_players(board):
 
     for player in board.players:
-        if player.dead:
 
+        if player.dead:
             board.dead_players.append(player.sym)
 
