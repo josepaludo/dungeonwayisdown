@@ -58,6 +58,11 @@ class Player(Living):
         self.moves, self.moves_per_turn = 2, 2
         self.actions, self.actions_per_turn = 2, 2
 
+    def append_to_turn_checker(self, func):
+
+        if func not in self.board.living_turn_checker:
+            self.board.living_turn_checker.append(func)
+
     def prompt_for_ally(self, question, ally_group=False):
 
         alive_allies = [ally for ally in self.board.allies if not ally.dead]

@@ -364,7 +364,7 @@ class Druid(Player):
         self.sym = "D"
         self.name = "Druid"
 
-        self.roots_sym = "z"
+        self.root_sym = "z"
 
         self.boar_sym = "r"
         self.wolf_sym = "w"
@@ -376,14 +376,16 @@ class Druid(Player):
 
         self.enroot_turns = 1
 
-        root_protection = f"Protects an ally, enrooting enemies around it for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
+        self.enrooted = []
+
+        entangle = f"Protects an ally, enrooting enemies around it for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
         enroot = f"Enroots all enemies for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
         summon_wild = "Summons an wild beast: a boar or a wolf."
         summon_beast = "Summons an wild beast: a bear of a tiger."
         ancient_shape = "Transforms into an ancient beast, a saber tooth tiger or a mammoth."
 
-        self.cards["Root Protection"] = {"func": self.root_protection,
-                                  "descr": root_protection,
+        self.cards["Entangle"] = {"func": self.entangle,
+                                  "descr": entangle,
                                   "level": "weak"}
 
         self.cards["Enroot"] = {"func": self.enroot,
@@ -402,20 +404,23 @@ class Druid(Player):
                                   "descr": ancient_shape,
                                   "level": "strong"}
 
-    def root_protection(self):
+        self.init_cards()
+
+    def entangle(self):
 
         question = "Which ally would you like to protect with your roots?"
-
         ally = self.prompt_for_ally(question)
 
         if not ally:
             return
 
-        self.do_root_protection(ally)
+        self.do_entangle(ally)
+
+        self.append_to_turn_checker(self.disenroot)
 
         return True
 
-    def do_root_protection(self, ally):
+    def do_entangle(self, ally):
 
         around_coords = self.get_around_coords(ally.y, ally.x, 1)
 
@@ -426,15 +431,60 @@ class Druid(Player):
             if target == 'invalid':
                 continue
 
-            self.board.backup_board[coord.y][coord.x] = self.root_sym
+            self.board.backup_board[coord[0]][coord[1]] = self.root_sym
 
             if target not in self.board.enemies:
                 continue
 
+            message = f"{target.name} is entangled on {self.name}'s roots."
+            self.board.add_log(message)
+
+            self.enrooted.append(target)
             target.can_move = False
 
+    def disenroot(self, living):
+
+        if self != living:
+            return
+
+        for enemy in self.enrooted:
+            enemy.can_move = True
+
+        self.enrooted = []
+
+        message = f"Enrooted enemies freed themselves from {self.name}'s roots"
+        self.board.add_log(message)
+
+        return True
+
     def enroot(self):
-        pass
+
+        question = "Do you want to enroot all enemies? Enter '1' for yes or 'q' for no."
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        self.do_enroot()
+
+        self.append_to_turn_checker(self.disenroot)
+
+        message = f"All enemyes are entangled on {self.name}'s roots."
+        self.board.add_log(message)
+
+        return True
+
+    def do_enroot(self):
+
+        for enemy in self.board.enemies:
+
+            if enemy.dead:
+                continue
+
+            self.board.backup_board[enemy.y][enemy.x] = self.root_sym
+
+            enemy.can_move = False
+            self.enrooted.append(enemy)
 
     def summon_wild(self):
         pass

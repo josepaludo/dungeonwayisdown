@@ -4,16 +4,17 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
-    *** see if redo priest to include impare attack
-    *** make ally turns
-    *** fix targets if all alies are dead
-    *** make revive counter checker on living turn
+    *** make can move checker on enemy turn ***
+    *** see if redo priest to include impare attack ***
+    *** make ally turns ***
+    *** fix targets if all alies are dead ***
+    *** make revive counter checker on living turn ***
     *** use revivable counter counter on necro ***
     *** protect and ignore pain anull each other ***
-    *** erase all logs, make a dungeon maintance function
+    *** erase all logs, make a dungeon maintance function ***
 	*** make a minimum distance variable ***
 	*** check if dead function ***
-	*** reduce target max counter
+	*** reduce target max counter ***
 	*** enemy move checks which places get it closer to target, chose at
 	random, if no one, choses one at random(only here he can fall)
 	*** enemy move check if can move ***
