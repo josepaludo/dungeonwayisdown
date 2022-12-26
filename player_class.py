@@ -12,8 +12,17 @@ class Ally(Living):
         self.board = board
 
         self.target = None
-        self.target_counter = 0
         self.max_target_counter = 5
+        self.target_counter = self.max_target_counter
+
+        self.moves = 1
+        self.moves_per_turn = 1
+
+        self.actions = 1
+        self.actions_per_turn = 1
+
+        self.card_list = []
+        self.my_cards = []
 
         self.append_to_board()
 
