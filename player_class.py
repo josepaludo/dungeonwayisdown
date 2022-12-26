@@ -14,6 +14,7 @@ class Ally(Living):
         self.target = None
         self.max_target_counter = 5
         self.target_counter = self.max_target_counter
+        self.current_diff = None
 
         self.moves = 1
         self.moves_per_turn = 1
@@ -33,6 +34,10 @@ class Ally(Living):
 
         if self not in self.board.livings:
             self.board.livings.append(self)
+
+    def ally_move(self):
+
+        self.set_target(False)
 
 
 class Player(Living):

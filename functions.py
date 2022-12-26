@@ -112,7 +112,7 @@ def ally_turn(ally, board):
 
 def enemy_turn(enemy, board):
 
-    enemy.enemy_maintance()
+    enemy.living_maintance()
     enemy_move(enemy, board)
     enemy_act(enemy, board)
     enemy.empty_hand()

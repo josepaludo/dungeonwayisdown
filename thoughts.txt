@@ -31,7 +31,9 @@ TODO:
 
 Doing now:
 
-    ally
+   ally move, use set_target with argument false
+
+   ally move: set target, measure distance, move
 
 Druid:
     - medium: summon a boar or wolf
