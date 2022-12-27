@@ -14,6 +14,7 @@ class Living():
         self.heal_sym = 'h'
         self.invulnerable_sym = 'i'
         self.axe_sym = 'x'
+        self.claw_sym = 'c'
 
         self.health = 20
         self.dead = False
@@ -30,8 +31,11 @@ class Living():
 
         self.moves = 1
         self.moves_per_turn = 1
+        self.moves_changed_counter = 0
+
         self.actions = 1
         self.actions_per_turn = 1
+        self.actions_changed_counter = 0
 
         self.board = None
 
@@ -303,6 +307,36 @@ class Living():
 
         self.actions = max(self.actions, self.actions_per_turn)
         self.moves = max(self.moves, self.moves_per_turn)
+
+    def summon_enemy_ally(self, summon_class, is_enemy=True):
+
+        coords = self.get_urdl_coords(self.y, self.x, 1)
+
+        for coord in coords:
+
+            ycor, xcor = coord[0][0], coord[0][1]
+
+            if not self.board.board[ycor][xcor] == self.board.empty_square:
+                return
+
+            self.do_summon_enemy_ally(summon_class, ycor, xcor, is_enemy)
+
+            return
+
+    def do_summon_enemy_ally(self, summon_class, ycor, xcor, is_enemy):
+
+        summon = summon_class()
+        summon.y, summon.x = ycor, xcor
+        summon.board = self.board
+
+        self.board.board[ycor][xcor] = summon.sym
+        self.board.livings.append(summon)
+
+        group = self.board.enemies if is_enemy else self.board.allies
+        group.append(summon)
+
+        message = f"{self.name} summoned {summon.name}."
+        self.board.add_log(message)
 
 
 class Enemy(Living):

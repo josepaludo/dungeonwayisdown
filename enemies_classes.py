@@ -528,7 +528,7 @@ class Necro(Enemy):
     def reincarnate(self):
 
         chance = random()
-        if chance < 0.3:
+        if chance < 0.4:
             return
 
         for enemy in self.board.enemies:
@@ -542,25 +542,9 @@ class Necro(Enemy):
 
     def summon_orc(self):
 
-        coords = self.get_urdl_coords(self.y, self.x, 1)
-
-        for coord in coords:
-
-            ycor, xcor = coord[0][0], coord[0][1]
-
-            if not self.board.board[ycor][xcor] == self.board.empty_square:
-                continue
-
-            orc = Orc()
-            orc.y, orc.x = ycor, xcor
-            orc.board = self.board
-
-            self.board.board[ycor][xcor] = orc.sym
-            self.board.enemies.append(orc)
-            self.board.livings.append(orc)
-
-            message = f"{self.name} summoned {orc.name}."
-            self.board.add_log(message)
-
+        chance = random()
+        if chance < 0.3:
             return
+
+        self.summon_enemy_ally(Orc)
 

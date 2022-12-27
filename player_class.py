@@ -5,11 +5,10 @@ from living_classes import Living, Enemy
 
 class Ally(Living):
 
-    def __init__(self, board):
+    def __init__(self):
         super().__init__()
 
         self.player_or_enemy = 'Ally'
-        self.board = board
 
         self.target = None
         self.max_target_counter = 5
@@ -24,16 +23,6 @@ class Ally(Living):
 
         self.card_list = []
         self.my_cards = []
-
-        self.append_to_board()
-
-    def append_to_board(self):
-
-        if self not in self.board.allies:
-            self.board.allies.append(self)
-
-        if self not in self.board.livings:
-            self.board.livings.append(self)
 
     def ally_move(self):
 

@@ -1,7 +1,8 @@
 from random import randint, choice
 from time import sleep
 
-from spec_classes import Warrior, Druid, Thief, Wizard, Priest
+from spec_classes import Warrior, Thief, Wizard, Priest
+from druid_class import Druid
 from enemies_classes import Goblin, Snake, Troll, Necro
 from living_classes import Enemy
 from board_class import Board
@@ -86,60 +87,60 @@ def livings_turn(board):
             sleep(2)
             return
 
-        if not living.dead:
+        if living.dead:
+            continue
 
-            living_turn_check(board, living)
+        living_turn_check(board, living)
 
-            if living in board.enemies:
-                enemy_turn(living, board)
+        if living in board.enemies:
+            living_turn(living, board)
 
-            elif living in board.players:
-                player_turn(living, board)
+        elif living in board.players:
+            player_turn(living, board)
 
-            else:
-                pass
-                ally_turn(ally, board)
+        else:
+            living_turn(living, board)
 
     return True
 
 
-def ally_turn(ally, board):
+def living_turn(living, board):
 
-    ally.ally_maintance()
-    ally_move(ally, board)
-    ally_act(ally, board)
-    ally.empty_hand()
-
-def enemy_turn(enemy, board):
-
-    enemy.living_maintance()
-    enemy_move(enemy, board)
-    enemy_act(enemy, board)
-    enemy.empty_hand()
+    living.living_maintance()
+    living_move(living, board)
+    living_act(living, board)
+    living.empty_hand()
 
 
-def enemy_act(enemy, board):
+def living_act(living, board):
 
-    for card in enemy.my_cards:
+    for card in living.my_cards:
 
         board.make_copy()
-        enemy.cards[card]["func"]()
+        living.cards[card]["func"]()
         board.board_blink()
         board.empty_copy()
 
-    enemy.actions = 0
+    if living.actions_changed_counter > 0:
+        living.actions_changed_counter -= 1
 
+    else:
+        living.actions = living.actions_per_turn
 
-def enemy_move(enemy, board):
+def living_move(living, board):
 
-    for i in range(enemy.moves):
+    for i in range(living.moves):
 
         board.make_copy()
-        enemy.turn_move()
+        living.turn_move()
         board.board_blink()
         board.empty_copy()
 
-    enemy.moves = 0
+    if living.moves_changed_counter > 0:
+        living.moves_changed_counter -= 1
+
+    else:
+        living.moves = living.moves_per_turn
 
 
 def player_turn(player, board):

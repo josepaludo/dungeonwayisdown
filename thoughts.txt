@@ -4,6 +4,10 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
+
+    *** why boar begins turn on player turn as player and not as living?
+    *** how to living/enemy gain more actions ? ***
+        - problem solved on turns and on druid beasts, but must change on enemies
     *** make can move checker on enemy turn ***
     *** see if redo priest to include impare attack ***
     *** make ally turns ***
@@ -60,9 +64,9 @@ List of symbols:
 
     - #: wall
     - -: hole     
-    - a:
+    - a: board druid
     - b: bear, druid summon
-    - c: chest on the ground
+    - c: claw/ animal attack
     - ç: snake enemy/ Ç snake boss/ p poison
     - d: D ruid/ d drain life necro
     - e:
@@ -78,7 +82,7 @@ List of symbols:
     - o: orc enemy/ Orc boss
     - p: P priest/ poison snake
     - q:
-    - r: R rogue/ rock/ board, druid
+    - r: R rogue/ rock/
     - s: 
     - t: T druid saber tooth tiger/ t tiger/ t taunt
     - u:
