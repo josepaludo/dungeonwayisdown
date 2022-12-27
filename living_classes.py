@@ -411,6 +411,17 @@ class Living():
 
         target.check_if_dead(self)
 
+    def do_short_taunt(self):
+
+        for enemy in self.board.enemies:
+
+            enemy.target = self
+            enemy.target_counter = enemy.max_target_counter-self.short_taunt_duration-1
+            self.board.backup_board[enemy.y][enemy.x] = self.taunt_sym
+
+        message = f"{self.name} taunted each enemy for {self.short_taunt_duration} turns."
+        self.board.add_log(message)
+
 
 class Enemy(Living):
 

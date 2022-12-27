@@ -130,13 +130,15 @@ class Bear(Beast):
         self.claw_damage = 3
         self.bite_damage = 4
 
+        self.short_taunt_duration = 2
+
         self.cards["Rip and Bite"] = {"func": self.rip_and_bite,
                                       "level": "weak"}
 
         self.cards["Barkskin"] = {"func": self.barkskin,
                                   "level": "medium"}
 
-        self.cards["Short Taunt"] = {"func": self.short_taunt,
+        self.cards["Short Taunt"] = {"func": self.do_short_taunt,
                                       "level": "strong"}
 
         self.init_cards()

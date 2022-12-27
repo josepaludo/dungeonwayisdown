@@ -35,18 +35,11 @@ TODO:
 
 Doing now:
 
-   ally move, use set_target with argument false
-
-   ally move: set target, measure distance, move
-
 Druid:
-    - medium: summon a boar or wolf
-        - boar:
-        - wolf:
-    - strong: summon a bear or tiger
-        - bear:
-        - tiger
+
     - strong: transforms into a saber tooth tiger or into a mammoth
+        - prompt for transformation, do 2 functions: transform and reverse transformation.
+            -transforms: :w
         - saber tooth tiger:
         - mammoth:
 

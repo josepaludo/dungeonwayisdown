@@ -1,5 +1,15 @@
-for x in range(10):
+class A:
 
-    y = x % 2 != 0
+    def __init__(self):
 
-    print(y)
+        self.name = "Idiot"
+    def del_self(self):
+        del self
+
+a = A()
+
+a.del_self()
+
+print(a.name)
+
+
