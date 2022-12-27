@@ -4,9 +4,8 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
-
+    *** add turn limit to summons ***
     *** start using urdl damage, and around damage ***
-    *** why boar begins turn on player turn as player and not as living?
     *** how to living/enemy gain more actions ? ***
         - problem solved on turns and on druid beasts, but must change on enemies
     *** make can move checker on enemy turn ***
@@ -77,9 +76,9 @@ List of symbols:
     - r: R rogue/ rock/
     - s: 
     - t: T druid saber tooth tiger/ t tiger/ t taunt
-    - u:
+    - u: wolf druid
     - v:
-    - w: wold druid/ W Warrior/ x axe/ t taunt/ i invulnerable
+    - w: W Warrior/ x axe/ t taunt/ i invulnerable
     - x: warrios axe
     - y: troll enemy / Y troll boss/ r rock
     - z: Wizard/ druid roots

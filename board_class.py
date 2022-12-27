@@ -46,10 +46,10 @@ class Board:
 
     def livings_maintance(self, livings, enemies, allies, players):
 
-        self.livings = livings
-        self.enemies = enemies
-        self.allies = allies
-        self.players = players
+        self.livings += livings
+        self.enemies += enemies
+        self.allies += allies
+        self.players += players
 
     def clear_livings(self):
 
@@ -147,34 +147,50 @@ class Board:
             player.y = coord[1]
             self.board[player.y][player.x] = player.sym
 
-    def make_entrance(self, entry=None, entrance=True):
+    def make_entrance(self, entry=None, is_entrance=True):
 
-        if entrance:
+        start = self.entrance_start(is_entrance)
+        entry = entry if entry else self.entry
+        is_up_or_down = entry % 2 != 0
+
+        if is_up_or_down:
+            self.make_up_down_entrance(start, entry, is_entrance)
+        else:
+            self.make_left_right_entrance(start, entry, is_entrance)
+
+    def entrance_start(self, is_entrance):
+
+        if is_entrance:
             self.entrance_coords = []
             start = self.start
+
         else:
             start = randint(3, 12)
             self.start = start
             self.exit_coords = []
 
-        entry = entry if entry else self.entry
+        return start
 
-        if entry % 2 != 0:
-            y = 0 if entry == 1 else 19
-            for i in range(5):
-                x = start+i
-                self.board[y][x] = self.empty_square
+    def make_up_down_entrance(self, start, entry, is_entrance):
 
-                self.add_coords(x, y, entrance)
+        y = 0 if entry == 1 else 19
 
-        else:
-            x = 0 if entry == 4 else 19
-            for ind, line in enumerate(self.board):
-                if start <= ind < start+5:
-                    y = ind
-                    line[x] = self.empty_square
+        for i in range(5):
 
-                    self.add_coords(x, y, entrance)
+            x = start+i
+            self.board[y][x] = self.empty_square
+            self.add_coords(x, y, is_entrance)
+
+    def make_left_right_entrance(self, start, entry, is_entrance):
+
+        x = 0 if entry == 4 else 19
+
+        for ind, line in enumerate(self.board):
+
+            if start <= ind < start+5:
+                y = ind
+                line[x] = self.empty_square
+                self.add_coords(x, y, is_entrance)
 
     def add_coords(self, x, y, entrance=True):
 
@@ -207,7 +223,7 @@ class Board:
     def make_exit(self):
 
         self.exit = choice([x for x in [1, 2, 3, 4] if x != self.entry])
-        self.make_entrance(self.exit, entrance=False)
+        self.make_entrance(self.exit, is_entrance=False)
         self.next_entry = 1 if self.exit == 3 else 2 if self.exit == 4 else 3 if self.exit == 1 else 4
 
     def make_holes(self):

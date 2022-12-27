@@ -26,7 +26,6 @@ def create_enemies(board):
 def create_players(board):
 
     players = []
-    # for player_class in [Warrior, Druid, Thief, Wizard, Priest]:
     for player_class in [Warrior, Priest, Druid]:
 
         player = player_class()

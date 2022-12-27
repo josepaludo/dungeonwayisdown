@@ -376,12 +376,12 @@ class Living():
 
         target.check_if_dead(self)
 
-    def around_damage(self, sym, damage, weapon, is_enemy=True):
+    def around_damage(self, sym, damage, weapon, is_enemy=True, range_=1):
 
         if not self.can_attack:
             return
 
-        coords = self.get_around_coords(self.y, self.x, 1)
+        coords = self.get_around_coords(self.y, self.x, range_)
 
         for coord in coords:
 

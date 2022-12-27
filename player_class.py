@@ -15,18 +15,14 @@ class Ally(Living):
         self.target_counter = self.max_target_counter
         self.current_diff = None
 
-        self.moves = 1
         self.moves_per_turn = 1
+        self.moves = self.moves_per_turn
 
-        self.actions = 1
         self.actions_per_turn = 1
+        self.actions = self.actions_per_turn
 
         self.card_list = []
         self.my_cards = []
-
-    def ally_move(self):
-
-        self.set_target(False)
 
 
 class Player(Living):

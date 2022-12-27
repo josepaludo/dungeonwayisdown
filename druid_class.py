@@ -1,25 +1,67 @@
 from player_class import Player, Ally
 
-class Tiger(Ally):
+class Beast(Ally):
 
     def __init__(self):
         super().__init__()
 
-        self.sym = 't'
-        self.name = "Tiger"
+        self.bite_damage = 0
+        self.claw_damage = 0
         self.bite_name = "bite"
         self.rip_name = "claw"
+        self.attack_range = 1
+
+    def bite(self):
+
+        self.urdl_damage(self.claw_sym, self.bite_damage, self.bite_name, False, False)
+
+    def rip(self):
+
+        self.around_damage(self.claw_sym, self.claw_damage, self.rip_name, False, self.attack_range)
+
+    def rip_and_bite(self):
+
+        self.bite()
+        self.rip()
+
+    def wild_sprint(self):
+
+        self.moves = max(self.moves+1, self.moves_per_turn+1)
+        self.moves_changed_counter += 1
+
+    def wild_action(self):
+
+        self.actions = max(self.actions+1, self.actions_per_turn+1)
+        self.actions_changed_counter += 1
+
+    def wild_calling(self):
+
+        self.wild_sprint()
+        self.wild_action()
+
+        message = f"{self.name} echoes a wild call, getting faster and more active."
+        self.board.add_log(message)
+
+    def barkskin(self):
+
+        self.health += 5
+
+        message = f"{self.name} toughens its skin, becoming more resilient."
+        self.board.add_log(message)
+
+
+class Wolf(Beast):
+
+    def __init__(self):
+        super().__init__()
+
+        self.sym = 'u'
+        self.name = "Wolf"
 
         self.health = 15
 
-        self.moves_per_turn = 1
-        self.moves = self.moves_per_turn
-
-        self.actions_per_turn = 1
-        self.actions = self.actions_per_turn
-
-        self.claw_damage = "3"
-        self.bite_damage = "4"
+        self.claw_damage = 2
+        self.bite_damage = 3
 
         self.cards["Bite"] = {"func": self.bite,
                               "level": "weak"}
@@ -32,39 +74,24 @@ class Tiger(Ally):
 
         self.init_cards()
 
-    def bite(self):
 
-        self.urdl_damage(self.claw_sym, self.bite_damage, self.bite_name, False, False)
-
-    def rip(self):
-
-        self.around_damage(self.claw_sym, self.claw_damage, self.rip_name, False)
-
-    def rip_and_bite(self):
-
-        self.bite()
-        self.rip()
-
-class Boar(Ally):
+class Boar(Beast):
 
     def __init__(self):
         super().__init__()
 
         self.sym = 'a'
         self.name = "Boar"
-        self.tusk_name = "tusk"
+        self.rip_name = "tusk"
 
         self.health = 10
 
         self.moves_per_turn = 2
         self.moves = self.moves_per_turn
 
-        self.actions_per_turn = 1
-        self.actions = self.actions_per_turn
+        self.claw_damage = 3
 
-        self.tusk_damage = 3
-
-        self.cards['Tusk Strike'] = {"func": self.tusk_strike,
+        self.cards['Tusk Strike'] = {"func": self.rip,
                                      "level": "weak"}
 
         self.cards['Boar Sprint'] = {"func": self.boar_sprint,
@@ -75,19 +102,79 @@ class Boar(Ally):
 
         self.init_cards()
 
-    def tusk_strike(self):
-
-        self.around_damage(self.claw_sym, self.tusk_damage, self.tusk_name, False)
-
     def boar_sprint(self):
 
-        self.moves = max(self.moves+1, self.moves_per_turn+1)
-        self.moves_changed_counter += 1
+        self.wild_sprint()
+
+        message = f"{self.name} echoes a wild call, getting faster."
+        self.board.add_log(message)
 
     def boar_enrage(self):
 
-        self.actions = max(self.actions+1, self.actions_per_turn+1)
-        self.actions_changed_counter += 1
+        self.wild_action()
+
+        message = f"{self.name} echoes a wild call, geting more active."
+        self.board.add_log(message)
+
+
+class Bear(Beast):
+
+    def __init__(self):
+        super().__init__()
+
+        self.sym = "b"
+        self.name = "Bear"
+
+        self.health = 20
+
+        self.claw_damage = 3
+        self.bite_damage = 4
+
+        self.cards["Rip and Bite"] = {"func": self.rip_and_bite,
+                                      "level": "weak"}
+
+        self.cards["Barkskin"] = {"func": self.barkskin,
+                                  "level": "medium"}
+
+        self.cards["Short Taunt"] = {"func": self.short_taunt,
+                                      "level": "strong"}
+
+        self.init_cards()
+
+
+class Tiger(Beast):
+
+    def __init__(self):
+        super().__init__()
+
+        self.sym = "t"
+        self.name = "Tiger"
+
+        self.claw_damage = 3
+        self.bite_damage = 4
+
+        self.frenzy_range_increase = 1
+        self.frenzy_damage_increase = 1
+
+        self.cards["Rip and Bite"] = {"func": self.rip_and_bite,
+                                      "level": "weak"}
+
+        self.cards["Best Frenzy"] = {"func": self.beast_frenzy,
+                                     "level": "medium"}
+
+        self.cards["Wild Calling"] = {"func": self.wild_calling,
+                                      "level": "strong"}
+
+    def beast_frenzy(self):
+
+        self.attack_range += self.frenzy_range_increase
+        self.claw_damage += self.frenzy_damage_increase
+
+        self.rip()
+
+        self.attack_range -= self.frenzy_range_increase
+        self.claw_damage -= self.frenzy_damage_increase
+
 
 class Druid(Player):
 
@@ -219,26 +306,26 @@ class Druid(Player):
             enemy.can_move = False
             self.enrooted.append(enemy)
 
-    def summon_wild(self):
+    def summon_wild(self, class_1=Boar, class_2=Wolf, name_1="Boar", name_2="Wolf"):
 
-        summon = self.prompt_for_wild()
+        summon = self.prompt_for_wild(name_1, name_2)
 
         if not summon:
             return
 
-        wild_class = (Boar, Tiger)[summon-1]
+        wild_class = (class_1, class_2)[summon-1]
 
         self.summon_enemy_ally(wild_class, is_enemy=False)
 
         return True
 
-    def prompt_for_wild(self):
+    def prompt_for_wild(self, wild_1, wild_2):
 
         while True:
 
             self.clear_screen()
 
-            print("Wild beasts you can summon:\n\n'1' for Boar.\n'2' for Tiger.\n'q' to quit.")
+            print(f"Wild beasts you can summon:\n\n'1' for {wild_1}.\n'2' for {wild_2}.\n'q' to quit.")
             answer = input("\nWhich one would you like to summon?")
 
             if answer == 'q':
@@ -250,7 +337,8 @@ class Druid(Player):
             self.wrong_input_warning()
 
     def summon_beast(self):
-        pass
+
+        self.summon_wild(Bear, Tiger, "Bear", "Tiger")
 
     def ancient_shape(self):
         pass
