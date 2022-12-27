@@ -5,6 +5,7 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 TODO:
 
+    *** start using urdl damage, and around damage ***
     *** why boar begins turn on player turn as player and not as living?
     *** how to living/enemy gain more actions ? ***
         - problem solved on turns and on druid beasts, but must change on enemies
@@ -50,15 +51,6 @@ Druid:
         - saber tooth tiger:
         - mammoth:
 
-
-
-Enemies ideas:
-    - "v": fast enemy, changes target quickly, but doesn't do much damage, melee
-    - sting, does 1 damage and 2 damage every turn for the next 3 turns
-    - "ç": snake enemy, walks slowly, but does high dagamge, and over time damage, melee
-    - "o": orc enemy, medium speed, medium damage, high defense, melee
-    - "g": goblin, high speed, casts bombs from afar, ranged
-    - "y": troll enemy, slow, high damage, trows rocks from afar, ranged
 
 List of symbols:
 

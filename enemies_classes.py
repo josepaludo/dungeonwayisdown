@@ -59,7 +59,7 @@ class Goblin(Enemy):
 
         self.target.health -= self.knife_damage
 
-        message = f"{self.name} dealt {self.knife_damage} to {target.name} with his knife."
+        message = f"{self.name} dealt {self.knife_damage} damage to {target.name} with his knife."
         self.board.add_log(message)
 
         target.check_if_dead(self)

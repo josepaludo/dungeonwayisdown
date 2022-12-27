@@ -338,6 +338,79 @@ class Living():
         message = f"{self.name} summoned {summon.name}."
         self.board.add_log(message)
 
+    def urdl_damage(self, sym, damage, weapon, is_enemy=True, only_one=True):
+
+        if not self.can_attack:
+            return
+
+        coords = self.get_urdl_coords(self.y, self.x, 1)
+
+        for coord in coords:
+
+            ycor, xcor = coord[0][0], coord[0][1]
+            target = self.check_coord(ycor, xcor)
+            target_group = self.board.allies if is_enemy else self.board.enemies
+
+            if target not in target_group:
+                continue
+
+            self.do_urdl_damage(sym, damage, weapon, target, ycor, xcor)
+
+            if only_one:
+                return
+
+    def do_urdl_damage(self, sym, damage, weapon, target, ycor, xcor):
+
+        if target.dead:
+            return
+
+        self.board.backup_board[ycor][xcor] = sym
+
+        if target.invulnerable:
+            return
+
+        self.target.health -= damage
+
+        message = f"{self.name} dealt {damage} damage to {target.name} with its {weapon}."
+        self.board.add_log(message)
+
+        target.check_if_dead(self)
+
+    def around_damage(self, sym, damage, weapon, is_enemy=True):
+
+        if not self.can_attack:
+            return
+
+        coords = self.get_around_coords(self.y, self.x, 1)
+
+        for coord in coords:
+
+            ycor, xcor = coord[0], coord[1]
+            target = self.check_coord(ycor, xcor)
+            target_group = self.board.allies if is_enemy else self.board.enemies
+
+            self.do_around_damage(sym, damage, weapon, ycor, xcor, target, target_group)
+
+    def do_around_damage(self, sym, damage, weapon, ycor, xcor, target, target_group):
+
+        if target == 'invalid':
+            return
+
+        self.board.backup_board[ycor][xcor] = sym
+
+        if target not in target_group:
+            return
+
+        if target.invulnerable or target.dead:
+            return
+
+        target.health -= damage
+
+        message = f"{self.name} dealt {damage} damage to {target.name} with its {weapon}."
+        self.board.add_log(message)
+
+        target.check_if_dead(self)
+
 
 class Enemy(Living):
 

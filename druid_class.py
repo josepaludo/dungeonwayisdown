@@ -5,7 +5,45 @@ class Tiger(Ally):
     def __init__(self):
         super().__init__()
 
-        pass
+        self.sym = 't'
+        self.name = "Tiger"
+        self.bite_name = "bite"
+        self.rip_name = "claw"
+
+        self.health = 15
+
+        self.moves_per_turn = 1
+        self.moves = self.moves_per_turn
+
+        self.actions_per_turn = 1
+        self.actions = self.actions_per_turn
+
+        self.claw_damage = "3"
+        self.bite_damage = "4"
+
+        self.cards["Bite"] = {"func": self.bite,
+                              "level": "weak"}
+
+        self.cards["Rip"] = {"func": self.rip,
+                             "level": "medium"}
+
+        self.cards["Rip and Bite"] = {"func": self.rip_and_bite,
+                                      "level": "strong"}
+
+        self.init_cards()
+
+    def bite(self):
+
+        self.urdl_damage(self.claw_sym, self.bite_damage, self.bite_name, False, False)
+
+    def rip(self):
+
+        self.around_damage(self.claw_sym, self.claw_damage, self.rip_name, False)
+
+    def rip_and_bite(self):
+
+        self.bite()
+        self.rip()
 
 class Boar(Ally):
 
@@ -14,13 +52,15 @@ class Boar(Ally):
 
         self.sym = 'a'
         self.name = "Boar"
+        self.tusk_name = "tusk"
 
         self.health = 10
 
-        self.moves = 2
         self.moves_per_turn = 2
+        self.moves = self.moves_per_turn
 
         self.actions_per_turn = 1
+        self.actions = self.actions_per_turn
 
         self.tusk_damage = 3
 
@@ -37,34 +77,7 @@ class Boar(Ally):
 
     def tusk_strike(self):
 
-        coords = self.get_around_coords(self.y, self.x, 1)
-
-        for coord in coords:
-
-            ycor, xcor = coord[0], coord[1]
-
-            target = self.check_coord(ycor, xcor)
-
-            self.do_tusk_strike(ycor, xcor, target)
-
-    def do_tusk_strike(self, ycor, xcor, target):
-
-        if target == 'invalid':
-            return
-
-        self.board.backup_board[ycor][xcor] = self.claw_sym
-
-        if target in self.board.enemies:
-
-            if target.dead:
-                return
-
-            target.health -= self.tusk_damage
-
-            message = f"{self.name} hit {target.name} with its tusks, dealing {self.tusk_damage}."
-            self.board.add_log(message)
-
-            target.check_if_dead(self)
+        self.around_damage(self.claw_sym, self.tusk_damage, self.tusk_name, False)
 
     def boar_sprint(self):
 
