@@ -59,21 +59,33 @@ class Board:
     def add_log(self, log):
 
         self.log.append(log)
+
         if len(self.log) > 10:
             self.log.pop(0)
 
     def level_finished(self):
 
         for player in self.players:
-            if not player.dead:
-                if (player.x, player.y) not in self.exit_coords:
-                    return
+
+            if player.dead:
+                continue
+
+            if (player.x, player.y) not in self.exit_coords:
+                return
 
         for enemy in self.enemies:
+
             if not enemy.dead:
                 return
 
         return True
+
+    def check_dead_players(self):
+
+        for player in self.players:
+
+            if player.dead:
+                self.dead_players.append(player.sym)
 
     def make_copy(self):
 
@@ -86,8 +98,9 @@ class Board:
     def reset_board(self):
 
         self.board = [[self.empty_square for i in range(20)] for j in range(20)]
-        self.board[0] = [self.wall_square for i in range(20)]
-        self.board[-1] = [self.wall_square for i in range(20)]
+
+        self.board[0] = [self.wall_square for i in self.board[0]]
+        self.board[-1] = [self.wall_square for i in self.board[-1]]
 
         for line in self.board:
             line[0] = line[-1] = self.wall_square
@@ -129,9 +142,14 @@ class Board:
 
     def set_enemy_xy(self, enemy):
 
+        is_entry_up_down = self.entry % 2 != 0
+        is_entry_right = self.entry == 2
+        is_entry_down = self.entry == 3
+
+        xrange = (1, 18) if is_entry_up_down else (1, 9) if is_entry_right else (10, 18)
+        yrange = (1, 18) if not is_entry_up_down else (1, 9) if is_entry_down else (10, 18)
+
         while True:
-            xrange = (1, 18) if self.entry % 2 != 0 else (1, 9) if self.entry == 2 else (10, 18)
-            yrange = (1, 18) if self.entry % 2 == 0 else (1, 9) if self.entry == 3 else (10, 18)
 
             xpos = randint(xrange[0], xrange[1])
             ypos = randint(yrange[0], yrange[1])

@@ -51,16 +51,21 @@ class Player(Living):
                        "end": {"func": "",
                                "descr": "Finish your turn."}}
 
-        jump = "Gains an extra move."
-
-        self.cards = {"Jump": {"func": self.jump_func,
-                               "descr": jump,
-                               "level": "weak"}}
-
         self.max_health = 20
         self.max_hand_size, self.draws_per_turn = 6, 2
         self.moves, self.moves_per_turn = 2, 2
         self.actions, self.actions_per_turn = 2, 2
+
+        self.cards = {}
+
+        self.get_player_cards()
+
+    def get_player_cards(self):
+
+        jump = "Gains an extra move."
+        self.cards["Jump"] = {"func": self.jump_func,
+                              "descr": jump,
+                              "level": "weak"}
 
     def append_to_turn_checker(self, func):
 
@@ -244,10 +249,6 @@ class Player(Living):
             input("\nPress 'Enter' to return")
             return
 
-        self.clear_screen()
-
-        self.print_options()
-
         action = self.action_input()
 
         if not action:
@@ -294,8 +295,10 @@ class Player(Living):
 
         while True:
 
-            act_input = input("\nWhich card do you want to use? ")
+            self.clear_screen()
+            self.print_options()
 
+            act_input = input("\nWhich card do you want to use? ")
             if act_input == 'q':
                 return
 

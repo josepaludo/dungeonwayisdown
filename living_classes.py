@@ -124,7 +124,8 @@ class Living():
 
     def wrong_input_warning(self):
 
-        print("\nInvalid input. Try again.")
+        self.clear_screen()
+        print("Invalid input. Try again.")
         input("\nPress 'Enter' to continue.")
 
     def yes_no_input(self, input_message, yes_par='1', no_par='q'):
@@ -275,9 +276,9 @@ class Living():
         self.y, self.x = direc[0], direc[1]
         self.board.board[self.y][self.x] = self.sym
 
-    def turn_move(self):
+    def turn_move(self, is_enemy):
 
-        self.set_target()
+        self.set_target(is_enemy)
         self.measure_distance()
 
         if not self.try_to_approach():

@@ -32,16 +32,13 @@ TODO:
         *** make a txt with all info to help players, better than on IDE
 	*** make a countdown for dead players, if reaches 0, he can't be
 	revived
+    *** board log consists of 3 lists, current turn, the last and the before the last
 
 Doing now:
 
 Druid:
 
-    - strong: transforms into a saber tooth tiger or into a mammoth
-        - prompt for transformation, do 2 functions: transform and reverse transformation.
-            -transforms: :w
-        - saber tooth tiger:
-        - mammoth:
+must make mammoth and saber tooth tiger cards
 
 
 List of symbols:

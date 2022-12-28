@@ -1,5 +1,6 @@
 from player_class import Player, Ally
 
+
 class Beast(Ally):
 
     def __init__(self):
@@ -13,11 +14,13 @@ class Beast(Ally):
 
     def bite(self):
 
-        self.urdl_damage(self.claw_sym, self.bite_damage, self.bite_name, False, False)
+        self.urdl_damage(self.claw_sym, self.bite_damage, \
+                         self.bite_name, False, False)
 
     def rip(self):
 
-        self.around_damage(self.claw_sym, self.claw_damage, self.rip_name, False, self.attack_range)
+        self.around_damage(self.claw_sym, self.claw_damage, \
+                           self.rip_name, False, self.attack_range)
 
     def rip_and_bite(self):
 
@@ -39,7 +42,8 @@ class Beast(Ally):
         self.wild_sprint()
         self.wild_action()
 
-        message = f"{self.name} echoes a wild call, getting faster and more active."
+        message = f"{self.name} echoes a wild call, "\
+                   "getting faster and more active."
         self.board.add_log(message)
 
     def barkskin(self):
@@ -187,46 +191,75 @@ class Druid(Player):
         self.name = "Druid"
 
         self.root_sym = "z"
-
-        self.boar_sym = "r"
-        self.wolf_sym = "w"
-        self.tiger_sym = "t"
-        self.bear_sym = "b"
-
         self.saber_tooth_tiger_sym = "T"
         self.mammoth_sym = "M"
+        self.druid_sym = "D"
 
         self.enroot_turns = 1
-
         self.enrooted = []
 
-        entangle = f"Protects an ally, enrooting enemies around it for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
-        enroot = f"Enroots all enemies for {self.enroot_turns} turn{'.' if self.enroot_turns == 1 else 's.'}"
-        summon_wild = "Summons an wild beast: a boar or a wolf."
-        summon_beast = "Summons an wild beast: a bear of a tiger."
-        ancient_shape = "Transforms into an ancient beast, a saber tooth tiger or a mammoth."
+        self.mammoth_health = 35
+        self.saber_tooth_tiger_health = 25
+        self.druid_health = 20
+
+        self.mammoth_moves_per_turn = 1
+        self.saber_tooth_tiger_moves_per_turn = 2
+        self.druid_moves_per_turn = 1
+
+        self.mammoth_name = "Mammoth"
+        self.saber_tooth_tiger_name = "Saber Tooth Tiger"
+        self.druid_name = "Druid"
+
+        self.reverse_transformation_card = "Reverse Transformation"
+        self.reverse_descr = "Transforms back into your regular form."
+        self.reverse_info = {"func": self.reverse_transformation,
+                             "descr": self.reverse_descr,
+                             "level": None}
+
+        self.entangle_descr = f"Protects an ally, enrooting enemies around it "\
+                              f"for {self.enroot_turns} turn"\
+                              f"{'.' if self.enroot_turns == 1 else 's.'}"
+
+        self.enroot_descr = f"Enroots all enemies for {self.enroot_turns} turn"\
+                            f"{'.' if self.enroot_turns == 1 else 's.'}"
+
+        self.summon_wild_descr = "Summons an wild beast: a boar or a wolf."
+        self.summon_beast_descr = "Summons an wild beast: a bear of a tiger."
+        self.ancient_shape_descr = "Transforms into an ancient beast, "\
+                                   "a saber tooth tiger or a mammoth."
+
+        self.get_druid_cards()
+
+    def get_druid_cards(self):
+
+        self.cards, self.my_cards = {}, []
+
+        self.get_player_cards()
+        self.init_druid_cards()
+        self.init_cards()
+
+    def init_druid_cards(self):
 
         self.cards["Entangle"] = {"func": self.entangle,
-                                  "descr": entangle,
+                                  "descr": self.entangle_descr,
                                   "level": "weak"}
 
         self.cards["Enroot"] = {"func": self.enroot,
-                                  "descr": enroot,
+                                  "descr": self.enroot_descr,
                                   "level": "medium"}
 
         self.cards["Summon Wild"] = {"func": self.summon_wild,
-                                  "descr": summon_wild,
+                                  "descr": self.summon_wild_descr,
                                   "level": "medium"}
 
         self.cards["Summon Beast"] = {"func": self.summon_beast,
-                                  "descr": summon_beast,
+                                  "descr": self.summon_beast_descr,
                                   "level": "strong"}
 
         self.cards["Ancient Shape"] = {"func": self.ancient_shape,
-                                  "descr": ancient_shape,
+                                  "descr": self.ancient_shape_descr,
                                   "level": "strong"}
 
-        self.init_cards()
 
     def entangle(self):
 
@@ -281,7 +314,8 @@ class Druid(Player):
 
     def enroot(self):
 
-        question = "Do you want to enroot all enemies? Enter '1' for yes or 'q' for no."
+        question = "Do you want to enroot all enemies? "\
+                   "Enter '1' for yes or 'q' for no."
         go_on = self.yes_no_input(question)
 
         if not go_on:
@@ -308,7 +342,8 @@ class Druid(Player):
             enemy.can_move = False
             self.enrooted.append(enemy)
 
-    def summon_wild(self, class_1=Boar, class_2=Wolf, name_1="Boar", name_2="Wolf"):
+    def summon_wild(self, class_1=Boar, class_2=Wolf,
+                    name_1="Boar", name_2="Wolf"):
 
         summon = self.prompt_for_wild(name_1, name_2)
 
@@ -321,14 +356,20 @@ class Druid(Player):
 
         return True
 
-    def prompt_for_wild(self, wild_1, wild_2):
+    def prompt_for_wild(self, wild_1, wild_2, presentation=None, question=None):
+
+        presentation = presentation if presentation \
+                       else "Wild beasts you can summon"
+        question = question if question \
+                   else "Which one would you like to summon"
 
         while True:
 
             self.clear_screen()
 
-            print(f"Wild beasts you can summon:\n\n'1' for {wild_1}.\n'2' for {wild_2}.\n'q' to quit.")
-            answer = input("\nWhich one would you like to summon?")
+            print(f"{presentation}:\n\n'1' for {wild_1}.\n"\
+                  f"'2' for {wild_2}.\n'q' to quit.")
+            answer = input(f"\n{question}?")
 
             if answer == 'q':
                 return
@@ -340,7 +381,91 @@ class Druid(Player):
 
     def summon_beast(self):
 
-        self.summon_wild(Bear, Tiger, "Bear", "Tiger")
+        if self.summon_wild(Bear, Tiger, "Bear", "Tiger"):
+            return True
 
     def ancient_shape(self):
-        pass
+
+        presentation = "Ancient beasts"
+        question = "Wich one would you like to transform into"
+        ancient_beasts = "Saber Tooth Tiger", "Mammoth"
+
+        answer = self.prompt_for_wild(ancient_beasts[0], ancient_beasts[1], \
+                                      presentation, question)
+
+        if not answer:
+            return
+
+        if answer == 1:
+            info = self.get_saber_tooth_tiger_info()
+        else:
+            info = self.get_mammoth_info()
+
+        self.transform(info)
+
+        return True
+
+    def transform(self, info):
+
+        sym, health, moves_per_turn, name, get_cards = info
+
+        self.sym = sym
+        self.health = health
+        self.moves_per_turn = moves_per_turn
+        self.name = name
+        get_cards()
+
+        self.board.board[self.y][self.x] = self.sym
+
+    def get_druid_info(self):
+
+        return self.druid_sym, self.druid_health, self.druid_moves_per_turn, \
+               self.druid_name, self.get_druid_cards
+
+    def get_mammoth_info(self):
+
+        return self.mammoth_sym, self.mammoth_health, \
+               self.mammoth_moves_per_turn, self.mammoth_name, \
+               self.get_mammoth_cards
+
+    def get_saber_tooth_tiger_info(self):
+
+        return self.saber_tooth_tiger_sym, self.saber_tooth_tiger_health, \
+               self.saber_tooth_tiger_moves_per_turn, \
+               self.saber_tooth_tiger_name, self.get_saber_tooth_tiger_cards
+
+    def get_saber_tooth_tiger_cards(self):
+
+        self.cards, self.my_cards = {}, []
+
+        # cards here
+
+        self.init_cards()
+
+        self.get_reverse_transformation_card()
+
+        for i in range(2):
+            self.get_turn_cards()
+
+    def get_mammoth_cards(self):
+
+        self.cards, self.my_cards = {}, []
+
+        # cards here
+
+        self.init_cards()
+
+        self.get_reverse_transformation_card()
+
+        for i in range(2):
+            self.get_turn_cards()
+
+    def get_reverse_transformation_card(self):
+
+        self.cards[reverse_transformation_card] = self.reverse_info
+        self.my_cards.append(self.reverse_transformation_card)
+
+    def reverse_transformation(self):
+
+        info = self.get_druid_info()
+        self.transform(info)

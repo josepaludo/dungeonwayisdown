@@ -8,6 +8,48 @@ from living_classes import Enemy
 from board_class import Board
 
 
+def game_loop():
+
+    board = Board()
+
+    while True:
+
+        board_maintance(board)
+
+        go_on = dungeon_loop(board)
+
+        if not go_on:
+            break
+
+        board_clean_up(board)
+
+
+def board_maintance(board):
+
+    players = create_players(board)
+    enemies = create_enemies(board)
+
+    livings = enemies + players
+
+    board.livings_maintance(livings, enemies, players, players)
+    board.place_things()
+
+
+def create_players(board):
+
+    players = []
+
+    for player_class in [Warrior, Priest, Druid]:
+
+        player = player_class()
+
+        if player.sym not in board.dead_players:
+            player.board = board
+            players.append(player)
+
+    return players
+
+
 def create_enemies(board):
 
     enemies = []
@@ -23,60 +65,29 @@ def create_enemies(board):
     return enemies
 
 
-def create_players(board):
-
-    players = []
-    for player_class in [Warrior, Priest, Druid]:
-
-        player = player_class()
-
-        if player.sym not in board.dead_players:
-            player.board = board
-            players.append(player)
-
-    return players
-
-
-def game_loop():
-
-    board = Board()
-
-    while True:
-
-        players = create_players(board)
-        enemies = create_enemies(board)
-
-        livings = enemies + players
-
-        board.livings_maintance(livings, enemies, players, players)
-        board.place_things()
-
-        go_on = dungeon_loop(board)
-
-        if not go_on:
-            break
-
-        check_dead_players(board, players)
-
-        board.clear_livings()
-
-
 def dungeon_loop(board):
 
     while True:
 
-        dungeon_loop_check(board)
-
         if all_players_died(board):
             return
 
-        go_on = livings_turn(board)
+        go_on = livings_turns(board)
 
         if not go_on:
             return True
 
 
-def livings_turn(board):
+def all_players_died(board):
+
+    for player in board.players:
+        if not player.dead:
+            return False
+
+    return True
+
+
+def livings_turns(board):
 
     for living in board.livings:
 
@@ -89,51 +100,50 @@ def livings_turn(board):
         if living.dead:
             continue
 
-        living_turn_check(board, living)
+        living_turn_check(living)
 
-        if living in board.enemies:
-            living_turn(living, board)
-
-        elif living in board.players:
-            player_turn(living, board)
-
-        else:
-            living_turn(living, board)
+        do_turn(living)
 
     return True
 
 
-def living_turn(living, board):
+def living_turn_check(living):
+
+    for func in living.board.living_turn_checker:
+
+        remove_ = func(living)
+        if remove_:
+            living.board.living_turn_checker.remove(func)
+
+
+def do_turn(living):
+
+    if living in living.board.enemies:
+        living_turn(living, True)
+
+    elif living in living.board.players:
+        player_turn(living)
+
+    else:
+        living_turn(living, False)
+
+
+def living_turn(living, is_enemy):
 
     living.living_maintance()
-    living_move(living, board)
-    living_act(living, board)
+    living_move(living, is_enemy)
+    living_act(living)
     living.empty_hand()
 
 
-def living_act(living, board):
-
-    for card in living.my_cards:
-
-        board.make_copy()
-        living.cards[card]["func"]()
-        board.board_blink()
-        board.empty_copy()
-
-    if living.actions_changed_counter > 0:
-        living.actions_changed_counter -= 1
-
-    else:
-        living.actions = living.actions_per_turn
-
-def living_move(living, board):
+def living_move(living, is_enemy):
 
     for i in range(living.moves):
 
-        board.make_copy()
-        living.turn_move()
-        board.board_blink()
-        board.empty_copy()
+        living.board.make_copy()
+        living.turn_move(is_enemy)
+        living.board.board_blink()
+        living.board.empty_copy()
 
     if living.moves_changed_counter > 0:
         living.moves_changed_counter -= 1
@@ -142,7 +152,23 @@ def living_move(living, board):
         living.moves = living.moves_per_turn
 
 
-def player_turn(player, board):
+def living_act(living):
+
+    for card in living.my_cards:
+
+        living.board.make_copy()
+        living.cards[card]["func"]()
+        living.board.board_blink()
+        living.board.empty_copy()
+
+    if living.actions_changed_counter > 0:
+        living.actions_changed_counter -= 1
+
+    else:
+        living.actions = living.actions_per_turn
+
+
+def player_turn(player):
 
     player.player_maintance()
 
@@ -153,7 +179,7 @@ def player_turn(player, board):
         if player.dead:
             return
 
-        valid_input = prompt_input(player, board)
+        valid_input = prompt_input(player)
 
         if not valid_input:
             return
@@ -164,14 +190,14 @@ def player_turn(player, board):
             input("\nPress 'Enter' to return.")
 
 
-def prompt_input(player, board):
+def prompt_input(player):
 
     while True:
 
-        board.print_board()
+        player.board.print_board()
         print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\nMoves left: {player.moves}.\n")
 
-        action = input("What do you want to do? ")
+        action = input("What do you want to do? ('help' for options) ")
 
         if action == "end":
             return
@@ -182,32 +208,8 @@ def prompt_input(player, board):
         player.wrong_input_warning()
 
 
-def living_turn_check(board, living):
+def board_clean_up(board):
 
-    for func in board.living_turn_checker:
-
-        remove_ = func(living)
-        if remove_:
-            board.living_turn_checker.remove(func)
-
-
-def dungeon_loop_check(board):
-    pass
-
-
-def all_players_died(board):
-
-    for player in board.players:
-        if not player.dead:
-            return False
-
-    return True
-
-
-def check_dead_players(board):
-
-    for player in board.players:
-
-        if player.dead:
-            board.dead_players.append(player.sym)
+    board.clear_livings()
+    board.check_dead_players()
 
