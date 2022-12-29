@@ -2,8 +2,6 @@ from random import random
 
 from player_class import Player
 
-# self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"},
-
 
 class Warrior(Player):
 
@@ -19,7 +17,8 @@ class Warrior(Player):
         self.axe_damage = 5
 
         swing_axe = "Swings your axe hiting a single enemy."
-        short_taunt = f"Taunts each enemy for {self.short_taunt_duration} turn{'s' if self.short_taunt_duration > 1 else ''}."
+        short_taunt = f"Taunts each enemy for {self.short_taunt_duration} "\
+                      f"turn{'s' if self.short_taunt_duration > 1 else ''}."
         avoid_pain = "Tries to ignore all damage until your next turn"
         taunt = "Taunts each enemy."
         ignore_pain = "Ignores all damage until your next turn."
@@ -60,7 +59,8 @@ class Warrior(Player):
             if (enemy.y, enemy.x) == (target[0], target[1]) and not enemy.dead:
                 enemy.health -= self.axe_damage
 
-                message = f"{self.name} dealt {self.axe_damage} damage to {enemy.name} with his axe."
+                message = f"{self.name} dealt {self.axe_damage} damage to "\
+                          f"{enemy.name} with his axe."
                 self.board.add_log(message)
 
                 enemy.check_if_dead(self.name)
@@ -71,8 +71,8 @@ class Warrior(Player):
 
     def taunt(self):
 
-        input_message = "To taunt each oponent, enter '1'. To cancel, enter 'q': "
-        go_on = self.yes_no_input(input_message)
+        message = "To taunt each oponent, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(message)
 
         if not go_on:
             return
@@ -90,8 +90,9 @@ class Warrior(Player):
 
     def short_taunt(self):
 
-        input_message = f"To taunt each oponent for {self.short_taunt_duration} turns, enter '1'. To cancel, enter 'q': "
-        go_on = self.yes_no_input(input_message)
+        message = f"To taunt each oponent for {self.short_taunt_duration} "\
+                  f"turns, enter '1'. To cancel, enter 'q': "
+        go_on = self.yes_no_input(message)
 
         if not go_on:
             return
@@ -114,8 +115,9 @@ class Warrior(Player):
 
     def ignore_pain(self):
 
-        input_message = "To ignore pain until next turn, enter '1'. To cancel, enter 'q': "
-        go_on = self.yes_no_input(input_message)
+        message = "To ignore pain until your next turn, enter '1'. "\
+                  "To cancel, enter 'q': "
+        go_on = self.yes_no_input(message)
 
         if not go_on:
             return
@@ -148,7 +150,8 @@ class Warrior(Player):
 
     def avoid_pain(self):
 
-        input_message = "To avoid damage until your next turn, enter '1'. To cancel, enter 'q': "
+        input_message = "To avoid damage until your next turn, enter '1'. "\
+                        "To cancel, enter 'q': "
         go_on = self.yes_no_input(input_message)
 
         if not go_on:
@@ -187,11 +190,13 @@ class Priest(Player):
         self.all_healed_heal = 3
         self.revive_turns = 3
 
-        blessing = f'Heals an ally for {self.blessing_heal} for {self.blessing_turns}.'
+        blessing = f'Heals an ally for {self.blessing_heal} "\
+                   f'for {self.blessing_turns}.'
         protect = 'Make an ally invulnerable for 1 turn.'
         light_heal = f'Heals an ally for {self.light_heal_heal}.'
         all_healed = f'Heals each ally for {self.all_healed_heal}.'
-        revive = f"Revive a dead player if not alive for {self.revive_turns} turns."
+        revive = f"Revive a dead player if not alive "\
+                 f"for {self.revive_turns} turns."
 
         self.cards["Blessing"] = {"func": self.blessing,
                                   "descr": blessing,
@@ -254,7 +259,8 @@ class Priest(Player):
         self.blessing_allies[living] -= 1
         living.health += self.blessing_heal
 
-        message = f'{self.name} healed {living.name} for {self.blessing_heal} with blessing.'
+        message = f'{self.name} healed {living.name} for '\
+                  f'{self.blessing_heal} with blessing.'
         self.board.add_log(message)
 
     def protect(self):
@@ -307,14 +313,16 @@ class Priest(Player):
         ally.health += self.light_heal_heal
         self.board.backup_board[ally.y][ally.x] = self.heal_sym
 
-        message = f"{self.name} healed {ally.name} for {self.light_heal_heal} health."
+        message = f"{self.name} healed {ally.name} for "\
+                  f"{self.light_heal_heal} health."
         self.board.add_log(message)
 
         return True
 
     def all_healed(self):
 
-        message = "Do you want to heal all allies?\nEnter '1' for yes and 'q' for no:"
+        message = "Do you want to heal all allies?\n"\
+                  "Enter '1' for yes and 'q' for no:"
         answer = self.yes_no_input(message)
 
         if not answer:
@@ -325,7 +333,8 @@ class Priest(Player):
         for ind, ally in enumerate(self.board.allies):
             ally.health += self.all_healed_heal
             self.board.backup_board[ally.y][ally.x] = self.heal_sym
-            message += f"{ally.name}{'.' if ind == len(self.board.allies)-1 else ', '}"
+            message += f"{ally.name}"\
+                       f"{'.' if ind == len(self.board.allies)-1 else ', '}"
 
         self.board.add_log(message)
 
@@ -333,7 +342,8 @@ class Priest(Player):
 
     def revive(self):
 
-        dead_players = [player for player in self.board.players if players.dead and player.revive_counter > 0]
+        dead_players = [player for player in self.board.players \
+                        if players.dead and player.revive_counter > 0]
 
         if len(dead_players) == 0:
             self.clear_screen()
