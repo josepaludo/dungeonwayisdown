@@ -57,7 +57,7 @@ class Warrior(Player):
 
         for enemy in self.board.enemies:
 
-            if ((enemy.y, enemy.x) == (target[0], target[1])) and not enemy.dead:
+            if (enemy.y, enemy.x) == (target[0], target[1]) and not enemy.dead:
                 enemy.health -= self.axe_damage
 
                 message = f"{self.name} dealt {self.axe_damage} damage to {enemy.name} with his axe."

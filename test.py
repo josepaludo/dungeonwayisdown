@@ -1,8 +1,4 @@
-a = "aaaa"
-b = "aaaaaaaaaaaaaaaaaa"
-c = "aaaaaaaaaaaaaaaaaaaaaaaaa"
-d = f"{a}"\
-f"{b}"\
-    f"{c}"
-
-print(d)
+a = "eu quero # hoje"
+a = a.split("#")
+a = a[0]+"cachaça"+a[1]
+print(a)

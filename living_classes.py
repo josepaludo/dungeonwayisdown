@@ -96,7 +96,8 @@ class Living():
         while True:
 
             self.clear_screen()
-            print("Directions:\n\n'1' for up.\n'2' for right.\n'3' for down.\n'4' for left.\n\n'q' to quit.")
+            print("Directions:\n\n'1' for up.\n'2' for right.\n"\
+                  "'3' for down.\n'4' for left.\n\n'q' to quit.")
 
             direction = input("\nEnter chosen direction: ")
 
@@ -423,6 +424,12 @@ class Living():
         message = f"{self.name} taunted each enemy for {self.short_taunt_duration} turns."
         self.board.add_log(message)
 
+    def barkskin(self):
+
+        self.health += self.barkskin_health
+
+        message = f"{self.name} toughens its skin, becoming more resilient."
+        self.board.add_log(message)
 
 class Enemy(Living):
 

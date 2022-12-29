@@ -46,13 +46,6 @@ class Beast(Ally):
                    "getting faster and more active."
         self.board.add_log(message)
 
-    def barkskin(self):
-
-        self.health += 5
-
-        message = f"{self.name} toughens its skin, becoming more resilient."
-        self.board.add_log(message)
-
 
 class Wolf(Beast):
 
@@ -136,6 +129,8 @@ class Bear(Beast):
 
         self.short_taunt_duration = 2
 
+        self.barkskin_health = 5
+
         self.cards["Rip and Bite"] = {"func": self.rip_and_bite,
                                       "level": "weak"}
 
@@ -195,6 +190,9 @@ class Druid(Player):
         self.mammoth_sym = "M"
         self.druid_sym = "D"
 
+        self.mm_damage_sym = "p"
+        self.stt_damage_sym = "p"
+
         self.enroot_turns = 1
         self.enrooted = []
 
@@ -206,14 +204,25 @@ class Druid(Player):
         self.saber_tooth_tiger_moves_per_turn = 2
         self.druid_moves_per_turn = 1
 
+        self.stt_bite_damage = 5
+        self.stt_rip_damage = 4
+        self.stt_wild_call_amount = 2
+
+        self.mm_tusk_damage = 5
+        self.mm_trunk_damage = 4
+        self.mm_trunk_reach = 2
+        self.mm_tusk_reach = 2
+
+        self.short_taunt_duration = 2
+        self.barkskin_health = 10
+
         self.mammoth_name = "Mammoth"
         self.saber_tooth_tiger_name = "Saber Tooth Tiger"
         self.druid_name = "Druid"
 
         self.reverse_transformation_card = "Reverse Transformation"
-        self.reverse_descr = "Transforms back into your regular form."
         self.reverse_info = {"func": self.reverse_transformation,
-                             "descr": self.reverse_descr,
+                             "descr": "Transforms back into your regular form."
                              "level": None}
 
         self.entangle_descr = f"Protects an ally, enrooting enemies around it "\
@@ -227,6 +236,13 @@ class Druid(Player):
         self.summon_beast_descr = "Summons an wild beast: a bear of a tiger."
         self.ancient_shape_descr = "Transforms into an ancient beast, "\
                                    "a saber tooth tiger or a mammoth."
+
+        self.stt_bite_descr = f"Bites an enemy, dealing {self.stt_bite_damage}"
+        self.stt_rip_descr = f"Rips all enemies around you, "\
+                             f"dealing {self.stt_rip_damage}"
+        self.stt_wild_call_descr = f"Echoes a wild call, gaining "\
+                                   f"{self.stt_wild_call_amount} more "\
+                                   f"movements, actions and cards"
 
         self.get_druid_cards()
 
@@ -390,7 +406,7 @@ class Druid(Player):
         question = "Wich one would you like to transform into"
         ancient_beasts = "Saber Tooth Tiger", "Mammoth"
 
-        answer = self.prompt_for_wild(ancient_beasts[0], ancient_beasts[1], \
+        answer = self.prompt_for_wild(ancient_beasts[0], ancient_beasts[1],
                                       presentation, question)
 
         if not answer:
@@ -438,7 +454,17 @@ class Druid(Player):
 
         self.cards, self.my_cards = {}, []
 
-        # cards here
+        self.cards["Bite"] = {"func": self.stt_bite,
+                              "descr": self.stt_bite_descr,
+                              "level": "weak"}
+
+        self.cards["Rip"] = {"func": self.stt_rip,
+                             "descr": self.stt_rip_descr,
+                             "level": "medium"}
+
+        self.cards["Wild Call"] = {"func": self.stt_wild_call,
+                                   "descr": self.stt_wild_call_descr,
+                                   "level": "strong"}
 
         self.init_cards()
 
@@ -451,7 +477,17 @@ class Druid(Player):
 
         self.cards, self.my_cards = {}, []
 
-        # cards here
+        self.cards["Tusk Bash"] = {"func": self.mm_tusk_bash,
+                                   "descr": self.mm_tusk_bash_descr,
+                                   "level": "weak"}
+
+        self.cards["Trunk Swipe"] = {"func": self.mm_trunk_swipe,
+                                     "descr": self.mm_trunk_swipe_descr,
+                                     "level": "medium"}
+
+        self.cards["Ancient Taunt"] = {"func": self.mm_ancient_taunt,
+                                       "descr": self.mm_ancient_taunt_descr,
+                                       "level": "strong"}
 
         self.init_cards()
 
@@ -469,3 +505,44 @@ class Druid(Player):
 
         info = self.get_druid_info()
         self.transform(info)
+
+    def stt_bite(self):
+        pass
+
+    def stt_rip(self):
+        pass
+
+    def stt_wild_call(self):
+        pass
+
+    def mm_tusk_bash(self):
+
+        message = f"{self.name} dealt {self.mm_tusk_damage} to # with its tusks"
+
+        if self.players_urdl_damage(self.tusk_reach, self.mm_damage_sym,
+                                    self.mm_tusk_damage, message):
+            return True
+
+    def mm_trunk_swipe(self):
+
+        message = f"{self.name} dealt {self.mm_trunk_damage} "\
+                  f"to # with its trunk"
+        question = "Do you wish to perform the mammoth's swipe?"
+
+        if self.player_around_damage(self.mm_trunk_reach, self.mm_damage_sym,
+                                     self.mm_trunk_damage, message, question):
+            return True
+
+    def mm_ancient_taunt(self):
+
+        question = "Are you sure you want to taunt enemies and "\
+                   "become more resilient? '1' for yes, 'q' for no."
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        self.do_short_taunt()
+        self.barkskin()
+
+        return True

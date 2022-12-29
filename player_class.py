@@ -37,9 +37,10 @@ class Player(Living):
                        "act": {"func": self.action,
                                "descr": "Use one of your cards."},
                        "log": {"func": self.show_log,
-                               "descr": "Shows a log of last important events."},
+                               "descr": "Shows log of last important events."},
                        "cards": {"func": self.show_cards,
-                                 "descr": "Shows every card you have and how it works."},
+                                 "descr": "Shows every card you have "\
+                                 "and how it works."},
                        "status": {"func": self.show_status,
                                   "descr": "Shows status of each player."},
                        "icons": {"func": self.show_icons,
@@ -122,9 +123,11 @@ class Player(Living):
 
             if x == 0:
                 self.clear_screen()
-                print(f"\nYou've reached the maximum hand size of {self.max_hand_size}.")
-                print(f"{excess_cards} random card{'s ' if excess_cards>1 else ' '}will be discarted.\n")
-                input(f"Press 'Enter' to return.")
+                print(f"\nYou've reached the maximum hand size of "\
+                      f"{self.max_hand_size}.")
+                print(f"{excess_cards} random card"\
+                      f"{'s ' if excess_cards > 1 else ' '}will be discarted.")
+                input(f"\nPress 'Enter' to return.")
                 self.clear_screen()
 
             random_card_index = randint(0, len(self.my_cards)-1)
@@ -151,7 +154,8 @@ class Player(Living):
         for living in self.board.livings:
             print(f"{living.sym}: {living.name}, {living.player_or_enemy}.")
 
-        print(f"{self.board.wall_square}: Wall.\n{self.board.hole_square}: Hole.")
+        print(f"{self.board.wall_square}: Wall."
+        print(f"{self.board.hole_square}: Hole.")
 
     def show_status(self):
 
@@ -169,7 +173,8 @@ class Player(Living):
         self.clear_screen()
 
         for card in set(self.my_cards):
-            print(f"\nCard name: {card}.\nDescription: {self.cards[card]['descr']}")
+            print(f"\nCard name: {card}.\n"\
+                  f"Description: {self.cards[card]['descr']}")
 
     def show_log(self):
 
@@ -208,7 +213,8 @@ class Player(Living):
 
     def prompt_for_direction(self):
 
-        di = input("Which direction?\n'1' for up\n'2' for right\n'3' for down\n'4' for left\n'q' for quit\n: ")
+        di = input("Which direction?\n'1' for up\n'2' for right\n"\
+                   "'3' for down\n'4' for left\n'q' for quit\n: ")
 
         if di == 'q':
             return 'q'
@@ -222,9 +228,11 @@ class Player(Living):
             pass
         else:
 
-            if 0 < di < 5:
-                if to == self.board.empty_square or to == self.board.hole_square:
-                    return (ycor, xcor)
+            if not (0 < di < 5):
+                return
+
+            if to in [self.board.empty_square, self.board.hole_square]:
+                return (ycor, xcor)
 
     def make_movement(self, ycor, xcor):
 
@@ -307,4 +315,55 @@ class Player(Living):
                 return test
 
             self.wrong_input_warning()
+
+    def player_urdl_damage(self, reach, sym, damage, message):
+
+        valid_direction = self.prompt_direction()
+
+        if not valid_direction:
+            return
+
+        coords = get_urdl_coords(self.y, self.x, reach)[valid_direction-1]
+
+        for coord in coords:
+
+            self.do_player_damage(coord, sym, target, damage, message)
+
+        return True
+
+    def player_around_damage(self, reach, sym, damage, message, question):
+
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        coords = self.get_around_coords(self.y, self.x, reach)
+
+        for coord in coords:
+
+            self.do_player_damage(coord, sym, damage, message)
+
+        return True
+
+    def do_player_damage(self, coord, sym, damage, message):
+
+        ycor, xcor = coord[0], coord[1]
+        target = self.check_coord(coord, ycor, xcor)
+
+        if target == "invalid":
+            return
+
+        self.backup_board[ycor][xcor] = sym
+
+        if target not in self.board.enemies:
+            return
+
+        target.health -= damage
+
+        message = message.split("#")
+        message = message[0] + target.name + message[1]
+        self.board.add_log(message)
+
+        target.check_if_dead(self)
 

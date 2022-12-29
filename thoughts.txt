@@ -4,6 +4,7 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
+    *** fix check_if_dead func
     *** add turn limit to summons ***
     *** start using urdl damage, and around damage ***
     *** how to living/enemy gain more actions ? ***
@@ -39,6 +40,14 @@ Doing now:
 Druid:
 
 must make mammoth and saber tooth tiger cards
+    saber tooth tiger:
+        bite: gains 1 move and bite
+        Rip : do around damage range 2
+        wild call: gains 2 move,2 action and 2 card
+    mammoth:
+        trunk swipe
+        tusk bash
+        taunt and barkskin
 
 
 List of symbols:
