@@ -195,7 +195,8 @@ def prompt_input(player):
     while True:
 
         player.board.print_board()
-        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\nMoves left: {player.moves}.\n")
+        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"\
+              f"Moves left: {player.moves}.\n")
 
         action = input("What do you want to do? ('help' for options) ")
 

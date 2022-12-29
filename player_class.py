@@ -154,7 +154,7 @@ class Player(Living):
         for living in self.board.livings:
             print(f"{living.sym}: {living.name}, {living.player_or_enemy}.")
 
-        print(f"{self.board.wall_square}: Wall."
+        print(f"{self.board.wall_square}: Wall.")
         print(f"{self.board.hole_square}: Hole.")
 
     def show_status(self):
@@ -318,16 +318,17 @@ class Player(Living):
 
     def player_urdl_damage(self, reach, sym, damage, message):
 
-        valid_direction = self.prompt_direction()
+        valid_side= self.prompt_direction()
 
-        if not valid_direction:
+        if not valid_side:
             return
 
-        coords = get_urdl_coords(self.y, self.x, reach)[valid_direction-1]
+        directions = self.get_urdl_coords(self.y, self.x, reach)[valid_side-1]
 
-        for coord in coords:
+        for direction in directions:
+            for coord in direction:
 
-            self.do_player_damage(coord, sym, target, damage, message)
+                self.do_player_damage(coord, sym, target, damage, message)
 
         return True
 

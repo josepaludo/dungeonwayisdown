@@ -11,7 +11,6 @@ class Warrior(Player):
         self.sym = "W"
         self.name = "Warrior"
         self.weapon_sym = self.axe_sym
-        self.taunt_sym = "t"
         self.ignore_sym = "i"
         self.short_taunt_duration = 3
         self.axe_damage = 5
@@ -190,7 +189,7 @@ class Priest(Player):
         self.all_healed_heal = 3
         self.revive_turns = 3
 
-        blessing = f'Heals an ally for {self.blessing_heal} "\
+        blessing = f'Heals an ally for {self.blessing_heal} '\
                    f'for {self.blessing_turns}.'
         protect = 'Make an ally invulnerable for 1 turn.'
         light_heal = f'Heals an ally for {self.light_heal_heal}.'

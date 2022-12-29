@@ -166,6 +166,8 @@ class Tiger(Beast):
         self.cards["Wild Calling"] = {"func": self.wild_calling,
                                       "level": "strong"}
 
+        self.init_cards()
+
     def beast_frenzy(self):
 
         self.attack_range += self.frenzy_range_increase
@@ -204,8 +206,11 @@ class Druid(Player):
         self.saber_tooth_tiger_moves_per_turn = 2
         self.druid_moves_per_turn = 1
 
-        self.stt_bite_damage = 5
+        self.stt_bite_damage = 3
+        self.stt_bite_reach = 2
+        self.stt_bite_amount = 3
         self.stt_rip_damage = 4
+        self.stt_rip_reach = 2
         self.stt_wild_call_amount = 2
 
         self.mm_tusk_damage = 5
@@ -222,7 +227,7 @@ class Druid(Player):
 
         self.reverse_transformation_card = "Reverse Transformation"
         self.reverse_info = {"func": self.reverse_transformation,
-                             "descr": "Transforms back into your regular form."
+                             "descr": "Transforms back into your regular form.",
                              "level": None}
 
         self.entangle_descr = f"Protects an ally, enrooting enemies around it "\
@@ -243,6 +248,12 @@ class Druid(Player):
         self.stt_wild_call_descr = f"Echoes a wild call, gaining "\
                                    f"{self.stt_wild_call_amount} more "\
                                    f"movements, actions and cards"
+
+        self.mm_trunk_swipe_descr = f"Swipes your trunk, deaking "\
+                                    f"{self.mm_trunk_damage} damage."
+        self.mm_tusk_bash_descr = f"Bash enemies in front of you, dealing "\
+                                  f"{self.mm_tusk_damage} damage."
+        self.mm_ancient_taunt_descr = "Taunts enemies and toughens your skin."
 
         self.get_druid_cards()
 
@@ -419,8 +430,6 @@ class Druid(Player):
 
         self.transform(info)
 
-        return True
-
     def transform(self, info):
 
         sym, health, moves_per_turn, name, get_cards = info
@@ -432,6 +441,9 @@ class Druid(Player):
         get_cards()
 
         self.board.board[self.y][self.x] = self.sym
+
+        self.actions -= 1
+        self.board.board_blink()
 
     def get_druid_info(self):
 
@@ -498,7 +510,7 @@ class Druid(Player):
 
     def get_reverse_transformation_card(self):
 
-        self.cards[reverse_transformation_card] = self.reverse_info
+        self.cards[self.reverse_transformation_card] = self.reverse_info
         self.my_cards.append(self.reverse_transformation_card)
 
     def reverse_transformation(self):
@@ -507,17 +519,58 @@ class Druid(Player):
         self.transform(info)
 
     def stt_bite(self):
-        pass
+
+        question = f"Do you wish to bite your enemies "\
+                   f"{self.stt_bite_amount} times?"
+
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        message = f"{self.name} dealt {self.stt_bite_damage} damage "\
+                  f"to # with its bite."
+
+        for i in range(self.bite_amount):
+            self.players_urdl_damage(self.stt_bite_reach, self.stt_damage_sym,
+                                     self.stt_bite_damage, message)
+
+        return True
 
     def stt_rip(self):
-        pass
+
+        message = f"{self.name} dealth {self.stt_rip_damage} damage"\
+                  f"to # with its claws."
+        question = "Do you wish to rip your enemies with your claws?"
+
+        if self.player_around_damage(self.stt_rip_reach, self.stt_damage_sym,
+                                     self.stt_rip_damage, message, question):
+            return True
 
     def stt_wild_call(self):
-        pass
+
+        question = "Do you wish to echo a will call, "\
+                   "getting faster and more active?"
+
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        for i in range(self.stt_wild_call_amount):
+            self.moves += 1
+            self.actions += 1
+            self.get_turn_cards()
+
+        x = self.stt_wild_call_amount
+        message = f"{self.name} echoes a wild call, gaining {x} moves, "\
+                  f"{x} actions and {x} cards."
+        self.board.add_log(message)
 
     def mm_tusk_bash(self):
 
-        message = f"{self.name} dealt {self.mm_tusk_damage} to # with its tusks"
+        message = f"{self.name} dealt {self.mm_tusk_damage} damage "\
+                  f"to # with its tusks."
 
         if self.players_urdl_damage(self.tusk_reach, self.mm_damage_sym,
                                     self.mm_tusk_damage, message):
@@ -525,8 +578,8 @@ class Druid(Player):
 
     def mm_trunk_swipe(self):
 
-        message = f"{self.name} dealt {self.mm_trunk_damage} "\
-                  f"to # with its trunk"
+        message = f"{self.name} dealt {self.mm_trunk_damage} damage"\
+                  f"to # with its trunk."
         question = "Do you wish to perform the mammoth's swipe?"
 
         if self.player_around_damage(self.mm_trunk_reach, self.mm_damage_sym,
@@ -546,3 +599,4 @@ class Druid(Player):
         self.barkskin()
 
         return True
+

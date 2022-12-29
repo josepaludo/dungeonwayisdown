@@ -15,6 +15,7 @@ class Living():
         self.invulnerable_sym = 'i'
         self.axe_sym = 'x'
         self.claw_sym = 'c'
+        self.taunt_sym = 't'
 
         self.health = 20
         self.dead = False
@@ -168,12 +169,14 @@ class Living():
 
         chance = random()
 
-        if chance == 0:
+        no_cards, weak, medium = -1, -1, -1
+
+        if chance == no_cards:
             message = f"{self.name} couldn't draw a card."
             self.board.add_log(message)
-        elif chance < 0.5:
+        elif chance < weak:
             self.my_cards.append(choice(self.weak_cards))
-        elif chance < 0.9:
+        elif chance < medium:
             self.my_cards.append(choice(self.medium_cards))
         else:
             self.my_cards.append(choice(self.strong_cards))
@@ -319,7 +322,7 @@ class Living():
             ycor, xcor = coord[0][0], coord[0][1]
 
             if not self.board.board[ycor][xcor] == self.board.empty_square:
-                return
+                continue
 
             self.do_summon_enemy_ally(summon_class, ycor, xcor, is_enemy)
 
