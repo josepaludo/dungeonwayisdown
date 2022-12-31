@@ -181,10 +181,18 @@ class Player(Living):
     def show_log(self):
 
         self.clear_screen()
-        print("Log of last events:\n")
+        print("Log of last events:")
 
-        for log in self.board.log:
-            print(log)
+        for ind, log in enumerate(reversed(self.board.log)):
+
+            turn = 'Current turn' if ind == 0 else 'Last turn' if ind == 1 \
+                   else 'The turn before'
+            print(f"\n{turn}:\n")
+
+            for entry in log:
+                print(f"    {entry}")
+
+        print()
 
     def move(self):
 
@@ -320,7 +328,7 @@ class Player(Living):
 
     def player_urdl_damage(self, reach, sym, damage, message):
 
-        valid_side= self.prompt_direction()
+        valid_side = self.prompt_direction()
 
         if not valid_side:
             return
@@ -334,7 +342,8 @@ class Player(Living):
 
         return True
 
-    def player_around_damage(self, reach, sym, damage, message, question):
+    def player_around_damage(self, reach, sym, damage, message, question,
+                             func=None, arg=None):
 
         go_on = self.yes_no_input(question)
 
@@ -345,11 +354,12 @@ class Player(Living):
 
         for coord in coords:
 
-            self.do_player_damage(coord, sym, damage, message)
+            self.do_player_damage(coord, sym, damage, message, func, arg)
 
         return True
 
-    def do_player_damage(self, coord, sym, damage, message):
+    def do_player_damage(self, coord, sym, damage, message,
+                         func=None, arg=None):
 
         ycor, xcor = coord[0], coord[1]
         target = self.check_coord(ycor, xcor)
@@ -363,6 +373,9 @@ class Player(Living):
             return
 
         target.health -= damage
+
+        if func:
+            func(target, arg)
 
         message = message.split("#")
         message = message[0] + target.name + message[1]
@@ -399,4 +412,16 @@ class Player(Living):
             for coord in coords:
 
                 self.do_player_damage(coord, sym, damage, message)
+
+    def fill_line_until_hit(self, direction, sym, damage, message):
+
+        for coord in direction:
+
+            if self.check_coord(coord[0], coord[1]) == 'invalid':
+                return
+
+            target = self.do_player_damage(coord, sym, damage, message)
+
+            if target:
+                return target
 

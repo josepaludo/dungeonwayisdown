@@ -365,8 +365,15 @@ class Rogue(Player):
         super().__init__()
 
         self.sym = "R"
+        self.name = "Rogue"
 
         self.health = 15
+
+        self.throw_range = 4
+        self.knife_damage = 3
+        self.arrow_damage = 4
+
+        self.fade_out_turns = 4
 
         self.enemies_hit = []
 
@@ -399,38 +406,138 @@ class Rogue(Player):
                                       "descr": blades_dance,
                                       "level": "strong"}
 
-        def empty_targets(self, living):
+        self.init_cards()
 
-            if living != self:
-                return
+    def fade_out(self):
 
-            self.enemies_hit = []
+        question = "Do you wish to fade out, becoming invisible? "\
+                   "Enter '1' for yes or 'q' for no."
+        go_on = self.yes_no_input(question)
 
+        if not go_on:
+            return
+
+        self.can_be_target = False
+
+        self.append_to_turn_checker(self.fade_out_check)
+
+        message = f"{self.name} faded out and became invisible."
+        self.board.add_log(message)
+
+        return True
+
+    def fade_out_check(self, living):
+
+        if self != living:
+            return
+
+        self.fade_out_turns -= 1
+
+        if fade_out_turns == 0:
             return True
 
-        def check_multi_target(self, target, card):
+    def empty_targets(self, living):
 
-            if target in self.enemies_hit:
-                return
+        if living != self:
+            return
 
-            self.enemies_hit.append(target)
-            self.append_to_turn_checker(empty_targets)
-            self.my_cards.append(card)
-            self.actions += 1
+        self.enemies_hit = []
 
-        def knife_throw(self):
+        return True
 
-            coords = self.get_urdl_coords_all(self.y, self.x)
+    def check_multi_target(self, target, card):
 
-        def arrow_shot(self):
-            return True
+        if target in self.enemies_hit:
+            return
 
-        def knives_out(self):
-            return True
+        self.enemies_hit.append(target)
+        self.append_to_turn_checker(self.empty_targets)
+        self.my_cards.append(card)
+        self.actions += 1
 
-        def blades_dance(self):
-            return True
+    def knife_throw(self):
 
-        def fade_out(self):
-            return True
+        card = "Knife Throw"
+        message = f"{self.name} dealt {self.knife_damage} damage "\
+                   "to # with knife throw."
+
+        side = self.prompt_direction()
+
+        if not side:
+            return
+
+        direction = self.get_urdl_coords(self.y, self.x, \
+                                         self.throw_range)[side-1]
+        target = self.fill_line_until_hit(direction, self.knife_sym, \
+                                          self.knife_damage, message)
+        if target:
+            self.check_multi_target(target, card)
+
+        self.jump_func()
+
+        return True
+
+    def arrow_shot(self):
+
+        card = "Arrow Shot"
+        message = f"{self.name} dealt {self.knife_damage} damage "\
+                   "to # with arrow shot."
+
+        side = self.prompt_direction()
+
+        if not side:
+            return
+
+        direction = self.get_urdl_coords_all(self.y, self.x)[side-1]
+        target = self.fill_line_until_hit(direction, self.arrow_sym, \
+                                          self.arrow_damage, message)
+        if target:
+            self.check_multi_target(target, card)
+
+        self.jump_func()
+
+        return True
+
+    def knives_out(self):
+
+        card = "Knives Out"
+        message = f"{self.name} dealt {self.knife_damage} damage "\
+                   "to # with knives out."
+        question = "Do you wish to hit all enemies around you with knives " \
+                   "out?\nEnter '1' for yes or 'q' for no."
+
+        self.player_around_damage(1, self.knife_sym, self.knife_damage, message,
+                                  question, self.check_multi_target, card)
+
+        self.jump_func()
+
+        return True
+
+    def blades_dance(self):
+
+        card = "Blades Dance"
+        message = f"{self.name} dealt {self.knife_damage} damage "\
+                   "to # with blades dance."
+        question = "Do you wish to throw 4 knives at the enemies around you?" \
+                   "out?\nEnter '1' for yes or 'q' for no."
+
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
+
+        directions = self.get_urdl_coords(self.y, self.x, self.throw_range)
+
+        for direction in directions:
+            for coord in direction:
+
+                target = self.do_player_damage(coord, self.knife_sym,
+                                               self.knife_damage, message)
+
+                if target:
+                    check_multi_target(target, card)
+
+        self.jump_func()
+
+        return True
 

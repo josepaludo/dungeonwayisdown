@@ -4,7 +4,6 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
-    *** fix do fire damage ***
     *** fix check_if_dead func
     *** add turn limit to summons ***
     *** start using urdl damage, and around damage ***
@@ -21,11 +20,8 @@ TODO:
 	*** make a minimum distance variable ***
 	*** check if dead function ***
 	*** reduce target max counter ***
-	*** enemy move checks which places get it closer to target, chose at
-	random, if no one, choses one at random(only here he can fall)
 	*** enemy move check if can move ***
 	*** make a clear checker functions function ***
-	*** check dead players?? ***
         *** change player movement ***
         *** make a counter, every 5th level make a boss ***
         *** make items you can iterract with ***
@@ -34,7 +30,6 @@ TODO:
         *** make a txt with all info to help players, better than on IDE
 	*** make a countdown for dead players, if reaches 0, he can't be
 	revived
-    *** board log consists of 3 lists, current turn, the last and the before the last
 
 Doing now:
 
@@ -73,7 +68,7 @@ List of symbols:
     - n: necromancer enemy/ N necro boss/ d drain life/ s summon
     - o: orc enemy/ Orc boss
     - p: P priest/ poison snake
-    - q:
+    - q: arrow sym
     - r: R rogue/ rock/
     - s: 
     - t: T druid saber tooth tiger/ t tiger/ t taunt

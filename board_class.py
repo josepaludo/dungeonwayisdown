@@ -56,12 +56,20 @@ class Board:
         self.livings, self.enemies = [], []
         self.allies, self.players = [], []
 
+    def erase_log(self):
+
+        self.log = []
+
+    def log_maintance(self):
+
+        self.log.append([])
+
+        if len(self.log) > 3:
+            self.log.pop(0)
+
     def add_log(self, log):
 
-        self.log.append(log)
-
-        if len(self.log) > 10:
-            self.log.pop(0)
+        self.log[-1].append(log)
 
     def level_finished(self):
 

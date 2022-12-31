@@ -18,6 +18,8 @@ class Living():
         self.taunt_sym = 't'
         self.fire_sym = 'f'
         self.lightning_sym = 'l'
+        self.knife_sym = 'k'
+        self.arrow_sym = 'q'
 
         self.health = 20
         self.dead = False
@@ -74,11 +76,6 @@ class Living():
     def get_urdl_coords(self, ycor, xcor, rangei):
 
         up, right, down, left = self.get_urdl_coords_all(ycor, xcor)
-
-        #up = up[:rangei] if len(up) > rangei else up
-        #right = right[:rangei] if len(right) > rangei else right
-        #down = down[:rangei] if len(down) > rangei else down
-        #left = left[:rangei] if len(left) > rangei else left
 
         return up[:rangei], right[:rangei], down[:rangei], left[:rangei]
 
@@ -172,7 +169,7 @@ class Living():
 
         chance = random()
 
-        no_cards, weak, medium = 0, 0.5, 0.9
+        no_cards, weak, medium = 0, 0.5, 0.85
 
         if chance == no_cards:
             message = f"{self.name} couldn't draw a card."

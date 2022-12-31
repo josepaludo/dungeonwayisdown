@@ -35,12 +35,13 @@ def board_maintance(board):
     board.livings_maintance(livings, enemies, players, players)
     board.place_things()
 
+    board.erase_log()
 
 def create_players(board):
 
     players = []
 
-    for player_class in [Warrior, Priest, Druid, Wizard]:
+    for player_class in [Warrior, Priest, Druid, Wizard, Rogue]:
 
         player = player_class()
 
@@ -72,6 +73,8 @@ def dungeon_loop(board):
 
         if all_players_died(board):
             return
+
+        board.log_maintance()
 
         go_on = livings_turns(board)
 
