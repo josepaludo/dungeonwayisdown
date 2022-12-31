@@ -4,6 +4,7 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
+    *** fix do fire damage ***
     *** fix check_if_dead func
     *** add turn limit to summons ***
     *** start using urdl damage, and around damage ***
@@ -37,18 +38,19 @@ TODO:
 
 Doing now:
 
-Druid:
-
-must make mammoth and saber tooth tiger cards
-    saber tooth tiger:
-        bite: gains 1 move and bite
-        Rip : do around damage range 2
-        wild call: gains 2 move,2 action and 2 card
-    mammoth:
-        trunk swipe
-        tusk bash
-        taunt and barkskin
-
+    Rogue:
+        - weak:
+            - jumps and throws knife  at a medium distance, gain one more move, 
+            everytime a different enemy is hit, gain the ability to throw 
+            another one
+        - medium:
+            - shots and arrow at an enemy, everytime a different enemy is hit, 
+            gain the ability to shoot another one
+            - makes a twist
+        - strong:
+            - becomes invisible for 5 turns
+            - throws knifes in all directions, gaining 2 moves and if
+            different eenemy is hit, yada yada
 
 List of symbols:
 
@@ -64,7 +66,7 @@ List of symbols:
     - g: goblin enemy / G goblin boss/ knife
     - h: heal
     - i: invulnerable
-    - j:
+    - j: infernal
     - k: knife
     - l: lightning
     - m: Mammoth druid
@@ -76,7 +78,7 @@ List of symbols:
     - s: 
     - t: T druid saber tooth tiger/ t tiger/ t taunt
     - u: wolf druid
-    - v:
+    - v: imp
     - w: W Warrior/ x axe/ t taunt/ i invulnerable
     - x: warrios axe
     - y: troll enemy / Y troll boss/ r rock

@@ -16,6 +16,8 @@ class Living():
         self.axe_sym = 'x'
         self.claw_sym = 'c'
         self.taunt_sym = 't'
+        self.fire_sym = 'f'
+        self.lightning_sym = 'l'
 
         self.health = 20
         self.dead = False
@@ -23,6 +25,7 @@ class Living():
         self.can_attack = True
         self.can_move = True
         self.revive_counter = 4
+        self.can_be_target = True
 
         self.min_distance = 1
         self.current_distance = None
@@ -52,7 +55,7 @@ class Living():
 
     def check_coord(self, ycor, xcor):
 
-        if self.board.board[ycor][xcor] in self.board.invalids:
+        if self.board.board[ycor][xcor] == self.board.wall_square:
             return 'invalid'
 
         for living in self.board.livings:
@@ -72,12 +75,12 @@ class Living():
 
         up, right, down, left = self.get_urdl_coords_all(ycor, xcor)
 
-        up = up[:rangei] if len(up) > rangei else up
-        right = right[:rangei] if len(right) > rangei else right
-        down = down[:rangei] if len(down) > rangei else down
-        left = left[:rangei] if len(left) > rangei else left
+        #up = up[:rangei] if len(up) > rangei else up
+        #right = right[:rangei] if len(right) > rangei else right
+        #down = down[:rangei] if len(down) > rangei else down
+        #left = left[:rangei] if len(left) > rangei else left
 
-        return up, right, down, left
+        return up[:rangei], right[:rangei], down[:rangei], left[:rangei]
 
     def get_around_coords(self, ycor, xcor, rangei, self_exc=True):
 
@@ -169,7 +172,7 @@ class Living():
 
         chance = random()
 
-        no_cards, weak, medium = -1, -1, -1
+        no_cards, weak, medium = 0, 0.5, 0.9
 
         if chance == no_cards:
             message = f"{self.name} couldn't draw a card."
@@ -210,7 +213,8 @@ class Living():
             return
 
         livings = self.board.allies if is_enemy else self.board.enemies
-        targets = [living for living in livings if not living.dead]
+        targets = [living for living in livings if \
+                   not living.dead and living.can_be_target]
 
         self.target = choice(targets)
         self.target_counter = 0
@@ -433,6 +437,7 @@ class Living():
 
         message = f"{self.name} toughens its skin, becoming more resilient."
         self.board.add_log(message)
+
 
 class Enemy(Living):
 

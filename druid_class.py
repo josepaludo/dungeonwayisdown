@@ -539,7 +539,7 @@ class Druid(Player):
 
     def stt_rip(self):
 
-        message = f"{self.name} dealth {self.stt_rip_damage} damage"\
+        message = f"{self.name} dealt {self.stt_rip_damage} damage"\
                   f"to # with its claws."
         question = "Do you wish to rip your enemies with your claws?"
 

@@ -358,22 +358,79 @@ class Priest(Player):
         if self.revive_living(ally):
             return True
 
-class Wizard(Player):
+
+class Rogue(Player):
 
     def __init__(self):
         super().__init__()
 
-        self.sym = "Z"
+        self.sym = "R"
 
-        self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"}}
+        self.health = 15
 
+        self.enemies_hit = []
 
-class Thief(Player):
+        multi_target = "If it's the first time this turn you've hit "\
+                       "this enemy, gain this ability again."
 
-    def __init__(self):
-        super().__init__()
+        knife_throw = f"Jumps and throws a knife at an enemy. {multi_target}"
+        arrow_shot = f"Jumps and shots an arrow at an enemy. {multi_target}"
+        knives_out = f"Jumps and slashes all enemies. {multi_target}"
+        blades_dance = f"Jumps and throws four knives. {multi_target}"
+        fade_out = "Becomes invisible for your enemies."
 
-        self.sym = "T"
+        self.cards["Knife Throw"] = {"func": self.knife_throw,
+                                     "descr": knife_throw,
+                                     "level": "weak"}
 
-        self.cards = {"card_name": {"func": self.func, "descr": self.var, "level": "weak"}}
+        self.cards["Arrow Shot"] = {"func": self.arrow_shot,
+                                    "descr": arrow_shot,
+                                    "level": "medium"}
+
+        self.cards["Knives Out"] = {"func": self.knives_out,
+                                    "descr": knives_out,
+                                    "level": "medium"}
+
+        self.cards["Fade out"] = {"func": self.fade_out,
+                                  "descr": fade_out,
+                                  "level": "strong"}
+
+        self.cards["Blades Dance"] = {"func": self.blades_dance,
+                                      "descr": blades_dance,
+                                      "level": "strong"}
+
+        def empty_targets(self, living):
+
+            if living != self:
+                return
+
+            self.enemies_hit = []
+
+            return True
+
+        def check_multi_target(self, target, card):
+
+            if target in self.enemies_hit:
+                return
+
+            self.enemies_hit.append(target)
+            self.append_to_turn_checker(empty_targets)
+            self.my_cards.append(card)
+            self.actions += 1
+
+        def knife_throw(self):
+
+            coords = self.get_urdl_coords_all(self.y, self.x)
+
+        def arrow_shot(self):
+            return True
+
+        def knives_out(self):
+            return True
+
+        def blades_dance(self):
+            return True
+
+        def fade_out(self):
+            return True
 

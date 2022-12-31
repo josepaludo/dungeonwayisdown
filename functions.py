@@ -1,8 +1,9 @@
 from random import randint, choice
 from time import sleep
 
-from spec_classes import Warrior, Thief, Wizard, Priest
+from spec_classes import Warrior, Priest, Rogue
 from druid_class import Druid
+from wizard_class import Wizard
 from enemies_classes import Goblin, Snake, Troll, Necro
 from living_classes import Enemy
 from board_class import Board
@@ -39,7 +40,7 @@ def create_players(board):
 
     players = []
 
-    for player_class in [Warrior, Priest, Druid]:
+    for player_class in [Warrior, Priest, Druid, Wizard]:
 
         player = player_class()
 

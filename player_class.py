@@ -106,6 +106,8 @@ class Player(Living):
         message = f"{self.name} jumped and can make one more move this turn"
         self.board.add_log(message)
 
+        return True
+
     def player_maintance(self):
 
         self.actions = max(self.actions_per_turn, self.actions)
@@ -350,12 +352,12 @@ class Player(Living):
     def do_player_damage(self, coord, sym, damage, message):
 
         ycor, xcor = coord[0], coord[1]
-        target = self.check_coord(coord, ycor, xcor)
+        target = self.check_coord(ycor, xcor)
 
         if target == "invalid":
             return
 
-        self.backup_board[ycor][xcor] = sym
+        self.board.backup_board[ycor][xcor] = sym
 
         if target not in self.board.enemies:
             return
@@ -367,4 +369,34 @@ class Player(Living):
         self.board.add_log(message)
 
         target.check_if_dead(self)
+
+        return target
+
+    def find_enemy_in_line(self, sym, damage, message):
+
+        direction = self.prompt_direction()
+
+        if not direction:
+            return
+
+        coords = self.get_urdl_coords_all(self.y, self.x)[direction-1]
+
+        for coord in coords:
+
+            target = self.do_player_damage(coord, sym, damage, message)
+
+            if not target:
+                continue
+
+            return target
+
+    def damage_around_enemies(self, reach, sym, damage, message):
+
+        for enemy in self.board.enemies:
+
+            coords = self.get_around_coords(enemy.y, enemy.x, reach, False)
+
+            for coord in coords:
+
+                self.do_player_damage(coord, sym, damage, message)
 
