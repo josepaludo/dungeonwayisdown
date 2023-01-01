@@ -1,3 +1,4 @@
+import os
 from random import randint, choice
 from time import sleep
 
@@ -7,6 +8,31 @@ from wizard_class import Wizard
 from enemies_classes import Goblin, Snake, Troll, Necro
 from living_classes import Enemy
 from board_class import Board
+from miscellaneous import game_icon
+
+
+def dungeon_way_is_down():
+
+    start_game()
+
+    result = game_loop()
+
+    end_game(result)
+
+
+def start_game():
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print(game_icon)
+
+    message ="A party of 5 adventurers enter a dungeon:\na warrior, a priest, "\
+             "a druid, a wizard and a rogue.\n\nThe entry is shut.\n\n"\
+             "The dungeon only way is down."
+
+    print(message)
+
+    input("\n\nPress 'Enter' to begin.")
 
 
 def game_loop():
@@ -15,17 +41,23 @@ def game_loop():
 
     while True:
 
-        board_maintance(board)
+        game_finished = board_maintance(board)
+
+        if game_finished:
+            return True
 
         go_on = dungeon_loop(board)
 
         if not go_on:
-            break
+            return
 
         board_clean_up(board)
 
 
 def board_maintance(board):
+
+    if board.game_finished():
+        return True
 
     players = create_players(board)
     enemies = create_enemies(board)
@@ -36,6 +68,8 @@ def board_maintance(board):
     board.place_things()
 
     board.erase_log()
+    board.erase_turn_checker()
+
 
 def create_players(board):
 
@@ -98,10 +132,11 @@ def livings_turns(board):
         board.print_board()
 
         if board.level_finished():
-            sleep(2)
+            board.level_finished_warning()
             return
 
         if living.dead:
+            dead_living_maintance(living)
             continue
 
         living_turn_check(living)
@@ -109,6 +144,11 @@ def livings_turns(board):
         do_turn(living)
 
     return True
+
+
+def dead_living_maintance(living):
+
+    living.revive_counter -= 1
 
 
 def living_turn_check(living):
@@ -135,7 +175,10 @@ def do_turn(living):
 def living_turn(living, is_enemy):
 
     living.living_maintance()
-    living_move(living, is_enemy)
+
+    if living.can_move:
+        living_move(living, is_enemy)
+
     living_act(living)
     living.empty_hand()
 
@@ -143,6 +186,9 @@ def living_turn(living, is_enemy):
 def living_move(living, is_enemy):
 
     for i in range(living.moves):
+
+        if living.check_if_dead():
+            break
 
         living.board.make_copy()
         living.turn_move(is_enemy)
@@ -202,7 +248,7 @@ def prompt_input(player):
         print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"\
               f"Moves left: {player.moves}.\n")
 
-        action = input("What do you want to do? ('help' for options) ")
+        action = input("What do you want to do? ('help' for options)\n")
 
         if action == "end":
             return
@@ -217,4 +263,22 @@ def board_clean_up(board):
 
     board.clear_livings()
     board.check_dead_players()
+
+
+def end_game(result):
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    print(game_icon)
+
+    win_message = "The way is shut.\n\n"\
+                  "The light is out.\n\n"\
+                  "The dungeon is over."
+    loss_message = "Your party was not able to follow the dungeon way."
+
+    print(win_message if result else loss_message)
+
+    input("\n\nPress 'Enter' to exit.")
+
+    os.system('cls' if os.name == 'nt' else 'clear')
 

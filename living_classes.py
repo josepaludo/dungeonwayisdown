@@ -154,7 +154,7 @@ class Living():
         self.dead = True
         self.board.board[self.y][self.x] = self.board.empty_square
 
-        message = f"{self.name} died.{f' {killer} slayed it.' if killer else ''}"
+        message = f"{self.name} died.{f' {killer.name} slayed it.' if killer else ''}"
         self.board.add_log(message)
 
         return True
@@ -302,8 +302,8 @@ class Living():
 
     def hole_fall(self):
 
-        self.dead = True
-        report = f"{self.name} fell on a hole and died."
+        self.health = 0
+        report = f"{self.name} fell in a hole."
         self.board.add_log(report)
 
     def living_maintance(self):

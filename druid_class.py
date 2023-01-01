@@ -531,7 +531,7 @@ class Druid(Player):
         message = f"{self.name} dealt {self.stt_bite_damage} damage "\
                   f"to # with its bite."
 
-        for i in range(self.bite_amount):
+        for i in range(self.stt_bite_amount):
             self.players_urdl_damage(self.stt_bite_reach, self.stt_damage_sym,
                                      self.stt_bite_damage, message)
 

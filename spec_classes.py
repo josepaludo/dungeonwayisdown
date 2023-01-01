@@ -62,7 +62,7 @@ class Warrior(Player):
                           f"{enemy.name} with his axe."
                 self.board.add_log(message)
 
-                enemy.check_if_dead(self.name)
+                enemy.check_if_dead(self)
 
         self.board.backup_board[target[0]][target[1]] = self.weapon_sym
 

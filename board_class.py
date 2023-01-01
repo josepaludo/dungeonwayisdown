@@ -3,6 +3,8 @@ from random import randint, choice
 from copy import deepcopy
 from time import sleep
 
+from miscellaneous import game_icon
+
 
 class Board:
 
@@ -15,6 +17,8 @@ class Board:
 
         self.board = []
         self.backup_board = []
+
+        self.level = 0
 
         self.exit = 0
         self.next_entry = 3
@@ -60,6 +64,10 @@ class Board:
 
         self.log = []
 
+    def erase_turn_checker(self):
+
+        self.living_turn_checker = []
+
     def log_maintance(self):
 
         self.log.append([])
@@ -88,12 +96,31 @@ class Board:
 
         return True
 
+    def level_finished_warning(self):
+
+        self.print_game_icon()
+
+        message = "Your party has reached the final level of the dungeon."
+
+        print(f"Your party has finished the level {self.level}." \
+              if self.level < 9 else message)
+
+        input(f"\nPress 'Enter' do advance to the "\
+              f"{'last' if self.level == 9 else 'next'} level.")
+
     def check_dead_players(self):
 
         for player in self.players:
 
             if player.dead:
                 self.dead_players.append(player.sym)
+
+    def game_finished(self):
+
+        self.level += 1
+
+        if self.level == 11:
+            return True
 
     def make_copy(self):
 
@@ -113,11 +140,20 @@ class Board:
         for line in self.board:
             line[0] = line[-1] = self.wall_square
 
+    def clean_clear(self):
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    def print_game_icon(self):
+
+        self.clean_clear()
+        print(game_icon)
+
     def print_board(self, proxy_board=None):
 
         proxy_board = proxy_board if proxy_board else self.board
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.clean_clear()
 
         print()
         for line in proxy_board:

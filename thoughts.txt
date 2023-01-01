@@ -4,9 +4,8 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
-    *** fix check_if_dead func
+    *** a summon disappears if it has no targets ***
     *** add turn limit to summons ***
-    *** start using urdl damage, and around damage ***
     *** how to living/enemy gain more actions ? ***
         - problem solved on turns and on druid beasts, but must change on enemies
     *** make can move checker on enemy turn ***

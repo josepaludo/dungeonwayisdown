@@ -1,3 +1,4 @@
-from functions import game_loop
+from functions import dungeon_way_is_down
 
-game_loop()
+dungeon_way_is_down()
+
