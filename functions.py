@@ -6,6 +6,7 @@ from spec_classes import Warrior, Priest, Rogue
 from druid_class import Druid
 from wizard_class import Wizard
 from enemies_classes import Goblin, Snake, Troll, Necro
+from boss_classes import GoblinBoss, SnakeBoss, TrollBoss, NecroBoss
 from living_classes import Enemy
 from board_class import Board
 from miscellaneous import game_icon
@@ -88,17 +89,29 @@ def create_players(board):
 
 def create_enemies(board):
 
-    enemies = []
+    enemy_objects = []
 
-    for i in range(5+randint(0, 5)):
+    quantity = 5 + randint(0, 5) - board.level
 
-        enemy_classes = Snake, Goblin, Troll, Necro
-        enemy = choice(enemy_classes)()
+    enemies = Goblin, Snake, Troll, Necro
+    bosses = GoblinBoss, SnakeBoss, TrollBoss, NecroBoss
 
-        enemy.board = board
-        enemies.append(enemy)
+    for i in range(board.level):
+        enemy_objects.append(create_enemy(board, bosses))
 
-    return enemies
+    for i in range(quantity):
+        enemy_objects.append(create_enemy(board, enemies))
+
+    return enemy_objects
+
+
+def create_enemy(board, enemy_classes):
+
+    enemy = choice(enemy_classes)()
+
+    enemy.board = board
+
+    return enemy
 
 
 def dungeon_loop(board):
