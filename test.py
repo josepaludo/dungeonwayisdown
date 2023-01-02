@@ -1,3 +1,5 @@
-from miscellaneous import game_icon
+a = 2
 
-print(game_icon)
+a *= 2
+
+print(a)

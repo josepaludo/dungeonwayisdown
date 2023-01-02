@@ -33,6 +33,13 @@ class Goblin(Enemy):
 
         self.init_cards()
 
+    def boss_maintance(self):
+
+        self.is_boss()
+
+        self.knife_damage *= 2
+        self.twist_range *= 2
+
     def hit(self):
 
         if not self.can_attack:
@@ -130,6 +137,16 @@ class Snake(Enemy):
                                "level": "strong"}
 
         self.init_cards()
+
+    def boss_maintance(self):
+
+        self.is_boss()
+
+        self.poison_damage *= 2
+        self.poison_dot_damage *= 2
+        self.dot_turn_duration = 4
+        self.spit_range = 8
+        self.spray_range += 1
 
     def sting(self):
 
@@ -292,6 +309,18 @@ class Troll(Enemy):
                                        "level": "strong"}
 
         self.init_cards()
+
+    def boss_maintance(self):
+
+        self.is_boss()
+
+        self.rock_damage *= 2
+        self.boulder_damage *= 2
+        self.splah_damage *= 2
+
+        self.throw_rock_range += 3
+        self.throw_boulder_range += 2
+        self.splash_range += 1
 
     def throw_rock(self, is_boulder=False):
 
@@ -492,6 +521,12 @@ class Necro(Enemy):
                                "level": "strong"}
 
         self.init_cards()
+
+    def boss_maintance(self):
+
+        self.is_boss()
+
+        self.drain_life_damage *= 1
 
     def drain_life(self):
 

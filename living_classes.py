@@ -449,3 +449,12 @@ class Enemy(Living):
         self.max_target_counter = 5
         self.target_counter = self.max_target_counter
 
+    def is_boss(self):
+
+        self.player_or_enemy = 'Boss'
+        self.sym = self.sym.title()
+        self.name += " Boss"
+        self.health *= 2
+        self.moves_per_turn *= 2
+        self.actions_per_turn *= 2
+
