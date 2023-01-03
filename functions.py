@@ -132,6 +132,7 @@ def dungeon_loop(board):
 def all_players_died(board):
 
     for player in board.players:
+
         if not player.dead:
             return False
 
@@ -145,7 +146,6 @@ def livings_turns(board):
         board.print_board()
 
         if board.level_finished():
-            board.level_finished_warning()
             return
 
         if living.dead:
@@ -177,13 +177,13 @@ def living_turn_check(living):
 def do_turn(living):
 
     if living in living.board.enemies:
-        living_turn(living, True)
+        living_turn(living, is_enemy=True)
 
     elif living in living.board.players:
         player_turn(living)
 
     else:
-        living_turn(living, False)
+        living_turn(living, is_enemy=False)
 
 
 def living_turn(living, is_enemy):

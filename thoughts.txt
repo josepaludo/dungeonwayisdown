@@ -2,6 +2,4 @@ Dungeon Way is Down
 
 TODO:
 
-        *** for some reason enemies do nothing
-        *** fix names on every summon
         *** use constants for symbols

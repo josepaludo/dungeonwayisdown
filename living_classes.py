@@ -372,6 +372,7 @@ class Living():
         summon = summon_class()
         summon.y, summon.x = ycor, xcor
         summon.board = self.board
+        summon.name = self.board.pick_name()
 
         self.board.board[ycor][xcor] = summon.sym
         self.board.livings.append(summon)

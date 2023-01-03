@@ -56,7 +56,7 @@ class Board:
 
         self.boss_epithets = ["Epic", "Magnificent", "Glorious", "Majestic",
                               "Imposing", "Monumental", "Massive", "Grand",
-                              "Royal", "Proud", "Colossal", "Lavish"]
+                              "Royal", "Proud", "Colossal", "Lavish", "Huge"]
 
     def set_names(self):
 
@@ -132,19 +132,20 @@ class Board:
             if not enemy.dead:
                 return
 
+        self.level_finished_warning()
+
         return True
 
     def level_finished_warning(self):
 
         self.print_game_icon()
 
-        message = "Your party has reached the final level of the dungeon."
+        message = "Your party has reached the final level of the dungeon.\n\n"\
+                  "Press 'Enter' to continue."
 
-        print(f"Your party has finished the level {self.level}." \
-              if self.level < 9 else message)
-
-        input(f"\nPress 'Enter' do advance to the "\
-              f"{'last' if self.level == 9 else 'next'} level.")
+        input(f"Your party has finished the level {self.level}.\n\n"\
+              f"\nPress 'Enter' do advance to follow the dungeon way." \
+              if self.level < 10 else message)
 
     def check_dead_players(self):
 
