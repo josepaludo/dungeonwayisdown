@@ -1,5 +1,0 @@
-Dungeon Way is Down
-
-TODO:
-
-        *** use constants for symbols
