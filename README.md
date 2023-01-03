@@ -4,11 +4,11 @@ DUNGEON WAY IS DOWN
 
 a 
 
-Turn based 
-Dungeon crawler 
-ASCII designed 
-Party focused 
-Card like 
+Turn based
+Dungeon crawler
+ASCII designed
+Party focused
+Card like
 
 Game
 
