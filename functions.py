@@ -103,11 +103,13 @@ def create_enemies(board):
 def create_enemy(board, enemy_classes, is_boss = False):
 
     enemy = choice(enemy_classes)()
+    enemy.board = board
 
     if is_boss:
         enemy.boss_maintance()
-
-    enemy.board = board
+        enemy.set_boss_name()
+    else:
+        enemy.set_name()
 
     return enemy
 
@@ -265,7 +267,7 @@ def prompt_input(player):
         print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"\
               f"Moves left: {player.moves}.\n")
 
-        action = input("What do you want to do? ('help' for options)\n")
+        action = input("What is it? ('help' for options)\n")
 
         if action == "end":
             return

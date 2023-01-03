@@ -105,7 +105,8 @@ class Goblin(Enemy):
 
     def quicker(self):
 
-        self.moves = 4
+        self.moves = max(self.moves+1, self.moves_per_turn+1)
+        self.moves_changed_counter += 1
 
 
 class Snake(Enemy):
@@ -470,7 +471,8 @@ class Orc(Enemy):
 
     def sprint(self):
 
-        self.moves = 3
+        self.moves = max(self.moves+1, self.moves_per_turn+1)
+        self.moves_changed_counter += 1
 
     def warcry(self):
 
@@ -499,7 +501,7 @@ class Necro(Enemy):
         super().__init__()
 
         self.sym = 'n'
-        self.name = 'Necro'
+        self.name = 'Necromancer'
 
         self.health = 15
 

@@ -53,6 +53,15 @@ class Living():
         self.my_cards = []
         self.weak_cards, self.medium_cards, self.strong_cards = [], [], []
 
+    def set_boss_name(self):
+
+        self.name = f"{self.board.pick_name()}, the "\
+                    f"{self.board.pick_boss_epithet()} {self.name}"
+
+    def set_name(self):
+
+        self.name = f"{self.board.pick_name()}, the {self.name}"
+
     def clear_screen(self):
 
         self.board.print_board()

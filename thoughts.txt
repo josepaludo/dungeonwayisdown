@@ -1,55 +1,7 @@
 Dungeon Way is Down
 
-Turn Based "Card Game" Dungeon Crawler Game Idea
-
-
 TODO:
 
-    good hint: use living maintance to end a not dead living before turn start
-
-        more turns, more moves
-        - problem solved on turns and on druid beasts, but must change on enemies
-
-        *** change player movement ***
-        *** make a txt with all info to help players, better than on IDE
-
-List of symbols:
-
-    - #: wall
-    - -: hole     
-    - a: board druid
-    - b: bear, druid summon
-    - c: claw/ animal attack
-    - ç: snake enemy/ Ç snake boss/ p poison
-    - d: D ruid/ d drain life necro
-    - e:
-    - f: fire
-    - g: goblin enemy / G goblin boss/ knife
-    - h: heal
-    - i: invulnerable
-    - j: infernal
-    - k: knife
-    - l: lightning
-    - m: Mammoth druid
-    - n: necromancer enemy/ N necro boss/ d drain life/ s summon
-    - o: orc enemy/ Orc boss
-    - p: P priest/ poison snake
-    - q: arrow sym
-    - r: R rogue/ rock/
-    - s: 
-    - t: T druid saber tooth tiger/ t tiger/ t taunt
-    - u: wolf druid
-    - v: imp
-    - w: W Warrior/ x axe/ t taunt/ i invulnerable
-    - x: warrios axe
-    - y: troll enemy / Y troll boss/ r rock
-    - z: Wizard/ druid roots
-
-Player classes:
-    - Warrior: tank, can taunt, takes less damage.
-    - Priest: healer, can't attack.
-    - Druid: support, deals damage but also have utilities, can transform itself, can summon.
-    - Wizard: damage, AOE, summon.
-    transform
-    - Thief: damage, glass cannon, can get invisible.
-
+        *** for some reason enemies do nothing
+        *** fix names on every summon
+        *** use constants for symbols

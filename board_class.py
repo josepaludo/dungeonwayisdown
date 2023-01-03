@@ -15,6 +15,9 @@ class Board:
         self.hole_square = "-"
         self.invalids = [self.wall_square, self.hole_square]
 
+        self.available_names = []
+        self.boss_epithets = []
+
         self.board = []
         self.backup_board = []
 
@@ -38,6 +41,41 @@ class Board:
         self.players = []
 
         self.reset_board()
+
+    def pick_boss_epithet(self):
+
+        if len(self.boss_epithets) == 0:
+            self.set_boss_names()
+
+        epithet_index = randint(0, len(self.boss_epithets)-1)
+        epithet = self.boss_epithets.pop(epithet_index)
+
+        return epithet
+
+    def set_boss_names(self):
+
+        self.boss_epithets = ["Epic", "Magnificent", "Glorious", "Majestic",
+                              "Imposing", "Monumental", "Massive", "Grand",
+                              "Royal", "Proud", "Colossal", "Lavish"]
+
+    def set_names(self):
+
+        with open("names.txt") as file:
+
+            file = file.readlines()[0].split(',')
+            file.pop(-1)
+
+            self.available_names = file
+
+    def pick_name(self):
+
+        if len(self.available_names) == 0:
+            self.set_names()
+
+        name_index = randint(0, len(self.available_names)-1)
+        name = self.available_names.pop(name_index)
+
+        return name
 
     def board_blink(self):
 

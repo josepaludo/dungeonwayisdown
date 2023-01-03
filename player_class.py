@@ -1,3 +1,4 @@
+import csv
 from random import random, choice, randint
 
 from living_classes import Living, Enemy
@@ -48,7 +49,7 @@ class Player(Living):
                        "help": {"func": self.help,
                                 "descr": "Shows every possible input."},
                        "mhelp": {"func": self.more_help,
-                                 "descr": "Gives more details about the game."},
+                                 "descr": "Gives more help."},
                        "end": {"func": "",
                                "descr": "Finish your turn."}}
 
@@ -147,7 +148,8 @@ class Player(Living):
 
     def more_help(self):
 
-        print("\nMore help here.")
+        self.clear_screen()
+        print("More help:\n\nget good")
 
     def show_icons(self):
 
@@ -156,8 +158,20 @@ class Player(Living):
         for living in self.board.livings:
             print(f"{living.sym}: {living.name}, {living.player_or_enemy}.")
 
-        print(f"{self.board.wall_square}: Wall.")
-        print(f"{self.board.hole_square}: Hole.")
+        self.print_other_icons()
+
+    def print_other_icons(self):
+
+        with open("icons.csv") as file:
+            file = csv.reader(file)
+
+            for ind, line in enumerate(file):
+                for ind, entry in enumerate(line):
+
+                    icon_message = f" {entry}:" if ind == 0 else f" {entry}."
+                    print(icon_message, end="")
+
+                print()
 
     def show_status(self):
 
