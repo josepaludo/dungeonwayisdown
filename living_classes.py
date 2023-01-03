@@ -26,7 +26,10 @@ class Living():
         self.invulnerable = False
         self.can_attack = True
         self.can_move = True
-        self.revive_counter = 4
+
+        self.revive_counter_start = 4
+        self.revive_counter = self.revive_counter_start
+        self.summon_counter = 8
         self.can_be_target = True
 
         self.min_distance = 1
@@ -192,29 +195,42 @@ class Living():
             if not self.board.board[ycor][xcor] == self.board.empty_square:
                 continue
 
-            self.board.board[ycor][xcor] = living.sym
-            living.dead = False
-            living.y, living.x = ycor, xcor
-            living.health = 15
+            living.reset_self_values(ycor, xcor)
 
             message = f"{self.name} revived {living.name}."
             self.board.add_log(message)
 
             return True
 
+    def reset_self_values(self, ycor, xcor):
+
+        self.revive_counter = self.revive_counter_start
+        self.board.board[ycor][xcor] = living.sym
+        self.dead = False
+        self.invulnerable = False
+        self.can_attack = True
+        self.can_move = True
+        self.y, living.x = ycor, xcor
+        self.health = 15
+
     def set_target(self, is_enemy=True):
 
         if self.target_counter < self.max_target_counter:
 
             self.target_counter += 1
-            return
+            return True
 
         livings = self.board.allies if is_enemy else self.board.enemies
         targets = [living for living in livings if \
                    not living.dead and living.can_be_target]
 
+        if len(targets) == 0:
+            return
+
         self.target = choice(targets)
         self.target_counter = 0
+
+        return True
 
     def distance(self, coor):
 
@@ -283,7 +299,9 @@ class Living():
 
     def turn_move(self, is_enemy):
 
-        self.set_target(is_enemy)
+        if not self.set_target(is_enemy):
+            return
+
         self.measure_distance()
 
         if not self.try_to_approach():
@@ -306,13 +324,24 @@ class Living():
         report = f"{self.name} fell in a hole."
         self.board.add_log(report)
 
-    def living_maintance(self):
+    def living_maintance(self, is_enemy):
 
         for i in range(self.actions_per_turn):
             self.get_turn_cards()
 
         self.actions = max(self.actions, self.actions_per_turn)
         self.moves = max(self.moves, self.moves_per_turn)
+
+        if is_enemy:
+            return True
+
+        self.summon_counter -= 1
+
+        if self.summon_counter > 0:
+            return True
+
+        self.health = 0
+        self.check_if_dead()
 
     def summon_enemy_ally(self, summon_class, is_enemy=True):
 

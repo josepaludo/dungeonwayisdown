@@ -92,9 +92,10 @@ def create_enemies(board):
 
     enemies = Goblin, Snake, Troll, Necro
 
-    for i in range(board.level + 5):
+    for i in range(board.level + 3):
+
         enemy_objects.append(create_enemy(board, enemies,
-                                          True if i <= board.level else False))
+                                          True if i == 1 else False))
 
     return enemy_objects
 
@@ -165,8 +166,9 @@ def living_turn_check(living):
 
     for func in living.board.living_turn_checker:
 
-        remove_ = func(living)
-        if remove_:
+        remove_func = func(living)
+
+        if remove_func:
             living.board.living_turn_checker.remove(func)
 
 
@@ -184,12 +186,14 @@ def do_turn(living):
 
 def living_turn(living, is_enemy):
 
-    living.living_maintance()
+    if not living.living_maintance(is_enemy):
+        return
 
     if living.can_move:
         living_move(living, is_enemy)
 
     living_act(living)
+
     living.empty_hand()
 
 
@@ -215,6 +219,9 @@ def living_move(living, is_enemy):
 def living_act(living):
 
     for card in living.my_cards:
+
+        if all_players_died:
+            return
 
         living.board.make_copy()
         living.cards[card]["func"]()

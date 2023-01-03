@@ -189,9 +189,12 @@ class Priest(Player):
         self.all_healed_heal = 3
         self.revive_turns = 3
 
+        self.silence_duration = 2
+        self.silence_turns = self.silence_duration
+
         blessing = f'Heals an ally for {self.blessing_heal} '\
                    f'for {self.blessing_turns}.'
-        protect = 'Make an ally invulnerable for 1 turn.'
+        silence = f"Silence enemies, impairing their attacks."
         light_heal = f'Heals an ally for {self.light_heal_heal}.'
         all_healed = f'Heals each ally for {self.all_healed_heal}.'
         revive = f"Revive a dead player if not alive "\
@@ -201,8 +204,8 @@ class Priest(Player):
                                   "descr": blessing,
                                   "level": "weak"}
 
-        self.cards["Protect"] = {"func": self.protect,
-                                 "descr": protect,
+        self.cards["Silence"] = {"func": self.silence,
+                                 "descr": silence,
                                  "level": "medium"}
 
         self.cards["Light Heal"] = {"func": self.light_heal,
@@ -262,44 +265,37 @@ class Priest(Player):
                   f'{self.blessing_heal} with blessing.'
         self.board.add_log(message)
 
-    def protect(self):
+    def silence(self):
 
-        question = "Which ally would you like to protect?"
+        question = f"Do you wish to silence enemies, impairing their attacks "\
+                   f"for {self.silence_duration} turns?"\
+                   f"Enter '1' for yes or 'q' for no."
 
-        ally = self.prompt_for_ally(question)
+        go_on = self.yes_no_input(question)
 
-        if not ally:
+        if not go_on:
             return
 
-        self.apply_protect(ally)
+        for enemy in enemies:
+            enemy.can_attack = False
 
-        return True
-
-    def apply_protect(self, ally):
-
-        if self.do_protect not in self.board.living_turn_checker:
-            self.board.living_turn_checker.append(self.do_protect)
-
-        message = f"{self.name} protected {ally.name}."
+        message = f"{self.name} silenced enemies, impairing their attacks."
         self.board.add_log(message)
 
-        self.board.backup_board[ally.y][ally.x] = self.invulnerable_sym
-        self.protect_allies.append(ally)
-        ally.invulnerable = True
-
-    def do_protect(self, living):
-
-        if not living == self:
-            return
-
-        for ally in self.protect_allies:
-            ally.invulnerable = False
-            self.protect_allies.remove(ally)
-
-            message = f'{ally.name} is no longer protected by {self.name}.'
-            self.board.add_log(message)
+        self.append_to_turn_checker(self.cancel_silence)
 
         return True
+
+    def cancel_silence(self, living):
+
+        if self != living:
+            return
+
+        self.silence_turns -= 1
+
+        if self.silence_turns == 0:
+            self.silence_turns = self.silence_duration
+            return True
 
     def light_heal(self):
 
@@ -353,6 +349,10 @@ class Priest(Player):
         ally = self.prompt_for_ally(question, dead_players)
 
         if not ally:
+            return
+
+        if ally.revive_counter <= 0:
+            input("Enemy can't be revived\n\nPress 'Enter' to continue.")
             return
 
         if self.revive_living(ally):

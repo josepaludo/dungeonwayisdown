@@ -4,47 +4,14 @@ Turn Based "Card Game" Dungeon Crawler Game Idea
 
 
 TODO:
-    *** a summon disappears if it has no targets ***
-    *** add turn limit to summons ***
-    *** how to living/enemy gain more actions ? ***
+
+    good hint: use living maintance to end a not dead living before turn start
+
+        more turns, more moves
         - problem solved on turns and on druid beasts, but must change on enemies
-    *** make can move checker on enemy turn ***
-    *** see if redo priest to include impare attack ***
-    *** make ally turns ***
-    *** fix targets if all alies are dead ***
-    *** make revive counter checker on living turn ***
-    *** use revivable counter counter on necro ***
-    *** protect and ignore pain anull each other ***
-    *** erase all logs, make a dungeon maintance function ***
-	*** make a minimum distance variable ***
-	*** check if dead function ***
-	*** reduce target max counter ***
-	*** enemy move check if can move ***
-	*** make a clear checker functions function ***
+
         *** change player movement ***
-        *** make a counter, every 5th level make a boss ***
-        *** make items you can iterract with ***
-        *** chests have effects: gain life, lose life, gain movements, love
-        movements
         *** make a txt with all info to help players, better than on IDE
-	*** make a countdown for dead players, if reaches 0, he can't be
-	revived
-
-Doing now:
-
-    Rogue:
-        - weak:
-            - jumps and throws knife  at a medium distance, gain one more move, 
-            everytime a different enemy is hit, gain the ability to throw 
-            another one
-        - medium:
-            - shots and arrow at an enemy, everytime a different enemy is hit, 
-            gain the ability to shoot another one
-            - makes a twist
-        - strong:
-            - becomes invisible for 5 turns
-            - throws knifes in all directions, gaining 2 moves and if
-            different eenemy is hit, yada yada
 
 List of symbols:
 

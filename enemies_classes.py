@@ -530,6 +530,9 @@ class Necro(Enemy):
 
     def drain_life(self):
 
+        if not self.can_attack:
+            return
+
         for ally in self.board.allies:
 
             if ally.invulnerable:
@@ -555,7 +558,9 @@ class Necro(Enemy):
             ally.health -= self.drain_life_damage
             enemy.health += self.drain_life_damage
 
-            message = f"{self.name} drained {self.drain_life_damage} life from {ally.name} and healed {enemy.name} with the drained life."
+            message = f"{self.name} drained {self.drain_life_damage} "\
+                      f"life from {ally.name} and healed {enemy.name} "\
+                      f"with the drained life."
             self.board.add_log(message)
 
             return
@@ -568,7 +573,7 @@ class Necro(Enemy):
 
         for enemy in self.board.enemies:
 
-            if not enemy.dead:
+            if not enemy.dead or enemy.revive_counter <= 0:
                 continue
 
             self.revive_living(enemy)
