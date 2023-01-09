@@ -155,8 +155,12 @@ class Player(Living):
 
         self.board.print_board()
 
+        print("Livings' Symbols:\n")
+
         for living in self.board.livings:
-            print(f"{living.sym}: {living.name}, {living.player_or_enemy}.")
+            print(f"  {living.sym}: {living.name}, {living.player_or_enemy}.")
+
+        print("\nOther Symbols:\n")
 
         self.print_other_icons()
 
@@ -168,7 +172,7 @@ class Player(Living):
             for ind, line in enumerate(file):
                 for ind, entry in enumerate(line):
 
-                    icon_message = f" {entry}:" if ind == 0 else f" {entry}."
+                    icon_message = f"  {entry}:" if ind == 0 else f" {entry}."
                     print(icon_message, end="")
 
                 print()
