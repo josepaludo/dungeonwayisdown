@@ -2,13 +2,13 @@ import os
 from random import randint, choice
 from time import sleep
 
-from spec_classes import Warrior, Priest, Rogue
-from druid_class import Druid
-from wizard_class import Wizard
-from enemies_classes import Goblin, Snake, Troll, Necro
-from living_classes import Enemy
-from board_class import Board
-from miscellaneous import game_icon
+from Specs import Warrior, Priest, Rogue
+from Druid import Druid
+from Wizard import Wizard
+from Enemies import Goblin, Snake, Troll, Necro
+from Living import Enemy
+from Board import Board
+from Constants import GAME_ICON
 
 
 def dungeon_way_is_down():
@@ -24,7 +24,7 @@ def start_game():
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    print(game_icon)
+    print(GAME_ICON)
 
     message ="A party of 5 adventurers enter a dungeon:\na warrior, a priest, "\
              "a druid, a wizard and a rogue.\n\nThe entry is shut.\n\n"\
@@ -288,7 +288,7 @@ def end_game(result):
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    print(game_icon)
+    print(GAME_ICON)
 
     win_message = "The way is shut.\n\n"\
                   "The light is out.\n\n"\

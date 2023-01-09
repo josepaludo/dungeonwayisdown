@@ -1,7 +1,7 @@
 import csv
 from random import random, choice, randint
 
-from living_classes import Living, Enemy
+from Living import Living, Enemy
 
 
 class Ally(Living):
@@ -162,7 +162,7 @@ class Player(Living):
 
     def print_other_icons(self):
 
-        with open("icons.csv") as file:
+        with open("assets/icons.csv") as file:
             file = csv.reader(file)
 
             for ind, line in enumerate(file):

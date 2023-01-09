@@ -1,7 +1,7 @@
 from random import random, choice
 
-from living_classes import Enemy
-from player_class import Player, Ally
+from Living import Enemy
+from Player import Player, Ally
 
 
 class Goblin(Enemy):

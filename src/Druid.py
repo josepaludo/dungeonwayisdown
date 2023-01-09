@@ -1,4 +1,4 @@
-from player_class import Player, Ally
+from Player import Player, Ally
 
 
 class Beast(Ally):

@@ -1,7 +1,7 @@
 from random import randint, choice
 from copy import deepcopy
 
-from player_class import Player, Ally
+from Player import Player, Ally
 
 
 class Demon(Ally):

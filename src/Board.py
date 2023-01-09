@@ -3,8 +3,7 @@ from random import randint, choice
 from copy import deepcopy
 from time import sleep
 
-from miscellaneous import game_icon
-
+from Constants import GAME_ICON
 
 class Board:
 
@@ -60,7 +59,7 @@ class Board:
 
     def set_names(self):
 
-        with open("names.txt") as file:
+        with open("assets/names.txt") as file:
 
             file = file.readlines()[0].split(',')
             file.pop(-1)
@@ -186,7 +185,7 @@ class Board:
     def print_game_icon(self):
 
         self.clean_clear()
-        print(game_icon)
+        print(GAME_ICON)
 
     def print_board(self, proxy_board=None):
 
