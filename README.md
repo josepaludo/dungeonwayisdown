@@ -21,8 +21,8 @@ Caution: not to be enjoyed with one's family
 
 run 
 
-'''
+```
 python3 dungeon_way_is_down.py
-'''
+```
 
-on the 'src' directory.
+on the `src` directory.
