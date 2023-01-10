@@ -5,6 +5,7 @@ from time import sleep
 
 from Constants import GAME_ICON
 
+
 class Board:
 
     def __init__(self):
@@ -142,8 +143,8 @@ class Board:
         message = "Your party has reached the final level of the dungeon.\n\n"\
                   "Press 'Enter' to continue."
 
-        input(f"Your party has finished the level {self.level}.\n\n"\
-              f"\nPress 'Enter' do advance to follow the dungeon way." \
+        input(f"Your party has finished the level {self.level}.\n\n"
+              f"\nPress 'Enter' do advance to follow the dungeon way."
               if self.level < 10 else message)
 
     def check_dead_players(self):

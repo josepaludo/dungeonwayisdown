@@ -1,7 +1,7 @@
 import csv
-from random import random, choice, randint
+from random import randint
 
-from Living import Living, Enemy
+from Living import Living
 
 
 class Ally(Living):
@@ -40,7 +40,7 @@ class Player(Living):
                        "log": {"func": self.show_log,
                                "descr": "Shows log of last important events."},
                        "cards": {"func": self.show_cards,
-                                 "descr": "Shows every card you have "\
+                                 "descr": "Shows every card you have "
                                  "and how it works."},
                        "status": {"func": self.show_status,
                                   "descr": "Shows status of each player."},
@@ -126,9 +126,9 @@ class Player(Living):
 
             if x == 0:
                 self.clear_screen()
-                print(f"\nYou've reached the maximum hand size of "\
+                print(f"\nYou've reached the maximum hand size of "
                       f"{self.max_hand_size}.")
-                print(f"{excess_cards} random card"\
+                print(f"{excess_cards} random card"
                       f"{'s ' if excess_cards > 1 else ' '}will be discarted.")
                 input(f"\nPress 'Enter' to return.")
                 self.clear_screen()
@@ -169,7 +169,7 @@ class Player(Living):
         with open("assets/icons.csv") as file:
             file = csv.reader(file)
 
-            for ind, line in enumerate(file):
+            for index, line in enumerate(file):
                 for ind, entry in enumerate(line):
 
                     icon_message = f"  {entry}:" if ind == 0 else f" {entry}."
@@ -193,7 +193,7 @@ class Player(Living):
         self.clear_screen()
 
         for card in set(self.my_cards):
-            print(f"\nCard name: {card}.\n"\
+            print(f"\nCard name: {card}.\n"
                   f"Description: {self.cards[card]['descr']}")
 
     def show_log(self):
@@ -241,7 +241,7 @@ class Player(Living):
 
     def prompt_for_direction(self):
 
-        di = input("Which direction?\n'1' for up\n'2' for right\n"\
+        di = input("Which direction?\n'1' for up\n'2' for right\n"
                    "'3' for down\n'4' for left\n'q' for quit\n: ")
 
         if di == 'q':
@@ -260,7 +260,7 @@ class Player(Living):
                 return
 
             if to in [self.board.empty_square, self.board.hole_square]:
-                return (ycor, xcor)
+                return ycor, xcor
 
     def make_movement(self, ycor, xcor):
 
@@ -356,7 +356,7 @@ class Player(Living):
         for direction in directions:
             for coord in direction:
 
-                self.do_player_damage(coord, sym, target, damage, message)
+                self.do_player_damage(coord, sym, damage, message)
 
         return True
 

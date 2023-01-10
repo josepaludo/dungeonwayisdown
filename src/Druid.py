@@ -14,12 +14,12 @@ class Beast(Ally):
 
     def bite(self):
 
-        self.urdl_damage(self.claw_sym, self.bite_damage, \
+        self.urdl_damage(self.claw_sym, self.bite_damage,
                          self.bite_name, False, False)
 
     def rip(self):
 
-        self.around_damage(self.claw_sym, self.claw_damage, \
+        self.around_damage(self.claw_sym, self.claw_damage,
                            self.rip_name, False, self.attack_range)
 
     def rip_and_bite(self):
@@ -43,7 +43,7 @@ class Beast(Ally):
         self.wild_action()
 
         message = f"{self.name} echoes a wild call, "\
-                   "getting faster and more active."
+                  "getting faster and more active."
         self.board.add_log(message)
 
 
@@ -272,21 +272,20 @@ class Druid(Player):
                                   "level": "weak"}
 
         self.cards["Enroot"] = {"func": self.enroot,
-                                  "descr": self.enroot_descr,
-                                  "level": "medium"}
+                                "descr": self.enroot_descr,
+                                "level": "medium"}
 
         self.cards["Summon Wild"] = {"func": self.summon_wild,
-                                  "descr": self.summon_wild_descr,
-                                  "level": "medium"}
+                                     "descr": self.summon_wild_descr,
+                                     "level": "medium"}
 
         self.cards["Summon Beast"] = {"func": self.summon_beast,
-                                  "descr": self.summon_beast_descr,
-                                  "level": "strong"}
+                                      "descr": self.summon_beast_descr,
+                                      "level": "strong"}
 
         self.cards["Ancient Shape"] = {"func": self.ancient_shape,
-                                  "descr": self.ancient_shape_descr,
-                                  "level": "strong"}
-
+                                       "descr": self.ancient_shape_descr,
+                                       "level": "strong"}
 
     def entangle(self):
 
@@ -394,7 +393,7 @@ class Druid(Player):
 
             self.clear_screen()
 
-            print(f"{presentation}:\n\n'1' for {wild_1}.\n"\
+            print(f"{presentation}:\n\n'1' for {wild_1}.\n"
                   f"'2' for {wild_2}.\n'q' to quit.")
             answer = input(f"\n{question}?")
 
@@ -532,8 +531,8 @@ class Druid(Player):
                   f"to # with its bite."
 
         for i in range(self.stt_bite_amount):
-            self.players_urdl_damage(self.stt_bite_reach, self.stt_damage_sym,
-                                     self.stt_bite_damage, message)
+            self.player_urdl_damage(self.stt_bite_reach, self.stt_damage_sym,
+                                    self.stt_bite_damage, message)
 
         return True
 
@@ -572,7 +571,7 @@ class Druid(Player):
         message = f"{self.name} dealt {self.mm_tusk_damage} damage "\
                   f"to # with its tusks."
 
-        if self.players_urdl_damage(self.tusk_reach, self.mm_damage_sym,
+        if self.player_urdl_damage(self.mm_tusk_reach, self.mm_damage_sym,
                                     self.mm_tusk_damage, message):
             return True
 

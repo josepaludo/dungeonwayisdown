@@ -1,7 +1,6 @@
 from random import random, choice
 
 from Living import Enemy
-from Player import Player, Ally
 
 
 class Goblin(Enemy):
@@ -355,7 +354,8 @@ class Troll(Enemy):
         damage = self.boulder_damage if is_boulder else self.rock_damage
         target.health -= damage
 
-        message = f"{self.name} threw a {'boulder' if is_boulder else 'rock'} on {target.name}, dealing {damage} damage."
+        message = f"{self.name} threw a {'boulder' if is_boulder else 'rock'} "\
+                  f"on {target.name}, dealing {damage} damage."
         self.board.add_log(message)
 
         target.check_if_dead(self)
@@ -399,7 +399,8 @@ class Troll(Enemy):
 
             target.health -= self.splah_damage
 
-            message = f"{target.name} was hit by the splash of {self.name}'s boulder throw, which dealt {self.splah_damage} damage."
+            message = f"{target.name} was hit by the splash of {self.name}'s"\
+                      f"boulder throw, which dealt {self.splah_damage} damage."
             self.board.add_log(message)
 
             target.check_if_dead(self)
@@ -427,13 +428,13 @@ class Orc(Enemy):
         self.axe_range = 1
 
         self.cards["Axe Swing"] = {"func": self.axe_swing,
-                             "level": "weak"}
+                                   "level": "weak"}
 
         self.cards["Sprint"] = {"func": self.sprint,
-                                 "level": "medium"}
+                                "level": "medium"}
 
         self.cards["Warcry"] = {"func": self.warcry,
-                               "level": "strong"}
+                                "level": "strong"}
 
         self.init_cards()
 
@@ -514,13 +515,13 @@ class Necro(Enemy):
         self.drain_life_damage = 1
 
         self.cards["Drain Life"] = {"func": self.drain_life,
-                             "level": "weak"}
+                                    "level": "weak"}
 
         self.cards["Reincarnate"] = {"func": self.reincarnate,
-                                 "level": "medium"}
+                                     "level": "medium"}
 
         self.cards["Summon Orc"] = {"func": self.summon_orc,
-                               "level": "strong"}
+                                    "level": "strong"}
 
         self.init_cards()
 

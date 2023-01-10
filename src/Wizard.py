@@ -1,5 +1,4 @@
-from random import randint, choice
-from copy import deepcopy
+from random import choice
 
 from Player import Player, Ally
 
@@ -146,10 +145,10 @@ class Infernal(Demon):
         self.fire_damage = 1
 
         self.cards["Meteor Fall"] = {"func": self.meteor_fall,
-                                   "level": "weak"}
+                                     "level": "weak"}
 
         self.cards["Double Meteor"] = {"func": self.double_meteor,
-                                     "level": "medium"}
+                                       "level": "medium"}
 
         self.cards["Meteor Rain"] = {"func": self.meteor_rain,
                                      "level": "strong"}
@@ -280,7 +279,7 @@ class Wizard(Player):
         demon_name = "Imp" if is_imp else "Infernal"
 
         question = f"Do you want to summon a {demon_name} demon? "\
-                    "Enter '1' for yes or 'q' for no."
+                   "Enter '1' for yes or 'q' for no."
         go_on = self.yes_no_input(question)
 
         if not go_on:

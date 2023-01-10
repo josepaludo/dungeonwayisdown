@@ -1,13 +1,12 @@
 import os
 from random import randint, choice
-from time import sleep
 
 from Specs import Warrior, Priest, Rogue
 from Druid import Druid
 from Wizard import Wizard
 from Enemies import Goblin, Snake, Troll, Necro
-from Living import Enemy
 from Board import Board
+
 from Constants import GAME_ICON
 
 
@@ -26,9 +25,9 @@ def start_game():
 
     print(GAME_ICON)
 
-    message ="A party of 5 adventurers enter a dungeon:\na warrior, a priest, "\
-             "a druid, a wizard and a rogue.\n\nThe entry is shut.\n\n"\
-             "The dungeon only way is down."
+    message = "A party of 5 adventurers enter a dungeon:\na warrior, a priest,"\
+              " a druid, a wizard and a rogue.\n\nThe entry is shut.\n\n"\
+              "The dungeon only way is down."
 
     print(message)
 
@@ -100,7 +99,7 @@ def create_enemies(board):
     return enemy_objects
 
 
-def create_enemy(board, enemy_classes, is_boss = False):
+def create_enemy(board, enemy_classes, is_boss=False):
 
     enemy = choice(enemy_classes)()
     enemy.board = board
@@ -264,7 +263,7 @@ def prompt_input(player):
     while True:
 
         player.board.print_board()
-        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"\
+        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"
               f"Moves left: {player.moves}.\n")
 
         action = input("What is it? ('help' for options)\n")

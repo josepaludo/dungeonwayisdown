@@ -135,7 +135,8 @@ class Warrior(Player):
     def inner_avoid_pain(self, living):
 
         if living == self:
-            self.invulnerable == False
+
+            self.invulnerable = False
 
             message = f"{self.name}'s Avoid Pain period ended."
             self.board.add_log(message)
@@ -217,8 +218,8 @@ class Priest(Player):
                                     "level": "strong"}
 
         self.cards["Revive"] = {"func": self.revive,
-                                  "descr": revive,
-                                  "level": "strong"}
+                                "descr": revive,
+                                "level": "strong"}
 
         self.init_cards()
 
@@ -276,7 +277,7 @@ class Priest(Player):
         if not go_on:
             return
 
-        for enemy in enemies:
+        for enemy in self.board.enemies:
             enemy.can_attack = False
 
         message = f"{self.name} silenced enemies, impairing their attacks."
@@ -337,8 +338,8 @@ class Priest(Player):
 
     def revive(self):
 
-        dead_players = [player for player in self.board.players \
-                        if players.dead and player.revive_counter > 0]
+        dead_players = [player for player in self.board.players
+                        if player.dead and player.revive_counter > 0]
 
         if len(dead_players) == 0:
             self.clear_screen()
@@ -433,7 +434,7 @@ class Rogue(Player):
 
         self.fade_out_turns -= 1
 
-        if fade_out_turns == 0:
+        if self.fade_out_turns == 0:
             return True
 
     def empty_targets(self, living):
@@ -459,16 +460,16 @@ class Rogue(Player):
 
         card = "Knife Throw"
         message = f"{self.name} dealt {self.knife_damage} damage "\
-                   "to # with knife throw."
+                  "to # with knife throw."
 
         side = self.prompt_direction()
 
         if not side:
             return
 
-        direction = self.get_urdl_coords(self.y, self.x, \
+        direction = self.get_urdl_coords(self.y, self.x,
                                          self.throw_range)[side-1]
-        target = self.fill_line_until_hit(direction, self.knife_sym, \
+        target = self.fill_line_until_hit(direction, self.knife_sym,
                                           self.knife_damage, message)
         if target:
             self.check_multi_target(target, card)
@@ -481,7 +482,7 @@ class Rogue(Player):
 
         card = "Arrow Shot"
         message = f"{self.name} dealt {self.knife_damage} damage "\
-                   "to # with arrow shot."
+                  "to # with arrow shot."
 
         side = self.prompt_direction()
 
@@ -489,7 +490,7 @@ class Rogue(Player):
             return
 
         direction = self.get_urdl_coords_all(self.y, self.x)[side-1]
-        target = self.fill_line_until_hit(direction, self.arrow_sym, \
+        target = self.fill_line_until_hit(direction, self.arrow_sym,
                                           self.arrow_damage, message)
         if target:
             self.check_multi_target(target, card)
@@ -502,7 +503,7 @@ class Rogue(Player):
 
         card = "Knives Out"
         message = f"{self.name} dealt {self.knife_damage} damage "\
-                   "to # with knives out."
+                  "to # with knives out."
         question = "Do you wish to hit all enemies around you with knives " \
                    "out?\nEnter '1' for yes or 'q' for no."
 
@@ -517,7 +518,7 @@ class Rogue(Player):
 
         card = "Blades Dance"
         message = f"{self.name} dealt {self.knife_damage} damage "\
-                   "to # with blades dance."
+                  "to # with blades dance."
         question = "Do you wish to throw 4 knives at the enemies around you?" \
                    "out?\nEnter '1' for yes or 'q' for no."
 

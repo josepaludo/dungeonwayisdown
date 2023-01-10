@@ -1,8 +1,7 @@
 from random import choice, random
-from time import sleep
 
 
-class Living():
+class Living:
 
     def __init__(self):
 
@@ -45,6 +44,9 @@ class Living():
         self.actions = 1
         self.actions_per_turn = 1
         self.actions_changed_counter = 0
+
+        self.max_target_counter = 5
+        self.target_counter = self.max_target_counter
 
         self.board = None
 
@@ -109,7 +111,7 @@ class Living():
         while True:
 
             self.clear_screen()
-            print("Directions:\n\n'1' for up.\n'2' for right.\n"\
+            print("Directions:\n\n'1' for up.\n'2' for right.\n"
                   "'3' for down.\n'4' for left.\n\n'q' to quit.")
 
             direction = input("\nEnter chosen direction: ")
@@ -214,12 +216,12 @@ class Living():
     def reset_self_values(self, ycor, xcor):
 
         self.revive_counter = self.revive_counter_start
-        self.board.board[ycor][xcor] = living.sym
+        self.board.board[ycor][xcor] = self.sym
         self.dead = False
         self.invulnerable = False
         self.can_attack = True
         self.can_move = True
-        self.y, living.x = ycor, xcor
+        self.y, self.x = ycor, xcor
         self.health = 15
 
     def set_target(self, is_enemy=True):
@@ -230,8 +232,8 @@ class Living():
             return True
 
         livings = self.board.allies if is_enemy else self.board.enemies
-        targets = [living for living in livings if \
-                   not living.dead and living.can_be_target]
+        targets = [living for living in livings
+                   if not living.dead and living.can_be_target]
 
         if len(targets) == 0:
             return
@@ -484,9 +486,6 @@ class Enemy(Living):
 
         self.sym = "e"
         self.name = "Generic small enemy"
-
-        self.max_target_counter = 5
-        self.target_counter = self.max_target_counter
 
     def is_boss(self):
 
