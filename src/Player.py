@@ -1,5 +1,5 @@
 import csv
-from random import randint
+from random import randint, choice
 
 from Living import Living
 
@@ -51,7 +51,9 @@ class Player(Living):
                        "mhelp": {"func": self.more_help,
                                  "descr": "Gives more help."},
                        "end": {"func": "",
-                               "descr": "Finish your turn."}}
+                               "descr": "Finish your turn."},
+                       "dragons": {"func": self.dragons,
+                                   "descr": ""}}
 
         self.max_health = 20
         self.max_hand_size, self.draws_per_turn = 6, 2
@@ -68,6 +70,12 @@ class Player(Living):
         self.cards["Jump"] = {"func": self.jump_func,
                               "descr": jump,
                               "level": "weak"}
+
+    def dragons(self):
+
+        self.clear_screen()
+
+        print(choice(self.board.quotes))
 
     def append_to_turn_checker(self, func):
 
@@ -144,6 +152,10 @@ class Player(Living):
         print("(Note you must enter only what is inside the '')\n")
 
         for key in self.inputs:
+
+            if key == "dragons":
+                continue
+
             print(f"'{key}': {self.inputs[key]['descr']}")
 
     def more_help(self):

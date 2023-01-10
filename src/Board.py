@@ -40,7 +40,23 @@ class Board:
         self.allies = []
         self.players = []
 
+        self.quotes = []
+
         self.reset_board()
+        self.init_quotes()
+
+    def init_quotes(self):
+
+        with open("assets/quotes.txt") as file:
+
+            file = file.read().split("#")
+
+            for ind, quote in enumerate(file):
+
+                if ind == len(file)-1:
+                    continue
+
+                self.quotes.append(quote)
 
     def pick_boss_epithet(self):
 
