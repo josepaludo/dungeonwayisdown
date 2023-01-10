@@ -3,7 +3,7 @@ from random import randint, choice
 from copy import deepcopy
 from time import sleep
 
-from Constants import GAME_ICON
+from src.Constants import GAME_ICON
 
 
 class Board:
@@ -47,7 +47,7 @@ class Board:
 
     def init_quotes(self):
 
-        with open("assets/quotes.txt") as file:
+        with open("src/assets/quotes.txt") as file:
 
             file = file.read().split("#")
 
@@ -76,7 +76,7 @@ class Board:
 
     def set_names(self):
 
-        with open("assets/names.txt") as file:
+        with open("src/assets/names.txt") as file:
 
             file = file.readlines()[0].split(',')
             file.pop(-1)

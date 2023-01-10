@@ -1,4 +1,4 @@
-from Player import Player, Ally
+from src.Player import Player, Ally
 
 
 class Beast(Ally):

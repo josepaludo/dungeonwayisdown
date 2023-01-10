@@ -1,6 +1,6 @@
 from random import choice
 
-from Player import Player, Ally
+from src.Player import Player, Ally
 
 
 class Demon(Ally):

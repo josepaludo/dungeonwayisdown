@@ -1,6 +1,6 @@
 from random import random, choice
 
-from Living import Enemy
+from src.Living import Enemy
 
 
 class Goblin(Enemy):

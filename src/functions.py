@@ -1,13 +1,13 @@
 import os
 from random import randint, choice
 
-from Specs import Warrior, Priest, Rogue
-from Druid import Druid
-from Wizard import Wizard
-from Enemies import Goblin, Snake, Troll, Necro
-from Board import Board
+from src.Specs import Warrior, Priest, Rogue
+from src.Druid import Druid
+from src.Wizard import Wizard
+from src.Enemies import Goblin, Snake, Troll, Necro
+from src.Board import Board
 
-from Constants import GAME_ICON
+from src.Constants import GAME_ICON
 
 
 def dungeon_way_is_down():

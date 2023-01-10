@@ -1,6 +1,6 @@
 from random import random
 
-from Player import Player
+from src.Player import Player
 
 
 class Warrior(Player):
