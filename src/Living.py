@@ -339,7 +339,7 @@ class Living:
         report = f"{self.name} fell in a hole."
         self.board.add_log(report)
 
-    def living_maintance(self, is_enemy):
+    def living_maintenance(self, is_enemy):
 
         for i in range(self.actions_per_turn):
             self.get_turn_cards()

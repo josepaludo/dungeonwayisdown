@@ -117,7 +117,7 @@ class Player(Living):
 
         return True
 
-    def player_maintance(self):
+    def player_maintenance(self):
 
         self.actions = max(self.actions_per_turn, self.actions)
         self.moves = max(self.moves, self.moves_per_turn)

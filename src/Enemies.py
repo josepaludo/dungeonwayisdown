@@ -32,7 +32,7 @@ class Goblin(Enemy):
 
         self.init_cards()
 
-    def boss_maintance(self):
+    def boss_maintenance(self):
 
         self.is_boss()
 
@@ -138,7 +138,7 @@ class Snake(Enemy):
 
         self.init_cards()
 
-    def boss_maintance(self):
+    def boss_maintenance(self):
 
         self.is_boss()
 
@@ -310,7 +310,7 @@ class Troll(Enemy):
 
         self.init_cards()
 
-    def boss_maintance(self):
+    def boss_maintenance(self):
 
         self.is_boss()
 
@@ -525,7 +525,7 @@ class Necro(Enemy):
 
         self.init_cards()
 
-    def boss_maintance(self):
+    def boss_maintenance(self):
 
         self.is_boss()
 

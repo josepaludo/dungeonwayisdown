@@ -106,7 +106,7 @@ class Board:
             sleep(0.1)
             self.print_board()
 
-    def livings_maintance(self, livings, enemies, allies, players):
+    def livings_maintenance(self, livings, enemies, allies, players):
 
         self.livings += livings
         self.enemies += enemies
@@ -126,7 +126,7 @@ class Board:
 
         self.living_turn_checker = []
 
-    def log_maintance(self):
+    def log_maintenance(self):
 
         self.log.append([])
 

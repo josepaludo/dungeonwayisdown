@@ -39,7 +39,7 @@ def game_loop():
 
     while True:
 
-        game_finished = board_maintance(board)
+        game_finished = board_maintenance(board)
 
         if game_finished:
             return True
@@ -52,7 +52,7 @@ def game_loop():
         board_clean_up(board)
 
 
-def board_maintance(board):
+def board_maintenance(board):
 
     if board.game_finished():
         return True
@@ -62,7 +62,7 @@ def board_maintance(board):
 
     livings = enemies + players
 
-    board.livings_maintance(livings, enemies, players, players)
+    board.livings_maintenance(livings, enemies, players, players)
     board.place_things()
 
     board.erase_log()
@@ -105,7 +105,7 @@ def create_enemy(board, enemy_classes, is_boss=False):
     enemy.board = board
 
     if is_boss:
-        enemy.boss_maintance()
+        enemy.boss_maintenance()
         enemy.set_boss_name()
     else:
         enemy.set_name()
@@ -120,7 +120,7 @@ def dungeon_loop(board):
         if all_players_died(board):
             return
 
-        board.log_maintance()
+        board.log_maintenance()
 
         go_on = livings_turns(board)
 
@@ -148,7 +148,7 @@ def livings_turns(board):
             return
 
         if living.dead:
-            dead_living_maintance(living)
+            dead_living_maintenance(living)
             continue
 
         living_turn_check(living)
@@ -158,7 +158,7 @@ def livings_turns(board):
     return True
 
 
-def dead_living_maintance(living):
+def dead_living_maintenance(living):
 
     living.revive_counter -= 1
 
@@ -187,7 +187,7 @@ def do_turn(living):
 
 def living_turn(living, is_enemy):
 
-    if not living.living_maintance(is_enemy):
+    if not living.living_maintenance(is_enemy):
         return
 
     if living.can_move:
@@ -238,7 +238,7 @@ def living_act(living):
 
 def player_turn(player):
 
-    player.player_maintance()
+    player.player_maintenance()
 
     input(f"{player.sym}'s turn. Press 'Enter' to begin.")
 
