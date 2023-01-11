@@ -270,7 +270,7 @@ class Priest(Player):
 
         question = f"Do you wish to silence enemies, impairing their attacks "\
                    f"for {self.silence_duration} turns?"\
-                   f"Enter '1' for yes or 'q' for no."
+                   f"\nEnter '1' for yes or 'q' for no."
 
         go_on = self.yes_no_input(question)
 

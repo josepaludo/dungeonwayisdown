@@ -171,7 +171,8 @@ class Snake(Enemy):
         if target.invulnerable or target.dead:
             return
 
-        message = message if message else f"{self.name} stung {target.name}. {target.name} is poisoned."
+        message = message if message else f"{self.name} stung {target.name}. "\
+                                          f"{target.name} is poisoned."
         self.board.add_log(message)
 
         self.bitten_allies[target] = self.dot_turn_duration
@@ -181,7 +182,7 @@ class Snake(Enemy):
 
     def poison_dot(self, living):
 
-        if living in self.board.enemies:
+        if living not in self.bitten_allies:
             return
 
         self.make_poison_dot(living)
@@ -192,7 +193,7 @@ class Snake(Enemy):
     def make_poison_dot(self, target):
 
         if self.bitten_allies[target] == 0 or target.dead:
-            del self.bitten_allies[target]
+            self.bitten_allies.pop(target)
             return
 
         self.bitten_allies[target] -= 1

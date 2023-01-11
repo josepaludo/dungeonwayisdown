@@ -80,6 +80,7 @@ def create_players(board):
         if player.sym in board.dead_players:
             continue
 
+        player.name = f"{board.pick_player_name()}, the {player.name}"
         player.board = board
         players.append(player)
 

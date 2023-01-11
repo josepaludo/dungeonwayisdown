@@ -223,7 +223,7 @@ class Druid(Player):
 
         self.mammoth_name = "Mammoth"
         self.saber_tooth_tiger_name = "Saber Tooth Tiger"
-        self.druid_name = "Druid"
+        self.druid_name = None
 
         self.reverse_transformation_card = "Reverse Transformation"
         self.reverse_info = {"func": self.reverse_transformation,
@@ -256,6 +256,7 @@ class Druid(Player):
         self.mm_ancient_taunt_descr = "Taunts enemies and toughens your skin."
 
         self.get_druid_cards()
+        self.my_cards.append("Ancient Shape")
 
     def get_druid_cards(self):
 
@@ -412,6 +413,9 @@ class Druid(Player):
 
     def ancient_shape(self):
 
+        if not self.druid_name:
+            self.druid_name = self.name
+
         presentation = "Ancient beasts"
         question = "Wich one would you like to transform into"
         ancient_beasts = "Saber Tooth Tiger", "Mammoth"
@@ -513,6 +517,13 @@ class Druid(Player):
         self.my_cards.append(self.reverse_transformation_card)
 
     def reverse_transformation(self):
+
+        question = "Do you wish to return to the regular druid's from?"\
+                   "\nEnter '1' for yes or 'q' for no."
+        go_on = self.yes_no_input(question)
+
+        if not go_on:
+            return
 
         info = self.get_druid_info()
         self.transform(info)

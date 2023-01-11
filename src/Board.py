@@ -41,6 +41,7 @@ class Board:
         self.players = []
 
         self.quotes = []
+        self.player_names = []
 
         self.reset_board()
         self.init_quotes()
@@ -90,6 +91,25 @@ class Board:
 
         name_index = randint(0, len(self.available_names)-1)
         name = self.available_names.pop(name_index)
+
+        return name
+
+    def set_player_names(self):
+
+        with open("src/assets/player_names.txt") as file:
+
+            names = file.read().split("#")
+            names.pop(-1)
+
+            self.player_names = names
+
+    def pick_player_name(self):
+
+        if len(self.player_names) == 0:
+            self.set_player_names()
+
+        name_index = randint(0, len(self.player_names)-1)
+        name = self.player_names.pop(name_index)
 
         return name
 
