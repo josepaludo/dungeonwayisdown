@@ -168,16 +168,20 @@ class Living:
         self.dead = True
         self.board.board[self.y][self.x] = self.board.empty_square
 
-        message = f"{self.name} died.{f' {killer.name} slayed it.' if killer else ''}"
+        message = f"{self.name} died."\
+                  f"{f' {killer.name} slayed it.' if killer else ''}"
         self.board.add_log(message)
 
         return True
 
     def init_cards(self):
 
-        self.strong_cards = [card for card, info in self.cards.items() if info['level'] == 'strong']
-        self.medium_cards = [card for card, info in self.cards.items() if info['level'] == 'medium']
-        self.weak_cards = [card for card, info in self.cards.items() if info['level'] == 'weak']
+        self.strong_cards = [card for card, info in self.cards.items()
+                             if info['level'] == 'strong']
+        self.medium_cards = [card for card, info in self.cards.items()
+                             if info['level'] == 'medium']
+        self.weak_cards = [card for card, info in self.cards.items()
+                           if info['level'] == 'weak']
 
     def get_turn_cards(self):
 
@@ -418,7 +422,8 @@ class Living:
 
         self.target.health -= damage
 
-        message = f"{self.name} dealt {damage} damage to {target.name} with its {weapon}."
+        message = f"{self.name} dealt {damage} damage to "\
+                  f"{target.name} with its {weapon}."
         self.board.add_log(message)
 
         target.check_if_dead(self)
@@ -436,9 +441,11 @@ class Living:
             target = self.check_coord(ycor, xcor)
             target_group = self.board.allies if is_enemy else self.board.enemies
 
-            self.do_around_damage(sym, damage, weapon, ycor, xcor, target, target_group)
+            self.do_around_damage(sym, damage, weapon, ycor, xcor,
+                                  target, target_group)
 
-    def do_around_damage(self, sym, damage, weapon, ycor, xcor, target, target_group):
+    def do_around_damage(self, sym, damage, weapon, ycor, xcor, target,
+                         target_group):
 
         if target == 'invalid':
             return
@@ -453,7 +460,8 @@ class Living:
 
         target.health -= damage
 
-        message = f"{self.name} dealt {damage} damage to {target.name} with its {weapon}."
+        message = f"{self.name} dealt {damage} damage to "\
+                  f"{target.name} with its {weapon}."
         self.board.add_log(message)
 
         target.check_if_dead(self)
@@ -466,7 +474,8 @@ class Living:
             enemy.target_counter = enemy.max_target_counter-self.short_taunt_duration-1
             self.board.backup_board[enemy.y][enemy.x] = self.taunt_sym
 
-        message = f"{self.name} taunted each enemy for {self.short_taunt_duration} turns."
+        message = f"{self.name} taunted each enemy for "\
+                  f"{self.short_taunt_duration} turns."
         self.board.add_log(message)
 
     def barkskin(self):

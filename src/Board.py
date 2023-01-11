@@ -93,13 +93,17 @@ class Board:
 
         return name
 
+    def print_backup_board(self):
+
+        self.print_board(self.backup_board)
+
     def board_blink(self):
 
         for i in range(5):
 
-            sleep(0.05)
-            self.print_board(self.backup_board)
-            sleep(0.05)
+            sleep(0.1)
+            self.print_backup_board()
+            sleep(0.1)
             self.print_board()
 
     def livings_maintance(self, livings, enemies, allies, players):

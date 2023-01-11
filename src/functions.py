@@ -6,7 +6,6 @@ from src.Druid import Druid
 from src.Wizard import Wizard
 from src.Enemies import Goblin, Snake, Troll, Necro
 from src.Board import Board
-
 from src.Constants import GAME_ICON
 
 
@@ -78,25 +77,26 @@ def create_players(board):
 
         player = player_class()
 
-        if player.sym not in board.dead_players:
-            player.board = board
-            players.append(player)
+        if player.sym in board.dead_players:
+            continue
+
+        player.board = board
+        players.append(player)
 
     return players
 
 
 def create_enemies(board):
 
-    enemy_objects = []
+    enemies = []
 
-    enemies = Goblin, Snake, Troll, Necro
+    enemy_classes = Goblin, Snake, Troll, Necro
 
     for i in range(board.level + 3):
 
-        enemy_objects.append(create_enemy(board, enemies,
-                                          True if i == 1 else False))
-
-    return enemy_objects
+        enemies.append(create_enemy(board, enemy_classes,
+                                    True if i == 0 else False))
+    return enemies
 
 
 def create_enemy(board, enemy_classes, is_boss=False):
@@ -221,7 +221,7 @@ def living_act(living):
 
     for card in living.my_cards:
 
-        if all_players_died:
+        if all_players_died(living.board):
             return
 
         living.board.make_copy()
