@@ -17,7 +17,7 @@ Game
 
 ## Prerequisites
 
-A computer with Python 3 Interpreter installed and access to a terminal/command prompt.
+A computer with the Python Interpreter installed and access to a terminal/command prompt.
 
 ## How to Play
 
