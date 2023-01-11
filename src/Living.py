@@ -67,7 +67,7 @@ class Living:
     def clear_screen(self):
 
         self.board.print_board()
-        print(f"{self.sym}'s turn.\n")
+        print(f"{self.name}'s turn.\n")
 
     def check_coord(self, ycor, xcor):
 
@@ -378,7 +378,7 @@ class Living:
         summon = summon_class()
         summon.y, summon.x = ycor, xcor
         summon.board = self.board
-        summon.name = self.board.pick_name()
+        summon.name = f"{self.board.pick_name()}, the {summon.name}"
 
         self.board.board[ycor][xcor] = summon.sym
         self.board.livings.append(summon)

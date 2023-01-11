@@ -240,7 +240,7 @@ def player_turn(player):
 
     player.player_maintenance()
 
-    input(f"{player.sym}'s turn. Press 'Enter' to begin.")
+    input(f"{player.name}'s turn. Press 'Enter' to begin.")
 
     while True:
 
@@ -263,7 +263,7 @@ def prompt_input(player):
     while True:
 
         player.board.print_board()
-        print(f"{player.sym}'s turn.\n\nActions left: {player.actions}.\n"
+        print(f"{player.name}'s turn.\n\nActions left: {player.actions}.\n"
               f"Moves left: {player.moves}.\n")
 
         action = input("What is it? ('help' for options)\n")
