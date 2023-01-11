@@ -15,7 +15,9 @@ a
 
 Game
 
-Caution: not to be enjoyed with one's family
+## Prerequisites
+
+A computer with Python 3 Interpreter installed and access to a terminal/command prompt.
 
 ## How to Play
 
