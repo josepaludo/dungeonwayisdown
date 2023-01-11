@@ -19,7 +19,7 @@ Caution: not to be enjoyed with one's family
 
 ## How to Play
 
-run 
+run: 
 
 ```
 python3 dungeon_way_is_down.py
